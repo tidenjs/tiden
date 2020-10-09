@@ -1,0 +1,11 @@
+{
+  "name": "tiden",
+  "version": "0.0.1",
+  "description": "100% native web applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mikabytes",
+  "license": "MIT"
+}
