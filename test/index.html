@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "redux-saga": "https://unpkg.com/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
+          "redux-saga/effects": "https://unpkg.com/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
+          "redux": "https://unpkg.com/redux@^4.0.4/es/redux.mjs"
+        }
+      }
+    </script>
+  </head>
+  <body>
+
+    <div id="mocha"></div>
+
+    <script type="module" src="./reload.js"></script>
+
+    <script type="module" class="mocha-init">
+      import "https://unpkg.com/chai@^4.3.4/chai.js"
+      import "https://unpkg.com/mocha@^8.3.2/mocha.js"
+
+      mocha.setup({
+        ui: 'bdd',
+        asyncOnly: true,
+        timeout: 2000,
+      })
+      mocha.checkLeaks()
+    </script>
+    <script type="module" class="mocha-exec">
+      import "./api.test.js"
+
+      mocha.run();
+    </script>
+  </body>
+</html>
