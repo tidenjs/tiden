@@ -4,9 +4,9 @@
 //
 // E.g. respondTo('get', 'languages', function* () { return ['en', 'sv'] })
 
-import { put, takeEvery } from "redux-saga/effects"
+import { put, takeEvery } from "redux-saga/effects.js"
 
-export function respondTo(verb, noun, actor) {
+export default function respondTo(verb, noun, actor) {
   if (typeof actor !== `function`) {
     const value = actor
     actor = function* () {

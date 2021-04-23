@@ -9,8 +9,9 @@
       {
         "imports": {
           "redux-saga": "https://unpkg.com/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
-          "redux-saga/effects": "https://unpkg.com/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
-          "redux": "https://unpkg.com/redux@^4.0.4/es/redux.mjs"
+          "redux-saga/effects.js": "https://unpkg.com/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
+          "redux": "https://unpkg.com/redux@^4.0.4/es/redux.mjs",
+          "reselect": "https://unpkg.com/reselect@^4.0.0/es/index.js"
         }
       }
     </script>
@@ -33,7 +34,10 @@
       mocha.checkLeaks()
     </script>
     <script type="module" class="mocha-exec">
-      import "./api.test.js"
+      const res = await fetch(`/files?include=src/**/*.test.js`)
+      const files = await res.json()
+
+      await Promise.all(files.map(file => import(`/${file}`)))
 
       mocha.run();
     </script>

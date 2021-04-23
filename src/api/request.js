@@ -1,4 +1,4 @@
-import { all, call, put, take } from "redux-saga/effects"
+import { all, call, put, take } from "redux-saga/effects.js"
 
 import getCallerFile from "../getCallerFile.js"
 import getUniqueKey from "../getUniqueKey.js"
@@ -8,7 +8,7 @@ export default function request(verb, stream, data, metadata = {}) {
   return _request(verb, stream, data, metadata, tag)
 }
 
-function* _request(verb, stream, data, metadata = {}, sender) {
+export function* _request(verb, stream, data, metadata = {}, sender) {
   if (Array.isArray(verb)) {
     return yield all(
       verb.map((v) =>

@@ -31,75 +31,6 @@ import { generate } from "./routing.js"
 
 let uniqueKey = 0
 
-// REQUEST
-//
-// request data from other sagas. Polymorphic function.
-//
-// Usage:
-// it = yield request(noun)       | Makes a 'get' request for noun.
-// it = yield request(verb, noun) | Makes a verb request for noun.
-// it = yield request(verb, noun, data)         | As above, but pass data value as well
-// it = yield request(verb, noun, data, extras) | As above, merge any keys in extras to action
-//
-// Additionally, an array may be passed in to request several actions in parallel
-// array = request(array[noun])  | Will call request for each noun
-// array = request(array[array]) | Will spread the inner array for calls with request
-//
-// EXAMPLES
-//
-// # Get token
-// const token = request(`token`)
-//
-// # Get token and languages:
-// const [token, languages] = yield request([`token`, `languages`])
-//
-// # validate token
-// yield request(`validate`, `token`)
-//
-// # Set language
-// yield request(`set`, `language`, `en`)
-//
-// # Update user
-// yield request(`update`, `user`, {name: `foo`}, {id: `123`})
-//
-// # Perform several actions in parallel
-// const [_, user] = yield request([
-//   [`validate`, `token`],
-//   [`create`, `user`, {name: `bar`}]
-// ])
-
-export function takeEveryCreate(noun, actor) {
-  return respondTo(`create`, noun, actor)
-}
-
-export function takeEveryUpdate(noun, actor) {
-  return respondTo(`update`, noun, actor)
-}
-
-// similar to 'respondTo', but waits and returns with callback
-export function* respondToSync(verb, noun, data = undefined) {
-  const action = yield waitFor(`${verb} ${noun}`)
-  const payload = { ...action }
-  payload.type = noun
-
-  const ret = {
-    data: action.data,
-    metadata: action,
-  }
-
-  if (data !== undefined) {
-    payload.data = data
-    yield put(payload)
-  } else {
-    ret.respond = function* answer(data) {
-      payload.data = data
-      yield put(payload)
-    }
-  }
-
-  return ret
-}
-
 export function takeEveryGet(noun, actor) {
   return takeXGet(takeEvery, noun, actor)
 }
@@ -168,28 +99,6 @@ export function distinct(matcher, targetFunction) {
   }
 }
 
-// Usage yield listenFor(`something`, whenChanged(d => d.id, targetFunction))
-//
-// matcher(data, metadata): return a value to determine uniqueness by.
-//
-// targetFunction(data, metadata): A function that will be called only when value from matcher has changed.
-//
-export function whenChanged(matcher, targetFunction) {
-  if (!targetFunction) {
-    targetFunction = matcher
-    matcher = (d) => d
-  }
-  let previousValue = undefined
-
-  return function* (data, metadata) {
-    const value = matcher(data, metadata)
-    if (value !== previousValue) {
-      previousValue = value
-      yield targetFunction(data, metadata)
-    }
-  }
-}
-
 // DEPRECATED: Use generator functions instead (with 'bind' if nested)
 //
 // target    | a DOM element
@@ -245,252 +154,6 @@ export function* takeOne(definition) {
   yield definition[action.type](action)
 }
 
-export function createDispatcher(cb) {
-  let dispatch
-  const channel = eventChannel((emitter) => {
-    let open = true
-    dispatch = (...args) => {
-      if (open) {
-        emitter(...args)
-      } else {
-        throw new Error(
-          `Using dispatch after channel has been closed is a no-op.`
-        )
-      }
-    }
-
-    return () => {
-      open = false
-    }
-  })
-
-  function* worker() {
-    try {
-      while (true) {
-        const action = yield take(channel)
-        yield put(action)
-      }
-    } finally {
-      channel.close()
-    }
-  }
-
-  return [dispatch, worker]
-}
-
-/*
- * Helper function to derive DOM element properties from Saga MOP communication.
- *
- * NOTE: This has to be run with yield* or get stuck forever.
- *
- * el: the DOM element to set properties to
- * from: the saga concepts to listen for
- * to: an object with keys mapped to properties. Values are functions that take state and returns value to use for property. Ideally, this would be a selector.
- * tail: Any function*(el) that also needs to set properties on given element.
- */
-let connectKey = 1
-export function* connect(el, selectors, { assets = [], onReady = null } = {}) {
-  selectors = { ...selectors } // we'll modify these, so make a copy first
-
-  for (const s of Object.values(selectors)) {
-    if (s && s.assets) {
-      for (const asset of s.assets) {
-        assets.push(asset)
-      }
-    }
-  }
-
-  const myKey = connectKey++
-  const self = yield fork(function* () {
-    const sender = getCallerFile()
-
-    // filter out falsies and duplicates
-    assets = [...new Set(assets.filter((t) => t))]
-
-    let state = {}
-
-    const [dispatch, worker] = createDispatcher()
-    yield fork(worker)
-
-    function announce(type, data = null, metadata = null) {
-      const payload = { type, _: { sender } }
-      if (data !== undefined) {
-        payload.data = data
-      }
-      if (metadata) {
-        Object.assign(payload, metadata)
-      }
-      dispatch(payload)
-    }
-    state.announce = announce
-
-    const bindvars = {
-      counter: 0,
-      name: ``,
-    }
-    state.bind = (thing) => {
-      if (!thing) {
-        return thing
-      } else if (thing[boundSym]) {
-        // already bound, so just return it
-        return thing
-      } else if (thing.call) {
-        const func = thing
-        const name = `${bindvars.name}[${bindvars.counter++}]`
-        repository[name] = func
-        const ret = (...args) =>
-          state.announce(name, args, {
-            connectKey: myKey,
-          })
-
-        Object.defineProperty(ret, `length`, { value: thing.length })
-
-        ret.toString = func.toString.bind(func)
-        return bound(ret)
-      } else if (thing.map) {
-        return thing.map(state.bind)
-      } else if (typeof thing === `object`) {
-        let newThing = thing
-        for (const k of Object.keys(thing)) {
-          const v = thing[k]
-          const bindVal = state.bind(v)
-          if (bindVal !== v) {
-            if (newThing === thing) {
-              // create a new object only when something has changed
-              newThing = { ...thing }
-            }
-            newThing[k] = bindVal
-          }
-        }
-        return newThing
-      } else {
-        return thing
-      }
-    }
-
-    const repository = {}
-    window.r = repository
-    const propertyNames = Object.keys(selectors).filter((k) => {
-      const val = selectors[k]
-      if (isGeneratorFunction(val) || typeof val !== `function`) {
-        const staticValue = state.bind(val)
-        selectors[k] = () => staticValue
-      }
-      return true
-    })
-
-    // initial fetch
-    Object.assign(
-      state,
-      yield all(
-        assets.reduce((promises, asset) => {
-          promises[asset] = call(_request, asset, null, null, null, sender)
-          return promises
-        }, {})
-      )
-    )
-
-    state.dispatch = function () {
-      throw new Error(`dispatch is deprecated`)
-    }
-
-    const invalidAssets = new Set()
-
-    // listen for changes
-    for (const asset of assets) {
-      yield listenFor(
-        asset,
-        whenChanged(function* (data) {
-          invalidAssets.delete(asset) // we have data for this now
-          state = Object.freeze({ ...state, [asset]: Object.freeze(data) })
-          yield setProperties()
-        })
-      )
-
-      yield listenFor(`invalidate ${asset}`, function* () {
-        invalidAssets.add(asset)
-      })
-    }
-
-    const propertyFunctionsSaga = yield takeEvery(
-      (action) => action.connectKey === myKey,
-      function* (action) {
-        if (repository[action.type]) {
-          try {
-            const func = repository[action.type]
-            const result = yield call(func, ...action.data, state)
-            if (result !== undefined) {
-              yield put({
-                type: `connectResult`,
-                data: result,
-                connectKey: myKey,
-              })
-            }
-          } catch (e) {
-            console.error(`Error in callback ${action.type}\n\n`, e)
-          }
-        } else {
-          console.error(
-            new Error(
-              `Could not find associated connect callback function for ${action.type}`
-            )
-          )
-        }
-      }
-    )
-
-    // set derived properties only if changed
-    function* setProperties() {
-      if (invalidAssets.size > 0) {
-        // do not set properties if any of the source data is invalid
-        return
-      }
-      for (const k of propertyNames) {
-        bindvars.counter = 0
-        bindvars.name = `${el.tagName.toLowerCase()}.${k}`
-        let val
-        try {
-          val = selectors[k](state)
-        } catch (e) {
-          console.error(
-            `Error setting ${el.tagName.toLowerCase()}.${k}\n\n${e.stack}`
-          )
-        }
-        if (val !== el[k]) {
-          el[k] = val
-        }
-      }
-    }
-
-    yield setProperties()
-
-    el.isReady = true
-    if (onReady) {
-      yield onReady()
-    }
-  })
-
-  const result = (yield waitFor(
-    (action) => action.type === `connectResult` && action.connectKey === myKey
-  )).data
-  yield cancel(self)
-
-  return result
-}
-
-// legacy signature of 'connect' which is non-blocking
-export function* connectedElement(el, from, to, tail = []) {
-  yield fork(connect, el, to, { assets: from, tail })
-}
-
-const boundSym = Symbol(`bound`)
-export function bound(value) {
-  if (value) {
-    value[boundSym] = true
-  }
-  return value
-}
-
 // sets up a very basic concept that only listens to 'get' and 'set'
 export function createSimpleConcept(name, initialValue) {
   return fork(_createLocalConcept, name, initialValue)
@@ -504,15 +167,6 @@ function* _createLocalConcept(noun, initialValue) {
   yield takeEveryGet(noun, function* () {
     return state
   })
-}
-
-function isGeneratorFunction(obj) {
-  return (
-    obj &&
-    obj.prototype &&
-    obj.prototype.next &&
-    !!obj.prototype[Symbol.iterator]
-  )
 }
 
 function getCallerFile() {
@@ -540,19 +194,6 @@ function getCallerFile() {
 }
 
 // a wrapper around redux-saga `put` to avoid needing to import it directly from there
-export function announce(type, data = null, extras = null) {
-  const payload = { type }
-
-  if (data !== undefined) {
-    payload.data = data
-  }
-
-  if (extras) {
-    Object.assign(payload, extras)
-  }
-
-  return put(payload)
-}
 
 // a wrapper with slighlty different signature around redux-saga `take` to avoid needing to import it directly from there
 export function* waitFor(arg, matcher) {
@@ -568,21 +209,6 @@ export function* waitFor(arg, matcher) {
 }
 
 // a wrapper with slightly different signature around redux-saga `takeEvery` to avoid needing to import it directly from there
-export function listenFor(...args) {
-  let arg, actor
-  if (args.length === 3) {
-    arg = `${args[0]} ${args[1]}`
-    actor = args[2]
-  } else {
-    arg = args[0]
-    actor = args[1]
-  }
-  return takeEvery(arg, function* (action) {
-    const extras = { ...action }
-    delete extras.data
-    yield actor(action.data, extras)
-  })
-}
 
 // export common redux-saga methods
 export { fork, cancel, all, race }
@@ -679,46 +305,6 @@ export function createCache(keyFunc) {
 export const noCacheSymbol = Symbol(`noCache`)
 
 // For use with 'connect'. Requests, selects, and reduces data. Use same way as reselect's createSelector, but you may also provide assets in the form of strings.
-export function s(...args) {
-  const assets = []
-  const selectors = []
-
-  // if last argument is a function then it is the reducer to be used. If not,
-  // its assumed to be a string pointing to the asset that should be returned
-  const lastval = args[args.length - 1]
-  const func = lastval && lastval.call ? args.pop() : (s) => s
-
-  for (const arg of args) {
-    if (typeof arg === `string`) {
-      if (arg === `bind`) {
-        throw new Error(`bind is deprecated`)
-      }
-      assets.push(arg)
-      selectors.push((s) => s[arg])
-    } else {
-      if (arg.assets) {
-        for (const a of arg.assets) {
-          assets.push(a)
-        }
-      }
-      selectors.push(arg)
-    }
-  }
-
-  const s = createSelector(
-    ...selectors,
-    (s) => s.bind,
-    (...args) => {
-      const bind = args.pop()
-      const ret = func(...args)
-      return bind(ret)
-    }
-  )
-  s.assets = assets
-
-  return s
-}
-
 export function createMutex() {
   let promise
 
