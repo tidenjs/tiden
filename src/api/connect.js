@@ -212,8 +212,8 @@ export default function* connect(
   )).data
   yield cancel(self)
 
-  // this fixes a bug in redux-saga (an extreme corner case) when the next instruction after returning is a cancellation. Without delay(0), the task will hang.
-  yield delay(0)
+  // this fixes a bug in redux-saga (an extreme corner case) when the next instruction after returning is a cancellation. Without delay, the task will hang.
+  yield delay(1)
 
   return result
 }

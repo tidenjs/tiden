@@ -37,9 +37,11 @@
       const res = await fetch(`/files?include=src/**/*.test.js`)
       const files = await res.json()
 
-      await Promise.all(files.map(file => import(`/${file}`)))
+      for (const file of files) {
+        await import(`/${file}`)
+      }
 
-      mocha.run();
+      mocha.run()
     </script>
   </body>
 </html>
