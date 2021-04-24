@@ -82,7 +82,11 @@ export default function* connect(
         ret.toString = func.toString.bind(func)
         return bound(ret)
       } else if (thing.map) {
-        return thing.map(state.bind)
+        dispatch({
+          type: `error`,
+          data: `An array was sent to 'connect', this is no longer allowed. Please use a selector instead. Caller was ${sender}`,
+        })
+        return undefined
       } else if (typeof thing === `object`) {
         let newThing = thing
         for (const k of Object.keys(thing)) {

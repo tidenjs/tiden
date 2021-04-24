@@ -1,7 +1,8 @@
-import {delay, fork} from 'redux-saga/effects.js'
+import { delay, fork } from "redux-saga/effects.js"
 
-import {announce} from "./announce.js"
-import connect, {s} from "./connect.js"
+import { announce } from "./announce.js"
+import connect, { s } from "./connect.js"
+import listenFor from "./listenFor.js"
 import respondTo from "./respondTo.js"
 
 const { expect } = chai
@@ -54,6 +55,38 @@ describe(`connect`, async () => {
       })
 
       expect(ret).to.equal(`ok let's go`)
+    })
+  )
+
+  it(
+    `should allow objects and literals in place of selectors, but not arrays`,
+    saga(function* () {
+      const errors = []
+      const el = { tagName: `x-awesome` }
+      yield fork(function* () {
+        yield listenFor(`error`, function* (w) {
+          errors.push(w)
+        })
+      })
+
+      yield fork(connect, el, {
+        object: {
+          value: `hello`,
+        },
+        number: 1,
+        string: `string`,
+        array: [`this should error`],
+      })
+
+      yield delay(2)
+
+      expect(errors).to.deep.equal([
+        `An array was sent to 'connect', this is no longer allowed. Please use a selector instead. Caller was http://localhost:1100/src/api/connect.js`,
+      ])
+      expect(el.object).to.deep.equal({ value: `hello` })
+      expect(el.number).to.equal(1)
+      expect(el.string).to.equal(`string`)
+      expect(el).to.not.contain.key(`array`)
     })
   )
 })
