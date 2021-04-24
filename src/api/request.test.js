@@ -1,4 +1,4 @@
-import { cancel, fork } from "redux-saga/effects.js"
+import { fork } from "redux-saga/effects.js"
 
 const { expect } = chai
 
@@ -20,7 +20,6 @@ describe(`request/response`, async () => {
       })
 
       expect(yield request(`toad`)).to.equal(`big green toad`)
-      yield cancel()
     })
   )
 
@@ -32,7 +31,6 @@ describe(`request/response`, async () => {
       })
 
       expect(yield request(`get`, `toad`)).to.equal(`big green toad`)
-      yield cancel()
     })
   )
 
@@ -44,7 +42,6 @@ describe(`request/response`, async () => {
       })
 
       expect(yield request([`toad`])).to.deep.equal([`big green toad`])
-      yield cancel()
     })
   )
 
@@ -65,8 +62,6 @@ describe(`request/response`, async () => {
           [`explode`, `toad`],
         ])
       ).to.deep.equal([`big green toad`, `exploded green toad`])
-
-      yield cancel()
     })
   )
 
@@ -87,8 +82,6 @@ describe(`request/response`, async () => {
       expect(yield request(`get`, `toad`, `please`, { text: `now` })).to.equal(
         `ok, here it is`
       )
-
-      yield cancel()
     })
   )
 })

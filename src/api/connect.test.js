@@ -1,7 +1,7 @@
-import { cancel, delay, fork } from "redux-saga/effects.js"
+import {delay, fork} from 'redux-saga/effects.js'
 
-import { announce } from "./announce.js"
-import connect, { s } from "./connect.js"
+import {announce} from "./announce.js"
+import connect, {s} from "./connect.js"
 import respondTo from "./respondTo.js"
 
 const { expect } = chai
@@ -54,7 +54,6 @@ describe(`connect`, async () => {
       })
 
       expect(ret).to.equal(`ok let's go`)
-      yield cancel()
     })
   )
 })
