@@ -1,7 +1,7 @@
 {
   "name": "tiden",
   "version": "0.0.1",
-  "description": "100% native web applications",
+  "description": "Build dynamic web applications using streams, nano-frontends, and modern native web technology",
   "main": "src/index.js",
   "scripts": {
     "start": "./start",
