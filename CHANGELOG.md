@@ -17,6 +17,7 @@
 - `pipe` Use generator functions directly in `connect` instead.
 -  `takeOne` This is such a corner case, and won't be covered by this library.
 - `createDispatcher` is no longer exported. Only used internally, as such low-level functionality shouldn't be offered by this library.
+- `link` Use `linkTo` instead
 
 ## Renames
 
@@ -28,6 +29,8 @@
 
 - `mutex` return value is no longer `{*lock}` but just `*lock`.
 - assigning arrays as selector to `connect` is now forbidden [1]
+- `clearcache` verb has been removed from `merge`. Use `invalidate` instead.
+- `merge` now refetches all streams when invalidated (early it only recalculated its value based on already cached upstream values
 
 
 [1] Assigning objects and literals is still allowed. Arrays will have a different meaning in v1.1 when connect moves towards using merges instead of selectors.
