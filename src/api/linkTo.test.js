@@ -3,7 +3,7 @@ import { register } from "./routing.js"
 
 const { expect } = chai
 
-import saga from "../../test/saga.js"
+import saga from "saga"
 
 describe(`linkTo`, async () => {
   it(

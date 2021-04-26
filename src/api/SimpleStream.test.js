@@ -2,7 +2,7 @@ import request from "./request.js"
 import SimpleStream from "./SimpleStream.js"
 
 const { expect } = chai
-import saga from "../../test/saga.js"
+import saga from "saga"
 
 describe(`SimpleStream`, async () => {
   it(

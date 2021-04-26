@@ -2,7 +2,7 @@ import { interpret, register } from "./routing.js"
 
 const { expect } = chai
 
-import saga from "../../test/saga.js"
+import saga from "saga"
 
 describe(`routing`, async () => {
   describe(`when no match`, async () => {
@@ -33,7 +33,7 @@ describe(`routing`, async () => {
         page,
         id: `manualInterpret`,
         interpret: (url) =>
-          console.log(url) || url.searchParams.get(`toad`)
+          url.searchParams.get(`toad`)
             ? { groups: { toad: url.searchParams.get(`toad`) } }
             : null,
         generate: ({ toad }) => `/?toad=${toad}`,

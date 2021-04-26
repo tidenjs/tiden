@@ -4,7 +4,7 @@ import mutex from "./mutex.js"
 
 const { expect } = chai
 
-import saga from "../../test/saga.js"
+import saga from "saga"
 
 describe(`mutex`, async () => {
   it(

@@ -4,7 +4,7 @@ import respondTo from "./respondTo.js"
 
 const { expect } = chai
 
-import saga from "../../test/saga.js"
+import saga from "saga"
 
 describe(`cache`, async () => {
   it(
