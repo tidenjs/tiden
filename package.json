@@ -6,13 +6,15 @@
   "scripts": {
     "start": "./start",
     "test": "npm run test-unit",
-    "test-unit": "node open.js"
+    "test-unit": "node open.js",
+    "test-system": "mocha ./test/system/setup.js --recursive cli --timeout=5000"
   },
   "author": "mikabytes",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "chai": "^4.3.4",
+    "express": "^4.17.1",
     "hotserve": "^1.1.3",
     "mocha": "^8.3.2",
     "open": "^8.0.6",
