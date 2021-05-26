@@ -1,4 +1,4 @@
-import { announce } from "./announce.js"
+import announce from "./announce.js"
 import { generate } from "./routing.js"
 
 export function linkTo(obj, { target = `_blank` } = {}) {

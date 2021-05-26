@@ -12,15 +12,24 @@ const store = createStore((s) => s || {}, applyMiddleware(sagaMiddleware))
 
 export default function saga(generator) {
   return async function () {
-    const task = sagaMiddleware.run(function* () {
-      const g = generator()
-      let state = g.next()
-      while (!state.done) {
-        const ret = yield state.value
-        state = g.next(ret)
+    this.test.task = sagaMiddleware.run(function* () {
+      try {
+        const g = generator()
+        let state = g.next()
+        while (!state.done) {
+          const ret = yield state.value
+          state = g.next(ret)
+        }
+      } finally {
+        yield cancel()
       }
-      yield cancel()
     })
-    await task.toPromise()
+    await this.test.task.toPromise()
   }
 }
+
+afterEach(async function () {
+  if (this.currentTest.task.isRunning()) {
+    this.currentTest.task.cancel()
+  }
+})

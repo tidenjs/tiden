@@ -1,6 +1,6 @@
 import { put } from "redux-saga/effects.js"
 
-export function announce(type, data = null, extras = null) {
+export default function announce(type, data = null, extras = null) {
   const payload = { type }
 
   if (data !== undefined) {

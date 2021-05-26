@@ -1,6 +1,6 @@
 import { delay, fork } from "redux-saga/effects.js"
 
-import { announce } from "./announce.js"
+import announce from "./announce.js"
 import connect, { s } from "./connect.js"
 import listenFor from "./listenFor.js"
 import respondTo from "./respondTo.js"

@@ -1,9 +1,10 @@
-import { cancel, delay } from "redux-saga/effects.js"
+import { cancel, delay, fork } from "redux-saga/effects.js"
 
 import listenFor from "./listenFor.js"
 import merge from "./merge.js"
 import request from "./request.js"
 import respondTo from "./respondTo.js"
+import announce from "./announce.js"
 
 const { expect } = chai
 
@@ -31,13 +32,16 @@ describe(`merge`, async () => {
 
       expect(yield request(`toad`)).to.equal(`a green toad`)
 
+      yield delay(1)
+
       let automaticallyAnnounced = false
       const listener = yield listenFor(`toad`, function* (toad) {
         expect(toad).to.equal(`a happy toad`)
         automaticallyAnnounced = true
       })
 
-      // merges automatically update when upstream changes, so our listener above should fire after changing the id here:
+      // merges automatically update when upstream changes,
+      // so our listener above should fire after changing the id here:
       yield request(`set`, `toadId`, 2)
       yield delay(1)
       expect(automaticallyAnnounced).to.equal(true)
@@ -66,6 +70,32 @@ describe(`merge`, async () => {
 
       yield request(`invalidate`, `it`)
       expect(yield request(`it`)).to.equal(2)
+    })
+  )
+
+  it(
+    `should block until return value is non-undefined`,
+    saga(function* () {
+      let ducks
+
+      yield respondTo(`get`, `ducks`, function* () {
+        return ducks
+      })
+
+      yield merge([`ducks`], `it`, function* (ducks) {
+        if (ducks === 3) {
+          return true
+        }
+      })
+
+      yield fork(function* () {
+        for (ducks = 0; ducks < 10; ducks++) {
+          yield announce(`ducks`, ducks)
+          yield delay(5)
+        }
+      })
+
+      expect(yield request(`it`)).to.equal(3)
     })
   )
 })
