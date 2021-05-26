@@ -9,7 +9,7 @@ export default async function init({ name, description }) {
   await Promise.all([
     fs.writeFile(`index.html`, indexHtml({ name, description })),
     fs.writeFile(`index.js`, indexJs()),
-    fs.writeFile(`manifest.json`, manifestJson({ name })),
+    fs.writeFile(`manifest.json`, manifestJson({ name, description })),
     fs.writeFile(`favicon.png`, faviconPng()),
     fs.writeFile(`favicon.svg`, faviconSvg()),
     fs.writeFile(`start`, "hotserve index.html 1100 '*'"),
