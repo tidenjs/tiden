@@ -8,12 +8,14 @@ import { spawn } from "child_process"
 import os from "os"
 import express from "express"
 
+const debug = true
+
 /* configurable options or object for puppeteer */
 const opts = {
-  headless: true,
+  headless: !debug,
   //slowMo: 100,
   timeout: 0,
-  // args: ['--start-maximized', '--window-size=1920,1040']
+  args: ["--window-size=1920,1040"],
 }
 
 before(async () => {
@@ -22,7 +24,7 @@ before(async () => {
 })
 
 let app
-beforeEach(async () => {
+beforeEach(async function () {
   global.page = await browser.newPage()
   const dir = await mkdtemp(path.join(os.tmpdir(), `tiden-`))
   process.chdir(dir)
@@ -36,6 +38,15 @@ beforeEach(async () => {
   await new Promise((res) => {
     app.server = app.listen(port, res)
   })
+
+  const title = this.currentTest.title
+  page.waitForNavigation().then(() => {
+    setTimeout(() => {
+      page.evaluate((newTitle) => {
+        document.title = newTitle
+      }, title)
+    }, 300)
+  })
 })
 
 afterEach(async () => {
@@ -46,7 +57,9 @@ afterEach(async () => {
 })
 
 after(async () => {
-  browser.close()
+  if (!debug) {
+    browser.close()
+  }
 })
 
 export default function cmd(literals, ...args) {
