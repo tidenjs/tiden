@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Build dynamic web applications using streams, nano-frontends, and modern native web technology",
   "main": "src/index.js",
+  "bin": {
+    "tiden": "cli.js"
+  },
   "scripts": {
     "start": "./start",
     "test": "npm run test-unit",

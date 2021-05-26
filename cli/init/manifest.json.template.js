@@ -1,3 +1,5 @@
+// sizes: 2000x2000 below because chrome doesn't support "any" keyword: https://bugs.chromium.org/p/chromium/issues/detail?id=1107123
+
 export default ({ name }) => `{
   "short_name": "${name}",
   "name": "${name}",
@@ -9,7 +11,7 @@ export default ({ name }) => `{
     },
     {
       "src": "favicon.svg",
-      "sizes": "any",
+      "sizes": "2000x2000",
       "type": "image/svg+xml"
     }
   ],
