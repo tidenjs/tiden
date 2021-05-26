@@ -7,14 +7,17 @@
     "tiden": "cli.js"
   },
   "scripts": {
-    "start": "./start",
+    "start": "hotserve '' 1099 '*'",
     "test": "npm run test-unit",
     "test-unit": "node open.js",
     "test-system": "mocha ./test/system/setup.js --recursive cli --timeout=5000"
   },
   "author": "mikabytes",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "command-exists": "^1.2.9",
+    "minimist": "^1.2.5"
+  },
   "devDependencies": {
     "chai": "^4.3.4",
     "express": "^4.17.1",

@@ -5,10 +5,15 @@ import manifestJson from "./init/manifest.json.template.js"
 import faviconPng from "./init/favicon.png.js"
 import faviconSvg from "./init/favicon.svg.js"
 
-export default async function init({ name, tagline }) {
-  fs.writeFile(`index.html`, indexHtml({ name, tagline }))
-  fs.writeFile(`index.js`, indexJs())
-  fs.writeFile(`manifest.json`, manifestJson({ name }))
-  fs.writeFile(`favicon.png`, faviconPng())
-  fs.writeFile(`favicon.svg`, faviconSvg())
+export default async function init({ name, description }) {
+  await Promise.all([
+    fs.writeFile(`index.html`, indexHtml({ name, description })),
+    fs.writeFile(`index.js`, indexJs()),
+    fs.writeFile(`manifest.json`, manifestJson({ name })),
+    fs.writeFile(`favicon.png`, faviconPng()),
+    fs.writeFile(`favicon.svg`, faviconSvg()),
+    fs.writeFile(`start`, "hotserve index.html 1100 '*'"),
+  ])
+
+  await fs.chmod(`start`, `755`)
 }

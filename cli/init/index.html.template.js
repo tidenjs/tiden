@@ -1,4 +1,4 @@
-export default ({ name, tagline }) => `<!DOCTYPE html>
+export default ({ name, description }) => `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="shortcut icon" href="favicon.png" type="image/png" />
 <link rel="manifest" href="manifest.json" />
@@ -16,7 +16,7 @@ export default ({ name, tagline }) => `<!DOCTYPE html>
 
 <div data-initial aria-hidden="true" style="height: 0; width: 0; opacity: 0; overflow: hidden;">
 <!-- This will be shown in excerpts when you copy a link to this site, for example in Facebook -->
-  ${tagline}
+  ${description}
 </div>
 
 <script data-initial src="https://unpkg.com/es-module-shims@0.10.1/dist/es-module-shims.js"></script>

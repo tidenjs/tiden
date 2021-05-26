@@ -2,18 +2,40 @@
 
 import init from "./cli/init.js"
 
-const [_node, _file, verb, ...args] = process.argv
+import minimist from "minimist"
 
-if (verb === `init`) {
-  init()
-} else if (verb === `help`) {
-  showHelp()
-} else {
-  showHelp()
+const parsed = minimist(process.argv.slice(2), {
+  alias: {
+    d: `description`,
+  },
+})
+
+switch (parsed._[0]) {
+  case `init`: {
+    const [name] = parsed._[1]
+
+    if (!name) {
+      throw new Error(
+        `Usage: init <name> [--description="some description"] [-d "some description"]`
+      )
+    }
+
+    init({ name, ...parsed })
+    break
+  }
+  case `help`: {
+    showHelp()
+    break
+  }
+  default: {
+    showHelp()
+    break
+  }
 }
 
 function showHelp() {
   console.log(`Usage:
 
-  init - Bootstraps a new project in current directory`)
+  init <name> [--description="some description"] [-d "some description"]
+`)
 }
