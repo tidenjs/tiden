@@ -1,35 +1,23 @@
-This is nowhere close to a Beta. Not ready for production nor experimental use.
+This is work in progress. It is not yet complete. This file will be updated when an alpha release is ready.
 
 # Tiden
 
-100% native Progressive Web Applications.
+Build dynamic web applications using streams, nano-frontends, and modern native web technology.
 
-This library provides helpers and tutorials for building web applications (single-page apps) using native technology such as Web Components and ES modules. It also strives to find a healthy balance between application-by-state and contextual thinking, _first do this, then that, then use those to do something else_. 
+The library will provide tools and tutorials for building progressive web apps (PWA) using native web technology such as Web Components and ES modules.
 
-## Cornerstones:
+## Objectives
 
-- Do not compile.
+- Bring truly modular architecture to the web. 
 
-  This means that the code you write is what you will see in the final product. When there's an error you'll debug the source code, not some mangled and obfuscated cat hairball.
-
-  Tiden does not use a bundler (such as webpack or browserify). No compiler (such as babel). Just pure JavaScript. No need for sourcemaps. What you see is what you get. Period. Don't worry about performance; that's covered too.
+  Each thing should be able to function as designed on its own. This makes it easier to split work across teams and reduces the work-test-work cycle of development. It also helps to focus at the problem at hand.
 
 - Encourage portability.
 
-  For work to be truly portable it should be delivered in small packages and have as few dependencies as possible. Using native technologies it can be achieved without the need for complex frameworks.
-
-  Tiden is built with microservice architecture in mind. A Tiden website may be built using one or many micro-frontends, which may be co-located or spread out on separate repositories and/or servers. Tiden even goes one step further with "nano-frontends". 
+  Tiden is built with microservice architecture in mind. A Tiden App may be split in several parts, co-located or stored in separate repositories. Each part may even be hosted independently and have its own release lifecycle. We call these "nano-frontends".
 
 - Don't compromise. Instead, make complexity easier to understand.
 
-  We've all been there. Complexity will appear in a world where a hundred things can happen at any time without any predefined order. One could, of course, opt to make a simpler product, making compromises with the final result. These compromises are everywhere, you'll find them on any big website. It may be a cart that isn't updated as the item goes out of stock, or a website that makes a complete reload when the user authenticates.
+  We've all been there. Complexity will appear in a world where a hundred things can happen at any time without any predefined order. One could, of course, opt to make a simpler product, making compromises with the quality of the final result. We think this makes for a bad user experience.
 
-  Tiden uses a form of Message-oriented Programming to increase visibility into the communication between various components in the system. It clearly defines areas of responsibility within each part, and encourages the programmer to make individual demonstrations of each part.
-
-- Be strict and clear.
-
-  Tiden strives to remove choices in how the product shall be built. Nobody gains from tabs-vs-spaces and similar battles. Great examples of products using similar philosophy are Prettier, Effective Go, Python's "the pythonic way", etc.
-
-  Delegating choices means choices will be made differently, spawning many different solutions to the same problem, which discourages portability.
-
-  In this way Tiden is opinionated, like it or not 😉.
+  Tiden uses a form of Message-oriented Programming to increase visibility into the communication between each thing. It clearly defines areas of responsibility, and encourages the programmer to make individual demonstrations of each part.
