@@ -1,4 +1,4 @@
-export default ({ name, description }) => `<!DOCTYPE html>
+export default ({ name, description, isTest }) => `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="shortcut icon" href="favicon.png" type="image/png" />
 <link rel="manifest" href="manifest.json" />
@@ -9,7 +9,8 @@ export default ({ name, description }) => `<!DOCTYPE html>
       "redux-saga": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
       "redux-saga/effects.js": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
       "redux": "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
-      "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js"
+      "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js",
+      "router": ""
     }
   }
 </script>

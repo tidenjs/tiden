@@ -29,7 +29,7 @@ export default function saga(generator) {
 }
 
 afterEach(async function () {
-  if (this.currentTest.task.isRunning()) {
+  if (this.currentTest.task && this.currentTest.task.isRunning()) {
     this.currentTest.task.cancel()
   }
 })
