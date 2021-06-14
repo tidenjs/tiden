@@ -13,6 +13,7 @@ const debug = true
 /* configurable options or object for puppeteer */
 const opts = {
   headless: !debug,
+  devtools: debug,
   //slowMo: 100,
   timeout: 0,
   args: ["--window-size=1920,1040"],
