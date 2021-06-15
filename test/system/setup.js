@@ -7,6 +7,7 @@ import path from "path"
 import { spawn } from "child_process"
 import os from "os"
 import express from "express"
+import path from "path"
 
 const debug = true
 
@@ -19,9 +20,16 @@ const opts = {
   args: ["--window-size=1920,1040"],
 }
 
+let tidenApp
 before(async () => {
   global.expect = expect
   global.browser = await puppeteer.launch(opts)
+
+  tidenApp = express()
+  tidenApp.use(express.static(path.resolve(`.`)))
+  await new Promise(res => {
+    tidenApp.server = tidenApp.listen(1105, res)
+  })
 })
 
 let app
@@ -61,6 +69,7 @@ after(async () => {
   if (!debug) {
     browser.close()
   }
+  tidenApp.server.close()
 })
 
 export default function cmd(literals, ...args) {
