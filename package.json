@@ -2,7 +2,7 @@
   "name": "tiden",
   "version": "0.0.1",
   "description": "Build dynamic web applications using streams, nano-frontends, and modern native web technology",
-  "main": "lib/index.js",
+  "main": "tiden.js",
   "bin": {
     "tiden": "cli.js"
   },
