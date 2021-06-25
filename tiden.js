@@ -1,8 +1,8 @@
-import announce from "./lib/api/announce.js"
+import publish from "./lib/api/publish.js"
 import cache from "./lib/api/cache.js"
 import connect from "./lib/api/connect.js"
 import linkTo from "./lib/api/linkTo.js"
-import listenFor from "./lib/api/listenFor.js"
+import subscribe from "./lib/api/subscribe.js"
 import merge from "./lib/api/merge.js"
 import mutex from "./lib/api/mutex.js"
 import once from "./lib/api/once.js"
@@ -13,7 +13,34 @@ import simpleStream from "./lib/api/simpleStream.js"
 import waitFor from "./lib/api/waitFor.js"
 import whenChanged from "./lib/api/whenChanged.js"
 
-export { announce, cache, connect, linkTo, listenFor, merge, mutex, once, request, respondTo, respondToSync, simpleStream, waitFor, whenChanged }
+function announce(...args) {
+  console.warn(`'announce' has been deprecated, use 'publish' instead.`)
+  return publish(...args)
+}
+
+function listenFor(...args) {
+  console.warn(`'listenFor' has been deprecated, use 'subscribe' instead.`)
+  return subscribe(...args)
+}
+
+export {
+  announce,
+  publish,
+  cache,
+  connect,
+  linkTo,
+  subscribe,
+  listenFor,
+  merge,
+  mutex,
+  once,
+  request,
+  respondTo,
+  respondToSync,
+  simpleStream,
+  waitFor,
+  whenChanged,
+}
 
 import { applyMiddleware, createStore } from "redux"
 import createSagaMiddleware from "redux-saga"
@@ -32,8 +59,8 @@ export default function tiden(actor) {
 
   sagaMiddleware = createSagaMiddleware({
     onError: (e, { sagaStack }) => {
-      sagaMiddleware.run(function*() {
-        yield announce(`error`, {data: e, stack: sagaStack})
+      sagaMiddleware.run(function* () {
+        yield publish(`error`, { data: e, stack: sagaStack })
       })
     },
   })

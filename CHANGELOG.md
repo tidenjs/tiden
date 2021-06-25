@@ -15,9 +15,11 @@
 - `distinct` Use `whenChanged` instead.
 - `distinct` Use `whenChanged` instead.
 - `pipe` Use generator functions directly in `connect` instead.
--  `takeOne` This is such a corner case, and won't be covered by this library.
+- `takeOne` This is such a corner case, and won't be covered by this library.
 - `createDispatcher` is no longer exported. Only used internally, as such low-level functionality shouldn't be offered by this library.
 - `link` Use `linkTo` instead
+- `announce` Use `publish` instead
+- `listenFor` Use `subscribe` instead
 
 ## Renames
 
@@ -33,7 +35,6 @@
 - `merge` now refetches all streams when invalidated (early it only recalculated its value based on already cached upstream values
 - Routing no longer prioritize pages that are registrered earlier before later ones. [2]
 - Routing interpreters must now return key 'groups' even if a regex. It may also return a key `0` which, if exists, will be used for prioritizations. If unset, then it will be given highest priority.
-
 
 [1] Assigning objects and literals is still allowed. Arrays will have a different meaning in v1.1 when connect moves towards using merges instead of selectors.
 

@@ -1,8 +1,10 @@
-export default () => `// clean up elements in DOM that are only needed for setting things up
-  document.querySelectorAll("[data-initial]").forEach((el) => {
-    el.parentElement.removeChild(el)
-  })
+export default () => `
+import {router} from "
 
-  document.body.innerHTML = \`Hello there :-)\`
+// clean up elements in DOM that are only needed for setting things up
+document.querySelectorAll("[data-initial]").forEach((el) => {
+  el.parentElement.removeChild(el)
+})
 
-`
+document.body.innerHTML = \`Hello there :-)\`
+`;
