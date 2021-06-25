@@ -19,3 +19,11 @@ The library will provide tools and tutorials for building progressive web apps (
 - Insight before compromise
 
   As developers, we often compromise quality because sophisticated solutions can be hard to understand. We think that makes for a poorer user experience. Instead, Tiden strives to provide logging and visualisations to aid the understanding of what's going on.
+
+## Browser support
+
+Tiden has official support for all major browsers released in the past year. While this might seem short to some, please remember that all these browsers are automatically updated by default. Only reason they'd be outdated is when the device was offline or turned off for a whole year, or user turned off automatic updates.
+
+Tiden is also likely to work in much older browsers than these. However, it is not considered a bug if it does not.
+
+Major browsers: Edge, Firefox, Chrome, Safari, Opera
