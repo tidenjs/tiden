@@ -1,5 +1,5 @@
 export default () => `
-import {router} from "
+import {register} from "tiden"
 
 // clean up elements in DOM that are only needed for setting things up
 document.querySelectorAll("[data-initial]").forEach((el) => {
@@ -7,4 +7,4 @@ document.querySelectorAll("[data-initial]").forEach((el) => {
 })
 
 document.body.innerHTML = \`Hello there :-)\`
-`;
+`

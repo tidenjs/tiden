@@ -3,11 +3,11 @@
 import puppeteer from "puppeteer"
 import { expect } from "chai"
 import { mkdtemp } from "fs/promises"
-import path from "path"
 import { spawn } from "child_process"
 import os from "os"
 import express from "express"
 import path from "path"
+import cors from "cors"
 
 const debug = true
 
@@ -17,7 +17,7 @@ const opts = {
   devtools: debug,
   //slowMo: 100,
   timeout: 0,
-  args: ["--window-size=1920,1040"],
+  args: ["--window-size=1920,1040", "--window-position=2000,0"],
 }
 
 let tidenApp
@@ -26,8 +26,9 @@ before(async () => {
   global.browser = await puppeteer.launch(opts)
 
   tidenApp = express()
+  tidenApp.use(cors())
   tidenApp.use(express.static(path.resolve(`.`)))
-  await new Promise(res => {
+  await new Promise((res) => {
     tidenApp.server = tidenApp.listen(1105, res)
   })
 })

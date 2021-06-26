@@ -10,7 +10,16 @@ export default ({ name, description, isTest }) => `<!DOCTYPE html>
       "redux-saga/effects.js": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
       "redux": "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
       "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js",
-      "tiden": "${isTest ? `http://localhost:1105/tiden.js` : `https://cdn.jsdelivr.net/gh/tidenjs/tiden/tiden.js`}"
+      "tiden": "${
+        isTest
+          ? `http://localhost:1105/tiden.js`
+          : `https://cdn.jsdelivr.net/gh/tidenjs/tiden/tiden.js`
+      }",
+      "router": "${
+        isTest
+          ? `http://localhost:1105/tiden/lib/api/routing.js`
+          : `https://cdn.jsdelivr.net/gh/tidenjs/tiden/tiden/lib/api/routing.js`
+      }"
     }
   }
 </script>
@@ -20,7 +29,7 @@ export default ({ name, description, isTest }) => `<!DOCTYPE html>
   ${description}
 </div>
 
-<script data-initial src="https://unpkg.com/es-module-shims@0.10.1/dist/es-module-shims.js"></script>
+<script data-initial src="https://unpkg.com/es-module-shims@^0.11.1/dist/es-module-shims.js"></script>
 
 <script data-initial>
   try {

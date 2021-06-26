@@ -12,6 +12,7 @@ import respondToSync from "./lib/api/respondToSync.js"
 import simpleStream from "./lib/api/simpleStream.js"
 import waitFor from "./lib/api/waitFor.js"
 import whenChanged from "./lib/api/whenChanged.js"
+import { interpret, register, generate } from "./lib/api/routing.js"
 
 function announce(...args) {
   console.warn(`'announce' has been deprecated, use 'publish' instead.`)
@@ -40,6 +41,9 @@ export {
   simpleStream,
   waitFor,
   whenChanged,
+  interpret,
+  generate,
+  register,
 }
 
 import { applyMiddleware, createStore } from "redux"
