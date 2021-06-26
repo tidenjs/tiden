@@ -1,9 +1,0 @@
-{
-  "env": {
-    "browser": true
-  },
-  "rules": {
-    "quotes": "backtick"
-  },
-  "extends": ["eslint:recommended", "prettier"]
-}

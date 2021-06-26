@@ -5,9 +5,9 @@ import manifestJson from "./init/manifest.json.template.js"
 import faviconPng from "./init/favicon.png.js"
 import faviconSvg from "./init/favicon.svg.js"
 
-export default async function init({ name, description }) {
+export default async function init({ name, description, isTest }) {
   await Promise.all([
-    fs.writeFile(`index.html`, indexHtml({ name, description, isTest: true })),
+    fs.writeFile(`index.html`, indexHtml({ name, description, isTest })),
     fs.writeFile(`index.js`, indexJs()),
     fs.writeFile(`manifest.json`, manifestJson({ name, description })),
     fs.writeFile(`favicon.png`, faviconPng()),
