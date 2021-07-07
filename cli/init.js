@@ -13,7 +13,14 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`favicon.png`, faviconPng()),
     fs.writeFile(`favicon.svg`, faviconSvg()),
     fs.writeFile(`start`, "hotserve index.html 1100 '*'"),
+    fs.mkdir(`app`),
+    fs.mkdir(`lib`),
   ])
 
-  await fs.chmod(`start`, `755`)
+  await Promise.all([
+    fs.chmod(`start`, `755`),
+    fs.mkdir(`app/streams`),
+    fs.mkdir(`app/components`),
+    fs.mkdir(`app/nanos`),
+  ])
 }

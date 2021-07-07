@@ -50,12 +50,14 @@ import { applyMiddleware, createStore } from "redux"
 import createSagaMiddleware from "redux-saga"
 
 let sagaMiddleware
+let store
 
 export default function tiden(actor) {
   if (sagaMiddleware) {
     sagaMiddleware.run(actor)
     return {
       sagaMiddleware,
+      store,
     }
   }
 
@@ -68,10 +70,11 @@ export default function tiden(actor) {
       })
     },
   })
-  const store = createStore((s) => s || {})
+  store = createStore((s) => s || {})
   sagaMiddleware.run(actor)
 
   return {
     sagaMiddleware,
+    store,
   }
 }
