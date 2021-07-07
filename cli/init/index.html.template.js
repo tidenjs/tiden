@@ -45,7 +45,7 @@ export default ({ name, description, isTest }) => `<!DOCTYPE html>
     document.head.appendChild(contents)
   } catch (err) {
     document.body.appendChild(Object.assign(document.createElement('span'), {
-      innerHTML: "This application requires a modern web browser and we're sorry to say that yours is outdated."
+      innerHTML: "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge."
     }))
   }
 </script>
