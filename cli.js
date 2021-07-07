@@ -12,7 +12,7 @@ const parsed = minimist(process.argv.slice(2), {
 
 switch (parsed._[0]) {
   case `init`: {
-    const [name] = parsed._[1] || []
+    const [_, name] = parsed._ || []
 
     if (!name) {
       console.error(
