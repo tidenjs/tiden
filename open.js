@@ -2,4 +2,4 @@
 
 import open from "open"
 
-open(`http://localhost:1100/test/unit`)
+open(`http://localhost:1099/test/unit`)

@@ -1,13 +1,13 @@
 /* Import the puppeteer and expect functionality of chai library for configuraing the Puppeteer */
 
-import puppeteer from "puppeteer"
 import { expect } from "chai"
-import { mkdtemp } from "fs/promises"
 import { spawn } from "child_process"
-import os from "os"
+import cors from "cors"
 import express from "express"
 import path from "path"
-import cors from "cors"
+import puppeteer from "puppeteer"
+
+import tmpdir from "../tmpdir.js"
 
 const debug = true
 
@@ -35,9 +35,8 @@ before(async () => {
 
 let app
 beforeEach(async function () {
+  const dir = await tmpdir()
   global.page = await browser.newPage()
-  const dir = await mkdtemp(path.join(os.tmpdir(), `tiden-`))
-  process.chdir(dir)
 
   app = express()
   const port = 1107

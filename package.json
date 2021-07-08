@@ -10,6 +10,7 @@
     "start": "hotserve '' 1099 '*'",
     "test": "npm run test-unit",
     "test-unit": "node open.js",
+    "test-cli": "mocha --recursive lib --timeout=1000",
     "test-system": "mocha ./test/system/setup.js --recursive cli --timeout=5000"
   },
   "author": "mikabytes",
@@ -28,6 +29,7 @@
     "husky": "^6.0.0",
     "mocha": "^8.3.2",
     "open": "^8.0.6",
+    "outdent": "^0.8.0",
     "puppeteer": "^9.0.0"
   },
   "repository": {
