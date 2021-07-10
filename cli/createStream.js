@@ -6,15 +6,26 @@ import { resolve } from "path"
 import o from "outdent"
 
 export default async function createStream({ path, name }) {
+  if (!path) {
+    throw new Error(`Can't create stream outside of module.`)
+  }
+
+  const file = `${path}/streams/${name}.js`
+  const exists = await fileExists(file)
+
+  if (exists) {
+    throw new Error(`A stream niagara already exists in app`)
+  }
+
   await mkdirp(path + `/streams`)
-  await createStreamFile(path, name)
-  await addToIndex(path, name)
-  await addToParents(resolve(path).split(/(?!\\)\//))
+  await createStreamFile(path, name, file)
+  await addToStreamsList(path, name)
+  await addToModule(path)
 }
 
-async function createStreamFile(path, name) {
+async function createStreamFile(path, name, file) {
   await fs.writeFile(
-    `${path}/streams/${name}.js`,
+    file,
     o`
       import {stream} from "tiden"
 
@@ -27,7 +38,7 @@ async function createStreamFile(path, name) {
   )
 }
 
-async function addToIndex(path, name) {
+async function addToStreamsList(path, name) {
   const streamsFile = `${path}/streams.js`
   let c
   if (await fileExists(streamsFile)) {
@@ -49,29 +60,26 @@ async function addToIndex(path, name) {
   await fs.writeFile(streamsFile, c)
 }
 
-async function* addToParents(parts) {
-  if (parts.length > 0) {
-    const name = parts.pop()
-    const path = parts.join(`/`)
+async function addToModule(path) {
+  const modules = path.split(`/`)
+  const module = modules.pop()
+  const moduleFile = `${path}.js`
 
-    const streamsFile = `${path}/streams.js`
-    let c
-    if (await fileExists(streamsFile)) {
-      c = await fs.readFile(streamsFile, `utf8`)
-    } else {
-      c = o`
-        import {fork} from "tiden"
+  let c
+  if (await fileExists(moduleFile)) {
+    c = await fs.readFile(moduleFile, `utf8`)
+    c = o`
+      import streams from "./${module}/streams.js"
+      ${c}
+      export {streams}
+    `
+  } else {
+    c = o`
+      import streams from "./${module}/streams.js"
 
-        export default function* streams() {
-        }
-      `
-    }
-
-    c = `import ${name} from "${path}/${name}/streams.js"
-${c.replace(
-  /(function\* streams() {)(.*)(}\s*)/,
-  `\\1\\2  yield fork(${name})\n\\3`
-)}`
-    await fs.writeFile(streamsFile, c)
+      export {streams}
+    `
   }
+
+  await fs.writeFile(moduleFile, c)
 }

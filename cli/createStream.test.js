@@ -2,7 +2,9 @@ import tmpdir from "../test/tmpdir.js"
 import createStream from "./createStream.js"
 import fs from "fs/promises"
 import { expect } from "chai"
-import o from "outdent"
+
+import singleLevelNewFiles from "./createStream.test/singleLevelNewFiles.js"
+import singleLevelExistingFiles from "./createStream.test/singleLevelExistingFiles.js"
 
 let dir
 beforeEach(async () => {
@@ -10,38 +12,23 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await fs.rm(dir, { recursive: true })
+  //await fs.rm(dir, { recursive: true })
 })
 
-describe(`createStream`, async () => {
-  it(`should create stream file`, async () => {
-    await createStream({ path: `app`, name: `niagara` })
-
-    const expected = o`
-      import {stream} from "tiden"
-
-      export default stream(\`niagara\`, function* niagara({respondTo}) {
-        yield respondTo(\`get\`, \`niagara\`, function*() {
-          return \`I'm here!\`
-        })
-      })`
-
-    expect(await fs.readFile(`app/streams/niagara.js`, `utf8`)).to.equal(
-      expected
-    )
+describe(`createStream`, () => {
+  describe(`when no module`, () => {
+    it(`should fail`, async () => {
+      try {
+        await createStream({ path: ``, name: `niagara` })
+        throw new Error(`It did not throw  an error as expected`)
+      } catch (e) {
+        expect(e.message).to.equal(`Can't create stream outside of module.`)
+      }
+    })
   })
 
-  it(`should update imports`, async () => {
-    await createStream({ path: `app`, name: `niagara` })
-
-    const expected = o`
-      import niagara from "./streams/niagara.js"
-
-      export default function* streams() {
-        yield niagara
-      }
-    `
-
-    expect(await fs.readFile(`app/streams.js`, `utf8`)).to.equal(expected)
+  describe(`single level`, () => {
+    singleLevelNewFiles()
+    singleLevelExistingFiles()
   })
 })
