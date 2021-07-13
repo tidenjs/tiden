@@ -6,9 +6,7 @@ import { resolve } from "path"
 import o from "outdent"
 
 export default async function createStream({ path, name }) {
-  if (!path) {
-    throw new Error(`Can't create stream outside of module.`)
-  }
+  path = path ? `app/${path}` : `app`
 
   const file = `${path}/streams/${name}.js`
   const exists = await fileExists(file)
@@ -20,7 +18,8 @@ export default async function createStream({ path, name }) {
   await mkdirp(path + `/streams`)
   await createStreamFile(path, name, file)
   await addToStreamsList(path, name)
-  await addToModule(path)
+  await addToNs(path)
+  await addToGrandParents(path)
 }
 
 async function createStreamFile(path, name, file) {
@@ -45,41 +44,90 @@ async function addToStreamsList(path, name) {
     c = await fs.readFile(streamsFile, `utf8`)
   } else {
     c = o`
-
       export default function* streams() {
       }
     `
   }
 
-  const matcher = /(function\*\s*streams\(\)\s*{)(.*)(}\s*)/ms
+  function addImport() {
+    const statement = `import ${name} from "./streams/${name}.js"`
+    const matcher = /(.*import.*(\nimport.*)*)/
 
-  c = o`
-    import ${name} from "./streams/${name}.js"
-    ${c.replace(matcher, `$1$2  yield ${name}\n$3`)}
-  `
+    // add after all import statements if any
+    if (c.match(matcher)) {
+      c = c.replace(matcher, `$1\n${statement}`)
+    } else {
+      c = `${statement}\n\n${c}`
+    }
+  }
+
+  function addYield() {
+    const statement = `  yield ${name}`
+    const matcher = /(function\*\s*streams\(\)\s*{)(.*)(}\s*)/ms
+    c = c.replace(matcher, `$1$2${statement}\n$3`)
+  }
+
+  addImport()
+  addYield()
+
   await fs.writeFile(streamsFile, c)
 }
 
-async function addToModule(path) {
-  const modules = path.split(`/`)
-  const module = modules.pop()
-  const moduleFile = `${path}.js`
+async function addToNs(path) {
+  const nss = path.split(`/`)
+  const ns = nss.pop()
+  const nsFile = `${path}.js`
 
   let c
-  if (await fileExists(moduleFile)) {
-    c = await fs.readFile(moduleFile, `utf8`)
-    c = o`
-      import streams from "./${module}/streams.js"
-      ${c}
-      export {streams}
-    `
+  if (await fileExists(nsFile)) {
+    c = await fs.readFile(nsFile, `utf8`)
   } else {
     c = o`
-      import streams from "./${module}/streams.js"
+      import {fork} from "tiden"
 
-      export {streams}
+      export function* streams() {
+      }
     `
   }
 
-  await fs.writeFile(moduleFile, c)
+  const matcher = /^(.*)(\s+)(export function\*\s*streams\(\)\s*{)(.*)(}\s*)/ms
+
+  const importStatement = `import myStreams from "./${ns}/streams.js"`
+  const forkStatement = `\n  yield fork(myStreams)`
+
+  c = c.replace(matcher, `$1${importStatement}\n$2$3${forkStatement}$4$5`)
+
+  await fs.writeFile(nsFile, c)
+}
+
+async function addToGrandParents(path) {
+  const nss = path.split(`/`)
+
+  for (let i = nss.length - 2; i >= 0; i--) {
+    const ns = nss[i]
+    const nextNs = nss[i + 1]
+    const nsFile = [...nss.slice(0, i), ``].join(`/`) + `${ns}.js`
+
+    let c
+    if (await fileExists(nsFile)) {
+      c = await fs.readFile(nsFile, `utf8`)
+    } else {
+      c = o`
+        import {fork} from "tiden"
+
+        export function* streams() {
+        }
+      `
+    }
+
+    const matcher =
+      /^(.*)(\s+)(export function\*\s*streams\(\)\s*{)(.*)(}\s*)/ms
+
+    const importStatement = `import {streams as ${nextNs}Streams} from "./${ns}/${nextNs}.js"`
+    const forkStatement = `  yield fork(${nextNs}Streams)`
+
+    c = c.replace(matcher, `$1${importStatement}\n$2$3$4${forkStatement}\n$5`)
+
+    await fs.writeFile(nsFile, c)
+  }
 }
