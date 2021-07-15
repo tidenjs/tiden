@@ -15,7 +15,7 @@ header {
 header > nav {
   height: 100%;
   width: 100%;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid #1A1B41;
 }
 
 header img {
@@ -35,7 +35,7 @@ header img {
 #sideBar {
   height: 100%;
   flex: 0 0;
-  border-right: 1px solid grey;
+  border-right: 1px solid #1A1B41;
 }
 
 #sideabar ol {
@@ -52,6 +52,7 @@ header img {
 
 #sideBar a {
   white-space: nowrap;
+  color: #1A1B41;
 }
 
 main {
@@ -69,3 +70,8 @@ main {
   max-width: 1060px;
   padding: 0 10px;
 }
+
+#mainContent h1, #mainContent h2 {
+  color: #1A1B41;
+}
+
