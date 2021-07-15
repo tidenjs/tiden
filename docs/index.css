@@ -23,12 +23,12 @@ header > nav {
 
 header a {
   display: block;
-  padding: 7px 14px;
+  padding: 8px 16px;
 }
 
 header img {
   display: block;
-  height: 36px;
+  height: 34px;
 }
 
 #sideBarAndMain {
@@ -43,7 +43,6 @@ header img {
   height: 100%;
   flex: 0 0;
   border-right: 1px solid #1A1B41;
-  overflow-y: auto;
 }
 
 #sidebar ol {
@@ -58,7 +57,9 @@ header img {
 
 #sideBar a {
   display: block;
-  padding: 5px 20px 6px;
+  margin: 2px 4px;
+  padding: 6px 18px 7px;
+  border-radius: 3px;
   white-space: nowrap;
   text-decoration: none;
   color: #1A1B41;
