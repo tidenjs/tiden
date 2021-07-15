@@ -10,18 +10,25 @@ body {
 header {
  width: 100%;
  flex: 0 0 50px;
+ border-bottom: 1px solid #1A1B41;
 }
 
 header > nav {
   height: 100%;
   width: 100%;
-  border-bottom: 1px solid #1A1B41;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+header a {
+  display: block;
+  padding: 5px 10px;
 }
 
 header img {
   display: block;
   height: 40px;
-  margin: 5px;
 }
 
 #sideBarAndMain {
@@ -38,7 +45,7 @@ header img {
   border-right: 1px solid #1A1B41;
 }
 
-#sideabar ol {
+#sidebar ol {
   margin: 0;
   padding: 0;
 }
@@ -46,9 +53,10 @@ header img {
 #sidebar li {
   list-style-type: none;
   color: black;
-  padding: 3px 5px;
+  padding: 0 8px 5px;
   margin: 0;
   transition: background-color 0.5s;
+  font-size: 16px;
 }
 
 #sidebar li:hover {
