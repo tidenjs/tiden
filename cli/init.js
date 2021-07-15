@@ -17,8 +17,5 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`start`, "hotserve index.html 1100 '*'"),
   ])
 
-  await Promise.all([
-    fs.chmod(`start`, `755`),
-    createStream({ path: `app`, name: `url` }),
-  ])
+  await Promise.all([fs.chmod(`start`, `755`)])
 }
