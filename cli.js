@@ -2,7 +2,7 @@
 
 import minimist from "minimist"
 
-import { createStream, init } from "./ops.js"
+import { init, createStream, createPage } from "./ops.js"
 
 const parsed = minimist(process.argv.slice(2), {
   alias: {
@@ -66,7 +66,7 @@ async function create(noun, name, path) {
   if (noun === `stream`) {
     await createStream({ path, name })
   } else if (noun === `page`) {
-    // await createPage({path, name})
+    await createPage({ path, name })
   } else if (noun === `nano`) {
     // await createNano({path, name})
   } else {

@@ -1,13 +1,13 @@
 import tmpdir from "../test/tmpdir.js"
-import createStream from "./createStream.js"
+import createPage from "./createPage.js"
 import fs from "fs/promises"
 import { expect } from "chai"
 
-import singleLevelNewFiles from "./createStream.test/singleLevelNewFiles.js"
-import singleLevelExistingFiles from "./createStream.test/singleLevelExistingFiles.js"
+import singleLevelNewFiles from "./createPage.test/singleLevelNewFiles.js"
+import singleLevelExistingFiles from "./createPage.test/singleLevelExistingFiles.js"
 
-import multiLevelNewFiles from "./createStream.test/multiLevelNewFiles.js"
-import multiLevelExistingFiles from "./createStream.test/multiLevelExistingFiles.js"
+import multiLevelNewFiles from "./createPage.test/multiLevelNewFiles.js"
+import multiLevelExistingFiles from "./createPage.test/multiLevelExistingFiles.js"
 
 let dir
 beforeEach(async () => {
@@ -18,7 +18,7 @@ afterEach(async () => {
   await fs.rm(dir, { recursive: true })
 })
 
-describe(`createStream`, () => {
+describe(`createPage`, () => {
   describe(`single level`, () => {
     singleLevelNewFiles()
     singleLevelExistingFiles()
