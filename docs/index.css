@@ -1,12 +1,32 @@
 body {
-  display: flex;
-  flex-direction: row;
   height: 100%;
   width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-nav {
+header {
+ width: 100%;
+ flex: 0 0 50px;
+}
+
+header > nav {
   height: 100%;
+  width: 100%;
+  border-bottom: 1px solid grey;
+}
+
+#sideBarAndMain {
+  width: 100%;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: row;
+}
+
+#sideBar {
+  height: 100%;
+  flex: 0 0;
   border-right: 1px solid grey;
 }
 
@@ -18,6 +38,8 @@ main {
   align-items: center;
 }
 
-#centeredContent {
+#mainContent {
   max-width: 1080px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
