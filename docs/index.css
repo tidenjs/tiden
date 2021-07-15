@@ -43,10 +43,11 @@ header img {
   height: 100%;
   flex: 0 0;
   border-right: 1px solid #1A1B41;
+  overflow-y: auto;
 }
 
 #sidebar ol {
-  margin: 1px 0;
+  margin: 2px 0;
   padding: 0;
 }
 
@@ -57,11 +58,12 @@ header img {
 
 #sideBar a {
   display: block;
-  padding: 4px 20px 6px;
+  padding: 5px 20px 6px;
   white-space: nowrap;
   text-decoration: none;
   color: #1A1B41;
   font-size: 16px;
+  font-weight: bold;
   transition: background-color 0.5s;
 }
 
@@ -82,7 +84,7 @@ main {
 #mainContent {
   flex: 0 0;
   max-width: 1040px;
-  padding: 0 20px;
+  padding: 0 20px 150px;
 }
 
 #mainContent h1, #mainContent h2 {
