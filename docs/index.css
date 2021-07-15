@@ -30,16 +30,21 @@ header > nav {
   border-right: 1px solid grey;
 }
 
+#sideBar a {
+  white-space: nowrap;
+}
+
 main {
   flex: 1 1 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #mainContent {
+  flex: 0 0;
   max-width: 1080px;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
