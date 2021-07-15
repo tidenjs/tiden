@@ -1,5 +1,8 @@
 export default ({ name, description, isTest }) => `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta property="og:title" content="${name}" />
+<meta property="og:image" content="favicon.svg" />
+<meta property="og:description" content="${description}" />
 <link rel="shortcut icon" href="favicon.png" type="image/png" />
 <link rel="manifest" href="manifest.json" />
 <title>${name}</title>
@@ -23,11 +26,6 @@ export default ({ name, description, isTest }) => `<!DOCTYPE html>
     }
   }
 </script>
-
-<div data-initial aria-hidden="true" style="height: 0; width: 0; opacity: 0; overflow: hidden;">
-<!-- This will be shown in excerpts when you copy a link to this site, for example in Facebook -->
-  ${description}
-</div>
 
 <script data-initial src="https://unpkg.com/es-module-shims@^0.11.1/dist/es-module-shims.js"></script>
 
