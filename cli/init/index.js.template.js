@@ -1,11 +1,13 @@
-export default () => `
-import tiden from "tiden"
-import app from "./app.js"
+import o from "outdent"
 
-// clean up elements in DOM that are only needed for setting things up
-document.querySelectorAll("[data-initial]").forEach((el) => {
-  el.parentElement.removeChild(el)
-})
+export default () => o`
+  import tiden from "tiden"
+  import app from "./app.js"
 
-tiden(app)
+  // clean up elements in DOM that are only needed for setting things up
+  document.querySelectorAll("[data-initial]").forEach((el) => {
+    el.parentElement.removeChild(el)
+  })
+
+  tiden(app)
 `
