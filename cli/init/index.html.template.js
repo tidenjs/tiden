@@ -3,6 +3,7 @@ export default ({ name, description, isTest }) => `<!DOCTYPE html>
 <meta property="og:title" content="${name}" />
 <meta property="og:image" content="favicon.svg" />
 <meta property="og:description" content="${description}" />
+<meta property="og:type" content="website" />
 <link rel="shortcut icon" href="favicon.png" type="image/png" />
 <link rel="manifest" href="manifest.json" />
 <title>${name}</title>
