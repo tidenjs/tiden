@@ -2,8 +2,7 @@
 
 import minimist from "minimist"
 
-import createStream from "./cli/createStream.js"
-import init from "./cli/init.js"
+import { createStream, init } from "./ops.js"
 
 const parsed = minimist(process.argv.slice(2), {
   alias: {
@@ -34,8 +33,6 @@ switch (verb) {
     const noun = arg1
     const name = arg2
     const path = arg3
-
-    console.log(noun, name)
 
     if (!noun || !name) {
       console.error(
