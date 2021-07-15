@@ -23,12 +23,12 @@ header > nav {
 
 header a {
   display: block;
-  padding: 5px 10px;
+  padding: 7px 14px;
 }
 
 header img {
   display: block;
-  height: 40px;
+  height: 36px;
 }
 
 #sideBarAndMain {
@@ -53,7 +53,7 @@ header img {
 #sidebar li {
   list-style-type: none;
   color: black;
-  padding: 0 8px 5px;
+  padding: 6px 12px 0;
   margin: 0;
   transition: background-color 0.5s;
   font-size: 16px;
@@ -80,8 +80,8 @@ main {
 
 #mainContent {
   flex: 0 0;
-  max-width: 1060px;
-  padding: 0 10px;
+  max-width: 1040px;
+  padding: 0 20px;
 }
 
 #mainContent h1, #mainContent h2 {
