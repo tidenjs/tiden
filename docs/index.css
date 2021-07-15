@@ -48,6 +48,11 @@ header img {
   color: black;
   padding: 3px 5px;
   margin: 0;
+  transition: background-color 0.5s;
+}
+
+#sidebar li:hover {
+  background-color: #5CC8FF;
 }
 
 #sideBar a {
