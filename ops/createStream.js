@@ -12,7 +12,7 @@ export default async function createStream({ path, name }) {
   const exists = await fileExists(file)
 
   if (exists) {
-    throw new Error(`A stream niagara already exists in app`)
+    throw new Error(`A stream '${name}' already exists in app`)
   }
 
   await mkdirp(path + `/streams`)

@@ -12,7 +12,7 @@ export default async function createPage({ path, name }) {
   const exists = await fileExists(file)
 
   if (exists) {
-    throw new Error(`A page niagara already exists in app`)
+    throw new Error(`A page '${name}' already exists`)
   }
 
   await mkdirp(path + `/pages`)
@@ -26,13 +26,38 @@ async function createPageFile(path, name, file) {
   await fs.writeFile(
     file,
     o`
-      import {page} from "tiden"
+      import {nested, register, all} from "tiden"
 
-      export default page(\`${name}\`, function* ${name}({respondTo}) {
-        yield respondTo(\`get\`, \`${name}\`, function*() {
-          return \`I'm here!\`
-        })
-      })
+      const id = \`one/two/${name}\`
+
+      function page* () {
+        const [template] = (
+          yield all([
+            import(\`../nanos/template.js\`),
+          ]
+        ).map(it => it.default)
+
+        yield nested(
+          root, 
+          [
+            template,
+            [
+            ]
+          ]
+        )
+      }
+
+      export function interpret(url) {
+        return url.pathname.match(
+          new RegExp(\`^/one/two/${name}\`)
+        )
+      }
+
+      export function generate(page) {
+        return \`/one/two/${name}\`
+      }
+
+      register({id, page, interpret, generate})
     `
   )
 }
@@ -43,32 +68,22 @@ async function addToPagesList(path, name) {
   if (await fileExists(pagesFile)) {
     c = await fs.readFile(pagesFile, `utf8`)
   } else {
-    c = o`
-      export default function* pages() {
-      }
-    `
+    c = ``
   }
 
   function addImport() {
-    const statement = `import ${name} from "./pages/${name}.js"`
+    const statement = `import "./pages/${name}.js"`
     const matcher = /(.*import.*(\nimport.*)*)/
 
     // add after all import statements if any
     if (c.match(matcher)) {
       c = c.replace(matcher, `$1\n${statement}`)
     } else {
-      c = `${statement}\n\n${c}`
+      c = `${statement}\n\n${c}`.trim()
     }
   }
 
-  function addYield() {
-    const statement = `  yield ${name}`
-    const matcher = /(function\*\s*pages\(\)\s*{)(.*)(}\s*)/ms
-    c = c.replace(matcher, `$1$2${statement}\n$3`)
-  }
-
   addImport()
-  addYield()
 
   await fs.writeFile(pagesFile, c)
 }
@@ -78,24 +93,15 @@ async function addToNs(path) {
   const ns = nss.pop()
   const nsFile = `${path}.js`
 
+  const importStatement = `import "./${ns}/pages.js"`
+
   let c
   if (await fileExists(nsFile)) {
     c = await fs.readFile(nsFile, `utf8`)
+    c = `${importStatement}\n${c}`
   } else {
-    c = o`
-      import {fork} from "tiden"
-
-      export function* pages() {
-      }
-    `
+    c = importStatement
   }
-
-  const matcher = /^(.*)(\s+)(export function\*\s*pages\(\)\s*{)(.*)(}\s*)/ms
-
-  const importStatement = `import myPages from "./${ns}/pages.js"`
-  const forkStatement = `\n  yield fork(myPages)`
-
-  c = c.replace(matcher, `$1${importStatement}\n$2$3${forkStatement}$4$5`)
 
   await fs.writeFile(nsFile, c)
 }
@@ -108,24 +114,16 @@ async function addToGrandParents(path) {
     const nextNs = nss[i + 1]
     const nsFile = [...nss.slice(0, i), ``].join(`/`) + `${ns}.js`
 
+    const importStatement = `import "./${ns}/${nextNs}.js"`
+
     let c
     if (await fileExists(nsFile)) {
       c = await fs.readFile(nsFile, `utf8`)
+
+      c = `${importStatement}\n${c}`
     } else {
-      c = o`
-        import {fork} from "tiden"
-
-        export function* pages() {
-        }
-      `
+      c = importStatement
     }
-
-    const matcher = /^(.*)(\s+)(export function\*\s*pages\(\)\s*{)(.*)(}\s*)/ms
-
-    const importStatement = `import {pages as ${nextNs}Pages} from "./${ns}/${nextNs}.js"`
-    const forkStatement = `  yield fork(${nextNs}Pages)`
-
-    c = c.replace(matcher, `$1${importStatement}\n$2$3$4${forkStatement}\n$5`)
 
     await fs.writeFile(nsFile, c)
   }

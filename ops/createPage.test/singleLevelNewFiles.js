@@ -6,43 +6,24 @@ import { expect } from "chai"
 export default function () {
   describe(`when no files exists`, () => {
     beforeEach(async () => {
-      await createPage({ path: ``, name: `niagara` })
+      await createPage({ path: ``, name: `home` })
     })
 
     it(`should create page file`, async () => {
-      const expected = o`
-        import {page} from "tiden"
-
-        export default page(\`niagara\`, function* niagara({respondTo}) {
-          yield respondTo(\`get\`, \`niagara\`, function*() {
-            return \`I'm here!\`
-          })
-        })
-      `
-
-      expect(await read(`app/pages/niagara.js`)).to.equal(expected)
+      expect(await read(`app/pages/home.js`)).to.match(/register/)
     })
 
-    it(`should update pages.js`, async () => {
-      const expected = o`
-        import niagara from "./pages/niagara.js"
-
-        export default function* pages() {
-          yield niagara
-        }
-      `
-
-      expect(await read(`app/pages.js`)).to.equal(expected)
+    it(`should create pages.js`, async () => {
+      expect(await read(`app/pages.js`)).to.equal(
+        o`
+          import "./pages/home.js"
+        `
+      )
     })
 
     it(`should update app.js`, async () => {
       const expected = o`
-        import {fork} from "tiden"
-        import myPages from "./app/pages.js"
-
-        export function* pages() {
-          yield fork(myPages)
-        }
+        import "./app/pages.js"
       `
 
       expect(await read(`app.js`)).to.equal(expected)

@@ -27,7 +27,7 @@ export default function () {
         await createStream({ path: ``, name: `niagara` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
-        expect(e.message).to.equal(`A stream niagara already exists in app`)
+        expect(e.message).to.equal(`A stream 'niagara' already exists in app`)
       }
     })
   })

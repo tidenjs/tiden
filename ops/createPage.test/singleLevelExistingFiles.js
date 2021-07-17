@@ -9,25 +9,19 @@ export default function () {
     beforeEach(async () => {
       await mkdirp(`app/pages`)
       await fs.writeFile(
-        `app/pages/niagara.js`,
+        `app/pages/home.js`,
         o`
         import {page} from "tiden"
-
-        export default page(\`niagara\`, function* niagara({respondTo}) {
-          yield respondTo(\`get\`, \`niagara\`, function*() {
-            return \`I'm here!\`
-          })
-        })
       `
       )
     })
 
     it(`should throw an error`, async () => {
       try {
-        await createPage({ path: ``, name: `niagara` })
+        await createPage({ path: ``, name: `home` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
-        expect(e.message).to.equal(`A page niagara already exists in app`)
+        expect(e.message).to.equal(`A page 'home' already exists`)
       }
     })
   })
@@ -38,35 +32,28 @@ export default function () {
       await fs.writeFile(
         `app/pages.js`,
         o`
-          import gullfoss from "./pages/gullfoss.js"
-
-          export default function* pages() {
-            yield gullfoss
-          }
+          import "./pages/listings.js"
         `
       )
       await fs.writeFile(
         `app.js`,
         o`
-          import pages from "./app/pages.js"
+          import streams from "./app/streams.js"
+          import "./app/pages.js"
 
           export {pages}
+          export {streams}
         `
       )
     })
 
     it(`should add to list`, async () => {
-      await createPage({ path: ``, name: `niagara` })
+      await createPage({ path: ``, name: `home` })
 
       expect(await read(`app/pages.js`)).to.equal(
         o`
-          import gullfoss from "./pages/gullfoss.js"
-          import niagara from "./pages/niagara.js"
-
-          export default function* pages() {
-            yield gullfoss
-            yield niagara
-          }
+          import "./pages/listings.js"
+          import "./pages/home.js"
         `
       )
     })
