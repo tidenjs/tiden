@@ -14,7 +14,6 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`manifest.json`, manifestJson({ name, description })),
     fs.writeFile(`favicon.png`, faviconPng()),
     fs.writeFile(`favicon.svg`, faviconSvg()),
-    fs.writeFile(`start`, "hotserve index.html 1100 '*'"),
   ])
 
   await Promise.all([fs.chmod(`start`, `755`)])

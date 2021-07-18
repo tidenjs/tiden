@@ -42,8 +42,12 @@ describe(`createNano`, () => {
       await createNano({ path: `one`, name: `myNano` })
     })
 
-    it(`should create nano file`, async () => {
+    it(`should create nano`, async () => {
       expect(await read(`app/one/nanos/myNano.js`)).to.match(/connect/)
+    })
+
+    it(`should create nano demo`, async () => {
+      expect(await read(`app/one/nanos/myNano/demo.js`)).to.match(/connect/)
     })
   })
 })
