@@ -37,7 +37,7 @@
       mocha.checkLeaks()
     </script>
     <script type="module" class="mocha-exec">
-      const res = await fetch(`/files?include=**/*.test.js`)
+      const res = await fetch(`/files?include=lib/api/*.test.js`)
       const files = await res.json()
 
       for (const file of files) {

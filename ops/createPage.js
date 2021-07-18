@@ -30,11 +30,11 @@ async function createPageFile(path, name, file) {
 
       const id = \`one/two/${name}\`
 
-      function page* () {
+      function* page () {
         const [template] = (
           yield all([
             import(\`../nanos/template.js\`),
-          ]
+          ])
         ).map(it => it.default)
 
         yield nested(

@@ -3,6 +3,7 @@
 import minimist from "minimist"
 
 import { init, createStream, createPage, createNano } from "./ops.js"
+import ide from "./ide.js"
 
 const parsed = minimist(process.argv.slice(2), {
   alias: {
@@ -13,6 +14,10 @@ const parsed = minimist(process.argv.slice(2), {
 const [verb, arg1, arg2, arg3] = parsed._
 
 switch (verb) {
+  case `start`: {
+    ide()
+    break
+  }
   case `init`: {
     const name = arg1
 
