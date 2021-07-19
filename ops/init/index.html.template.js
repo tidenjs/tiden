@@ -31,7 +31,7 @@ export default ({ name, description, isTest }) => o`
     }
   </script>
 
-  <script data-initial src="https://unpkg.com/es-module-shims@^0.11.1/dist/es-module-shims.js"></script>
+  <script data-initial src="https://unpkg.com/es-module-shims@0.12.1/dist/es-module-shims.js"></script>
 
   <script data-initial>
     try {

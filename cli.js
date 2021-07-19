@@ -8,6 +8,7 @@ import ide from "./ide.js"
 const parsed = minimist(process.argv.slice(2), {
   alias: {
     d: `description`,
+    pn: `pathname`,
   },
 })
 
@@ -63,7 +64,10 @@ function showHelp() {
   console.log(`Usage:
 
   init <name> [--description="some description"] [-d "some description"]
-  create <stream/nano/page> <name> [path]
+  start
+  create stream <name> [path]
+  create nano <name> [path]
+  create page <name> [path] [--pathname="/custom/url"] [-pn "/custom/url"]
 `)
 }
 

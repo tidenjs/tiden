@@ -5,7 +5,7 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 
-export default async function createPage({ path, name }) {
+export default async function createPage({ path, name, pathname }) {
   path = path ? `app/${path}` : `app`
 
   const file = `${path}/pages/${name}.js`
@@ -16,13 +16,19 @@ export default async function createPage({ path, name }) {
   }
 
   await mkdirp(path + `/pages`)
-  await createPageFile(path, name, file)
+  await createPageFile(path, name, file, pathname)
   await addToPagesList(path, name)
   await addToNs(path)
   await addToGrandParents(path)
 }
 
-async function createPageFile(path, name, file) {
+async function createPageFile(path, name, file, pathname) {
+  if (!pathname) {
+    const nss = path.split(`/`)
+    nss[0] = ``
+    pathname = `${nss.join(`/`)}/${name}`
+  }
+
   await fs.writeFile(
     file,
     o`
@@ -49,12 +55,12 @@ async function createPageFile(path, name, file) {
 
       export function interpret(url) {
         return url.pathname.match(
-          new RegExp(\`^/one/two/${name}\`)
+          new RegExp(\`^${pathname}$\`)
         )
       }
 
       export function generate(page) {
-        return \`/one/two/${name}\`
+        return \`${pathname}\`
       }
 
       register({id, page, interpret, generate})

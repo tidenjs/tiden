@@ -7,6 +7,8 @@ import indexHtml from "./init/index.html.template.js"
 import indexJs from "./init/index.js.template.js"
 import manifestJson from "./init/manifest.json.template.js"
 
+import createPage from "./createPage.js"
+
 export default async function init({ name, description, isTest }) {
   await Promise.all([
     fs.writeFile(`index.html`, indexHtml({ name, description, isTest })),
@@ -14,7 +16,7 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`manifest.json`, manifestJson({ name, description })),
     fs.writeFile(`favicon.png`, faviconPng()),
     fs.writeFile(`favicon.svg`, faviconSvg()),
-  ])
 
-  await Promise.all([fs.chmod(`start`, `755`)])
+    await createPage({name: `home`})
+  ])
 }
