@@ -8,9 +8,10 @@
   },
   "scripts": {
     "start": "hotserve '' 1099 '*'",
-    "test": "npm run test-unit",
-    "test-unit": "node open.js",
-    "test-cli": "mocha --recursive lib --timeout=1000",
+    "test": "npm run test-ops ; npm run test-cli",
+    "test-api": "node open.js",
+    "test-ops": "mocha --recursive ops --timeout=1000",
+    "test-cli": "mocha --recursive cli --timeout=1000",
     "test-system": "mocha ./test/system/setup.js --recursive ./test/system --timeout=5000"
   },
   "author": "mikabytes",
