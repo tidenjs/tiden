@@ -23,12 +23,20 @@ header > nav {
 
 header a {
   display: block;
-  padding: 8px 16px;
+  padding: 8px 18px;
+  text-decoration: none;
+  color: #1A1B41;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 header img {
   display: block;
   height: 34px;
+}
+
+header a > :not(img) {
+  margin-top: 2px;
 }
 
 #sideBarAndMain {
@@ -46,7 +54,7 @@ header img {
 }
 
 #sidebar ol {
-  margin: 4px 0;
+  margin: 8px 0;
   padding: 0;
 }
 
