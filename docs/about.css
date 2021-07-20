@@ -109,12 +109,12 @@ main {
 }
 
 #mainContent dt {
-  margin-top: 10px;
+  margin-top: 8px;
   font-weight: bold;
   line-height: 22px;
 }
 
 #mainContent dd {
-  margin: 15px 0 15px 25px;
+  margin: 10px 0 18px 18px;
   line-height: 22px;
 }
