@@ -17,6 +17,7 @@ import * as router from "./lib/api/routing.js"
 import stream from "./lib/api/stream.js"
 import render from "./lib/api/render.js"
 import html from "./lib/api/html.js"
+import nested from "./lib/api/nested.js"
 
 function announce(...args) {
   console.warn(`'announce' has been deprecated, use 'publish' instead.`)
@@ -51,6 +52,7 @@ export {
   fork,
   render,
   html,
+  nested,
 }
 
 import { applyMiddleware, createStore } from "redux"
