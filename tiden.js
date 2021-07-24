@@ -1,4 +1,4 @@
-import { all, fork, spawn } from "redux-saga/effects.js"
+import { all, fork, spawn, cancel } from "redux-saga/effects.js"
 import publish from "./lib/api/publish.js"
 import cache from "./lib/api/cache.js"
 import connect from "./lib/api/connect.js"
@@ -54,6 +54,7 @@ export {
   render,
   html,
   nested,
+  cancel,
 }
 
 import { applyMiddleware, createStore } from "redux"
