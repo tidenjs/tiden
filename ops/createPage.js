@@ -32,7 +32,7 @@ async function createPageFile(path, name, file, pathname) {
   await fs.writeFile(
     file,
     o`
-      import {nested, register, all} from "tiden"
+      import {nested, router, all} from "tiden"
 
       const id = \`one/two/${name}\`
 
@@ -63,7 +63,7 @@ async function createPageFile(path, name, file, pathname) {
         return \`${pathname}\`
       }
 
-      register({id, saga, interpret, generate})
+      router.register({id, saga, interpret, generate})
     `
   )
 }
