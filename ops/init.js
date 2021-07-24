@@ -2,6 +2,7 @@ import fs from "fs/promises"
 import o from "outdent"
 
 import createStream from "./createStream.js"
+import createNano from "./createNano.js"
 import faviconPng from "./init/favicon.png.js"
 import faviconSvg from "./init/favicon.svg.js"
 import indexHtml from "./init/index.html.template.js"
@@ -21,7 +22,8 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`favicon.svg`, faviconSvg()),
   ])
 
-  await createPage({ name: `home` })
+  await createNano({ name: `template` })
+  await createPage({ name: `home`, pathname: `/` })
   await createStream({
     name: `page`,
     body: o`

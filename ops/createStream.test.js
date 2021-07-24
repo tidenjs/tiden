@@ -38,9 +38,9 @@ describe(`createStream`, () => {
         body: `I'm a little\nmonkey`,
       })
       const expected = o`
-        import {stream} from "tiden"
+        import {stream, respondTo} from "tiden"
 
-        export default stream(\`niagara\`, function* niagara({respondTo}) {
+        export default stream(\`niagara\`, function* niagara() {
           I'm a little
           monkey
         })

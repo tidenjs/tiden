@@ -22,7 +22,7 @@ export default async function createStream({ path, name }) {
 }
 
 async function createNanoFile(path, name, file) {
-  const nss = path.split(`/`)
+  const nss = path ? path.split(`/`) : []
 
   if (nss.length === 0) {
     nss.push(`x`)
@@ -34,7 +34,7 @@ async function createNanoFile(path, name, file) {
     o`
       import { connect, s } from "tiden"
 
-      export default function *${name}(root) {
+      export default function* ${name}(root) {
         const el = document.createElement(\`${tagName}\`)
 
         root.innerHTML = \`\`

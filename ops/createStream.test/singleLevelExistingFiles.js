@@ -11,7 +11,7 @@ export default function () {
       await fs.writeFile(
         `app/streams/niagara.js`,
         o`
-        import {stream} from "tiden"
+        import {stream, respondTo} from "tiden"
 
         export default stream(\`niagara\`, function* niagara({respondTo}) {
           yield respondTo(\`get\`, \`niagara\`, function*() {

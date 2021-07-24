@@ -81,7 +81,7 @@ export default function tiden(actor) {
       })
     },
   })
-  store = createStore((s) => s || {})
+  store = createStore((s) => s || {}, applyMiddleware(sagaMiddleware))
   sagaMiddleware.run(actor)
 
   return {

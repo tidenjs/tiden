@@ -49,9 +49,9 @@ export default function () {
     it(`should create stream file`, async () => {
       expect(await read(`app/cart/checkout/streams/personalInfo.js`)).to.equal(
         o`
-          import {stream} from "tiden"
+          import {stream, respondTo} from "tiden"
 
-          export default stream(\`personalInfo\`, function* personalInfo({respondTo}) {
+          export default stream(\`personalInfo\`, function* personalInfo() {
             yield respondTo(\`get\`, \`personalInfo\`, function*() {
               return \`I'm here!\`
             })

@@ -36,9 +36,9 @@ async function createStreamFile(path, name, file, body) {
   await fs.writeFile(
     file,
     o`
-      import {stream} from "tiden"
+      import {stream, respondTo} from "tiden"
 
-      export default stream(\`${name}\`, function* ${name}({respondTo}) {
+      export default stream(\`${name}\`, function* ${name}() {
         ${body}
       })
     `

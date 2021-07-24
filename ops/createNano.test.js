@@ -50,6 +50,16 @@ describe(`createNano`, () => {
       expect(await read(`app/one/nanos/myNano/demo.js`)).to.match(/connect/)
     })
   })
+
+  describe(`with no namespace`, () => {
+    beforeEach(async () => {
+      await createNano({ name: `myNano` })
+    })
+
+    it(`should create nano`, async () => {
+      expect(await read(`app/nanos/myNano.js`)).to.match(/connect/)
+    })
+  })
 })
 
 async function read(file) {

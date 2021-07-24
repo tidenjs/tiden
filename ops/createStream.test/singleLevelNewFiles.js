@@ -11,9 +11,9 @@ export default function () {
 
     it(`should create stream file`, async () => {
       const expected = o`
-        import {stream} from "tiden"
+        import {stream, respondTo} from "tiden"
 
-        export default stream(\`niagara\`, function* niagara({respondTo}) {
+        export default stream(\`niagara\`, function* niagara() {
           yield respondTo(\`get\`, \`niagara\`, function*() {
             return \`I'm here!\`
           })
