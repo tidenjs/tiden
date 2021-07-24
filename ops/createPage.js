@@ -36,7 +36,7 @@ async function createPageFile(path, name, file, pathname) {
 
       const id = \`one/two/${name}\`
 
-      function* page () {
+      function* saga() {
         const [template] = (
           yield all([
             import(\`../nanos/template.js\`),
@@ -59,11 +59,11 @@ async function createPageFile(path, name, file, pathname) {
         )
       }
 
-      export function generate(page) {
+      export function generate(args) {
         return \`${pathname}\`
       }
 
-      register({id, page, interpret, generate})
+      register({id, saga, interpret, generate})
     `
   )
 }
