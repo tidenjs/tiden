@@ -5,7 +5,7 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 
-export default async function createStream({ path, name }) {
+export default async function createStream({ path, name, body }) {
   path = path ? `app/${path}` : `app`
 
   const file = `${path}/streams/${name}.js`
@@ -16,22 +16,30 @@ export default async function createStream({ path, name }) {
   }
 
   await mkdirp(path + `/streams`)
-  await createStreamFile(path, name, file)
+  await createStreamFile(path, name, file, body)
   await addToStreamsList(path, name)
   await addToNs(path)
   await addToGrandParents(path)
 }
 
-async function createStreamFile(path, name, file) {
+async function createStreamFile(path, name, file, body) {
+  if (body === undefined) {
+    body = o`
+      yield respondTo(\`get\`, \`${name}\`, function*() {
+        return \`I'm here!\`
+      })
+    `
+  }
+
+  body = body.replace(/\n/g, `\n  `)
+
   await fs.writeFile(
     file,
     o`
       import {stream} from "tiden"
 
       export default stream(\`${name}\`, function* ${name}({respondTo}) {
-        yield respondTo(\`get\`, \`${name}\`, function*() {
-          return \`I'm here!\`
-        })
+        ${body}
       })
     `
   )
