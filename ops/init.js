@@ -1,4 +1,5 @@
 import fs from "fs/promises"
+import o from "outdent"
 
 import createStream from "./createStream.js"
 import faviconPng from "./init/favicon.png.js"
@@ -21,4 +22,18 @@ export default async function init({ name, description, isTest }) {
   ])
 
   await createPage({ name: `home` })
+  await createStream({
+    name: `page`,
+    body: o`
+      let page
+      yield respondTo(\`set\`, \`page\`, function* (newPage) {
+        page = newPage
+        return page
+      })
+
+      yield respondTo(\`get\`, \`page\`, function* () {
+        return page
+      })
+    `,
+  })
 }

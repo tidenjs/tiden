@@ -22,6 +22,8 @@ export default () => o`
       root.innerHTML = \`<pre>An error occured:\\n\\n\${e.message}\\n\\n\${e.stack}</pre>\`
     })
 
+    yield fork(streams)
+
     yield subscribe(
       \`page\`,
       whenChanged(function* (page) {
@@ -34,5 +36,8 @@ export default () => o`
         }
       })
     )
+
+    // set initial page to the current url
+    yield request(\`set\`, \`page\`, router.interpret(document.location))
   }
 `
