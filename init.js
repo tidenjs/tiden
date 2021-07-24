@@ -12,7 +12,7 @@ function browserSupport() {
 }
 
 function addImportMap() {
-  const base = document.currentScript.src.replace(`/\/init.js$`, `/`)
+  const base = document.currentScript.src.replace(/\/init.js$/, `/`)
   document.head.appendChild(
     Object.assign(document.createElement("script"), {
       type: "importmap",

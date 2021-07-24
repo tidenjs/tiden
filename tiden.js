@@ -1,4 +1,4 @@
-import { all, fork } from "redux-saga/effects.js"
+import { all, fork, spawn } from "redux-saga/effects.js"
 import publish from "./lib/api/publish.js"
 import cache from "./lib/api/cache.js"
 import connect from "./lib/api/connect.js"
@@ -50,6 +50,7 @@ export {
   stream,
   all,
   fork,
+  spawn,
   render,
   html,
   nested,
