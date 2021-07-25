@@ -32,6 +32,7 @@ export default () => o`
       whenChanged(function* (page) {
         try {
           const pageDefinition = router.get(page.id)
+          console.log('starting ', pageDefinition)
           if (task) {
             yield cancel(task)
           }

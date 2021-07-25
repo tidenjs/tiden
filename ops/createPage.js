@@ -38,7 +38,6 @@ async function createPageFile(path, name, file, pathname) {
 
       function* saga() {
         console.log(1)
-        console.log(all)
         const [template] = (
           yield all([
             import(\`../nanos/template.js\`),

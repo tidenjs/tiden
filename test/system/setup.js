@@ -9,7 +9,8 @@ import puppeteer from "puppeteer"
 
 import tmpdir from "../tmpdir.js"
 
-const debug = true
+const debug = false
+const showOutput = true
 
 /* configurable options or object for puppeteer */
 const opts = {
@@ -18,12 +19,14 @@ const opts = {
   //slowMo: 100,
   timeout: 0,
   args: ["--window-size=1920,1040", "--window-position=2000,0"],
+  //dumpio: true,
 }
 
 let tidenApp
 before(async () => {
   global.expect = expect
   global.browser = await puppeteer.launch(opts)
+  global.pageUsed = false
 
   tidenApp = express()
   tidenApp.use(cors())
@@ -36,7 +39,21 @@ before(async () => {
 let app
 beforeEach(async function () {
   const dir = await tmpdir()
-  global.page = await browser.newPage()
+  if (global.pageUsed) {
+    global.page = await browser.newPage()
+  } else {
+    global.page = (await browser.pages())[0]
+    global.pageUsed = true
+  }
+
+  if (showOutput) {
+    global.page.on("console", async (msg) => {
+      const args = await Promise.all(msg.args().map((arg) => arg.jsonValue()))
+      if (msg._type !== `info`) {
+        console[msg._type](...args)
+      }
+    })
+  }
 
   app = express()
   const port = 1107
