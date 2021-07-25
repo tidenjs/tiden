@@ -32,17 +32,15 @@ async function createPageFile(path, name, file, pathname) {
   await fs.writeFile(
     file,
     o`
-      import {nested, router, all} from "tiden"
+      import {nested, router} from "tiden"
 
       const id = \`one/two/${name}\`
 
       function* saga() {
         console.log(1)
-        const [template] = (
-          yield all([
-            import(\`../nanos/template.js\`),
-          ])
-        ).map(it => it.default)
+        const [template] = (yield Promise.all([
+          import(\`../nanos/template.js\`),
+        ])).map(it => it.default)
 
         console.log(2)
         yield nested(

@@ -23,5 +23,5 @@ export default ({ name, description, isTest }) => o`
       ? `http://localhost:1105/init.js`
       : `https://cdn.jsdelivr.net/gh/tidenjs/tiden/init.js`
   }"></script>
-  <div id="root"></id>
+  <div id="root" style="display: contents;"></id>
 `

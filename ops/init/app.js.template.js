@@ -13,8 +13,8 @@ export default () => o`
   import {takeEvery} from "redux-saga/effects.js"
 
   export default function* app() {
-    yield subscribe(\`error\`, function* (error) {
-      console.error(error)
+    yield subscribe(\`error\`, function* (e) {
+      console.error(e)
       root.innerHTML = \`<pre>An error occured:\\n\\n\${e.message}\\n\\n\${e.stack}</pre>\`
     })
 
@@ -30,16 +30,17 @@ export default () => o`
     yield subscribe(
       \`page\`,
       whenChanged(function* (page) {
-        try {
-          const pageDefinition = router.get(page.id)
-          console.log('starting ', pageDefinition)
-          if (task) {
-            yield cancel(task)
-          }
-          task = yield fork(pageDefinition.saga, root)
-        } catch (e) {
-          yield publish(\`error\`, e)
+        const pageDefinition = router.get(page.id)
+        if (task) {
+          yield cancel(task)
         }
+        task = yield fork(function*() {
+          try {
+            yield pageDefinition.saga(root)
+          } catch (e) {
+            yield publish(\`error\`, e)
+          }
+        })
       })
     )
 

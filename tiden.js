@@ -18,6 +18,7 @@ import stream from "./lib/api/stream.js"
 import render from "./lib/api/render.js"
 import html from "./lib/api/html.js"
 import nested from "./lib/api/nested.js"
+import s from "./lib/api/s.js"
 
 function announce(...args) {
   console.warn(`'announce' has been deprecated, use 'publish' instead.`)
@@ -55,6 +56,7 @@ export {
   html,
   nested,
   cancel,
+  s,
 }
 
 import { applyMiddleware, createStore } from "redux"
@@ -76,9 +78,8 @@ export default function tiden(actor) {
 
   sagaMiddleware = createSagaMiddleware({
     onError: (e, { sagaStack }) => {
-      sagaMiddleware.run(function* () {
-        yield publish(`error`, { data: e, stack: sagaStack })
-      })
+      console.error(e)
+      console.error(sagaStack)
     },
   })
   store = createStore((s) => s || {}, applyMiddleware(sagaMiddleware))

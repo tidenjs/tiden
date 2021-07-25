@@ -47,7 +47,9 @@ describe(`createNano`, () => {
     })
 
     it(`should create nano demo`, async () => {
-      expect(await read(`app/one/nanos/myNano/demo.js`)).to.match(/connect/)
+      expect(await read(`app/one/nanos/myNano/demo.js`)).to.match(
+        /export const examples/
+      )
     })
   })
 
@@ -58,6 +60,22 @@ describe(`createNano`, () => {
 
     it(`should create nano`, async () => {
       expect(await read(`app/nanos/myNano.js`)).to.match(/connect/)
+    })
+  })
+
+  describe(`with body`, () => {
+    beforeEach(async () => {
+      await createNano({
+        path: `one`,
+        name: `myNano`,
+        body: o`
+          root.innerHTML = \`Hello there\`
+        `,
+      })
+    })
+
+    it(`should create nano`, async () => {
+      expect(await read(`app/one/nanos/myNano.js`)).to.match(/Hello there/)
     })
   })
 })

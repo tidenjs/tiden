@@ -12,8 +12,13 @@ describe(`init`, async () => {
     expect(await page.evaluate(() => document.title)).to.equal(
       `Tiden Example App`
     )
-    expect(await page.evaluate(() => document.title)).to.equal(
-      `Tiden Example App`
+
+    await page.waitForFunction(() => {
+      document.body.textContent !== ``
+    })
+
+    expect(await page.evaluate(() => document.body.textContent)).to.equal(
+      `Hurray! You're here.`
     )
   })
 })

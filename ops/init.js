@@ -22,7 +22,10 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`favicon.svg`, faviconSvg()),
   ])
 
-  await createNano({ name: `template` })
+  await createNano({
+    name: `template`,
+    body: `root.innerHTML = \`Hurray! You're here.\``,
+  })
   await createPage({ name: `home`, pathname: `/` })
   await createStream({
     name: `page`,

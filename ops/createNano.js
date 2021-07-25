@@ -5,7 +5,7 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 
-export default async function createStream({ path, name }) {
+export default async function createStream({ path, name, body }) {
   const realPath = path ? `app/${path}` : `app`
 
   const file = `${realPath}/nanos/${name}.js`
@@ -17,17 +17,31 @@ export default async function createStream({ path, name }) {
   }
 
   await mkdirp(realPath + `/nanos/${name}`)
-  await createNanoFile(path, name, file)
-  await createNanoFile(path, name, demo)
+  await createNanoFile(path, name, file, body)
+  await createNanoDemo(path, name, demo)
 }
 
-async function createNanoFile(path, name, file) {
+async function createNanoFile(path, name, file, body) {
   const nss = path ? path.split(`/`) : []
 
   if (nss.length === 0) {
     nss.push(`x`)
   }
-  const tagName = `${nss.join(`-`)}-view-${name}`
+
+  if (!body) {
+    const tagName = `${nss.join(`-`)}-view-${name}`
+
+    body = o`
+      const el = document.createElement(\`${tagName}\`)
+
+      root.innerHTML = \`\`
+      root.appendChild(el)
+
+      yield connect(el, {
+        language: s(\`language\`)
+      })
+    `
+  }
 
   await fs.writeFile(
     file,
@@ -35,14 +49,7 @@ async function createNanoFile(path, name, file) {
       import { connect, s } from "tiden"
 
       export default function* ${name}(root) {
-        const el = document.createElement(\`${tagName}\`)
-
-        root.innerHTML = \`\`
-        root.appendChild(el)
-
-        yield connect(el, {
-          language: s(\`language\`)
-        })
+        ${body.replace(/\n/g, `\n  `)}
       }
     `
   )
