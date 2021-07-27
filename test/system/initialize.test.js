@@ -14,11 +14,11 @@ describe(`init`, async () => {
     )
 
     await page.waitForFunction(() => {
-      document.body.textContent !== ``
+      return !!document.body.textContent
     })
 
-    expect(await page.evaluate(() => document.body.textContent)).to.equal(
-      `Hurray! You're here.`
-    )
+    expect(
+      await page.evaluate(() => document.body.textContent.trim())
+    ).to.equal(`Hurray! You're here.`)
   })
 })
