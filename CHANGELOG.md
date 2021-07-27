@@ -1,5 +1,13 @@
 # Changes to pre-0.0.1 legacy code
 
+## Deprecations
+
+These have been deprecated and will be removed in a future minor version
+
+- `HotHaunted.useAutoFocus`.
+- `HotHaunted.useElementWidth`
+- `HotHaunted.useCssVariable`
+
 ## Removed deprecated methods
 
 - `get` Use `request` instead.
@@ -26,6 +34,7 @@
 - `createSimpleConcept` has been renamed to `simpleStream`
 - `createCache` has been renamed to `cache`
 - `createMutex` has been renamed to `mutex`
+- `HotHaunted` has been renamed to `component`
 
 ## Changes to API
 

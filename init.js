@@ -19,6 +19,7 @@ function addImportMap() {
       innerHTML: JSON.stringify({
         imports: {
           tiden: base + "tiden.js",
+          "tiden/component": base + "lib/api/component.js",
           "tiden/": base,
           "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
           "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
