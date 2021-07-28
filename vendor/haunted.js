@@ -35,7 +35,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { directive, render } from "lit-html"
-export { html, render } from "lit-html"
 
 let current
 let currentId = 0

@@ -19,6 +19,18 @@ import render from "./lib/api/render.js"
 import html from "./lib/api/html.js"
 import nested from "./lib/api/nested.js"
 import s from "./lib/api/s.js"
+import component, {
+  css,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "./lib/api/component.js"
 
 function announce(...args) {
   console.warn(`'announce' has been deprecated, use 'publish' instead.`)

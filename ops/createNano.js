@@ -4,6 +4,7 @@ import fileExists from "../lib/fileExists.js"
 import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
+import camelToSnake from "../lib/camelToSnake.js"
 
 export default async function createStream({ path, name, body }) {
   const realPath = path ? `app/${path}` : `app`
@@ -29,7 +30,7 @@ async function createNanoFile(path, name, file, body) {
   }
 
   if (!body) {
-    const tagName = `${nss.join(`-`)}-view-${name}`
+    const tagName = `${nss.join(`-`)}-view-${camelToSnake(name)}`
 
     body = o`
       const el = document.createElement(\`${tagName}\`)
