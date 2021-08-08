@@ -7,6 +7,8 @@ These have been deprecated and will be removed in a future minor version
 - `HotHaunted.useAutoFocus`.
 - `HotHaunted.useElementWidth`
 - `HotHaunted.useCssVariable`
+- `ensure` [3]
+- `nested` [3]
 
 ## Removed deprecated methods
 
@@ -48,3 +50,5 @@ These have been deprecated and will be removed in a future minor version
 [1] Assigning objects and literals is still allowed. Arrays will have a different meaning in v1.1 when connect moves towards using merges instead of selectors.
 
 [2] pre-0.0.1 if a page was registered first with a regex of `/.*/` then it would take priority after all the following ones because it was first and matched anything. In 0.0.1 this has changed so that the page that matches the biggest portion of the URL gains priority. This makes it easier to make fallback URLs, and solves race conditions when sub-apps are dynamically loaded.
+
+[3] These are not automatically exposed in `import ... from "tiden"` but can instead be loaded using `import ... from "tiden/lib/api/ensure.js"` until next major version, at which point they will be removed.

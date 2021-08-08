@@ -17,7 +17,6 @@ import * as router from "./lib/api/routing.js"
 import stream from "./lib/api/stream.js"
 import render from "./lib/api/render.js"
 import html from "./lib/api/html.js"
-import nested from "./lib/api/nested.js"
 import s from "./lib/api/s.js"
 import component, {
   css,
@@ -43,6 +42,7 @@ function listenFor(...args) {
 }
 
 export {
+  /* API exports starts here */
   announce,
   publish,
   cache,
@@ -65,10 +65,11 @@ export {
   fork,
   spawn,
   render,
-  html,
-  nested,
   cancel,
   s,
+  /* component exports start here */
+  component,
+  html,
   css,
   createContext,
   useCallback,
