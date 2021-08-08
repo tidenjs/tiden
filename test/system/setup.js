@@ -9,7 +9,7 @@ import puppeteer from "puppeteer"
 
 import tmpdir from "../tmpdir.js"
 
-const debug = false
+const debug = process.env.DEBUG
 const showOutput = true
 
 /* configurable options or object for puppeteer */
