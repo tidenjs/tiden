@@ -8,6 +8,7 @@ import camelToSnake from "../lib/camelToSnake.js"
 
 export default async function createComponent({ path, name, body }) {
   const realPath = path ? `app/${path}` : `app`
+  path = path || ``
 
   const file = `${realPath}/components/${name}.js`
   const demo = `${realPath}/components/${name}/demo.js`
@@ -38,7 +39,7 @@ async function createComponentFile(path, name, file, body) {
     o`
       import { html, component } from "tiden"
 
-      import css from "./${path}/css.js"
+      import css from "./${path ? `${path}/` : ``}${name}/css.js"
 
       component(\`${tagName}\`, { css }, function ${name}({isReady, language}) {
         ${getBody()}
@@ -67,7 +68,7 @@ async function createComponentDemo(path, name, file) {
   await fs.writeFile(
     file,
     o`
-      import component from "../${name}.js"
+      export const path = new URL(import.meta.url + \`/../../${name}.js\`)
 
       export const examples = {
 
@@ -90,7 +91,7 @@ async function createCss(path, name, file) {
     o`
       import { css } from "tiden"
 
-      return css\`
+      export default css\`
         * { font-size: 24px }
       \`
     `

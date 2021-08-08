@@ -1,6 +1,12 @@
 import minimist from "minimist"
 
-import { init, createStream, createPage, createNano } from "../ops.js"
+import {
+  init,
+  createStream,
+  createPage,
+  createNano,
+  createComponent,
+} from "../ops.js"
 import ide from "../ide.js"
 
 export default function run(...slice) {
@@ -41,7 +47,7 @@ export default function run(...slice) {
 
       if (!noun || !name) {
         throw new Error(
-          `Usage: create <thing> <name> [path] (where thing can be 'stream', 'page' or 'nano')`
+          `Usage: create <thing> <name> [path] (where thing can be 'stream', 'component', 'page' or 'nano')`
         )
       }
 
@@ -74,7 +80,11 @@ function create(noun, name, path, extras) {
     return [createPage, { path, name, pathname: extras.pathname }]
   } else if (noun === `nano`) {
     return [createNano, { path, name }]
+  } else if (noun === `component`) {
+    return [createComponent, { path, name }]
   } else {
-    throw new Error(`Bad noun '${noun}'. Available: 'stream', 'page' or 'nano'`)
+    throw new Error(
+      `Bad noun '${noun}'. Available: 'stream', 'component', 'page' or 'nano'`
+    )
   }
 }

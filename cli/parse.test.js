@@ -1,7 +1,13 @@
 import { expect } from "chai"
 import o from "outdent"
 
-import { init, createStream, createPage, createNano } from "../ops.js"
+import {
+  init,
+  createStream,
+  createComponent,
+  createPage,
+  createNano,
+} from "../ops.js"
 import ide from "../ide.js"
 import parse from "./parse.js"
 
@@ -95,6 +101,24 @@ describe(`cli`, () => {
       expect(parse(`create`, `nano`, `myNano`, `ns1/ns2`)).to.be.deep.equal([
         createNano,
         { name: `myNano`, path: `ns1/ns2` },
+      ])
+    })
+  })
+
+  describe(`create component`, () => {
+    it(`should create with no extra args`, () => {
+      expect(parse(`create`, `component`, `myComponent`)).to.be.deep.equal([
+        createComponent,
+        { name: `myComponent`, path: undefined },
+      ])
+    })
+
+    it(`should create with path`, () => {
+      expect(
+        parse(`create`, `component`, `myComponent`, `ns1/ns2`)
+      ).to.be.deep.equal([
+        createComponent,
+        { name: `myComponent`, path: `ns1/ns2` },
       ])
     })
   })

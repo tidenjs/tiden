@@ -48,6 +48,7 @@ async function createNanoFile(path, name, file, body) {
     file,
     o`
       import { connect, s } from "tiden"
+      import "../components/view${name[0].toUpperCase() + name.slice(1)}.js"
 
       export default function* ${name}(root) {
         ${body.replace(/\n/g, `\n  `)}
