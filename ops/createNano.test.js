@@ -78,6 +78,53 @@ describe(`createNano`, () => {
       expect(await read(`app/one/nanos/myNano.js`)).to.match(/Hello there/)
     })
   })
+
+  describe(`with imports`, () => {
+    beforeEach(async () => {
+      await createNano({
+        path: `one`,
+        name: `myNano`,
+        imports: {
+          tiden: { render: [`render`] },
+          "./some/other.js  ": { thing: [`thing`], thing2: [`custom`] },
+          "./some/second.js": { default: [``] },
+          "./some/third.js": { default: [`third`] },
+        },
+      })
+    })
+
+    it(`should create nano`, async () => {
+      const result = await read(`app/one/nanos/myNano.js`)
+      expect(result).to.equal(
+        o`
+          import { connect, s, render } from "tiden"
+
+          import "../components/viewMyNano.js"
+
+          import { thing, thing2 as custom } from "./some/other.js  "
+          import "./some/second.js"
+          import third from "./some/third.js"
+
+          export default function* myNano(root) {
+            const el = document.createElement(\`one-view-my-nano\`)
+            
+            root.innerHTML = \`\`
+            root.appendChild(el)
+            
+            yield connect(el, {
+              language: s(\`language\`)
+            })
+          }
+        `
+      )
+    })
+  })
+
+  it(`should add extra arguments to nano`, async () => {
+    await createNano({ name: `myNano`, args: [`child`] })
+    const result = await read(`app/nanos/myNano.js`)
+    expect(result).to.include(`myNano(root, child)`)
+  })
 })
 
 async function read(file) {

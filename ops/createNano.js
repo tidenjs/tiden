@@ -5,8 +5,16 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 import camelToSnake from "../lib/camelToSnake.js"
+import importsBuilder from "./importsBuilder.js"
 
-export default async function createStream({ path, name, body }) {
+export default async function createStream({
+  path,
+  name,
+  body,
+  imports,
+  args = [],
+}) {
+  imports = imports || {}
   const realPath = path ? `app/${path}` : `app`
 
   const file = `${realPath}/nanos/${name}.js`
@@ -18,11 +26,18 @@ export default async function createStream({ path, name, body }) {
   }
 
   await mkdirp(realPath + `/nanos/${name}`)
-  await createNanoFile(path, name, file, body)
+  await createNanoFile(path, name, file, body, imports, args)
   await createNanoDemo(path, name, demo)
 }
 
-async function createNanoFile(path, name, file, body) {
+async function createNanoFile(path, name, file, body, imports, args) {
+  const allImports = importsBuilder({
+    tiden: {
+      connect: [`connect`],
+      s: [`s`],
+    },
+  })
+
   const nss = path ? path.split(`/`) : []
 
   if (nss.length === 0) {
@@ -42,15 +57,24 @@ async function createNanoFile(path, name, file, body) {
         language: s(\`language\`)
       })
     `
+
+    allImports.add({
+      [`../components/view${name[0].toUpperCase() + name.slice(1)}.js`]: {
+        default: [``],
+      },
+    })
   }
+
+  allImports.add(imports)
 
   await fs.writeFile(
     file,
     o`
-      import { connect, s } from "tiden"
-      import "../components/view${name[0].toUpperCase() + name.slice(1)}.js"
+      ${allImports}
 
-      export default function* ${name}(root) {
+      export default function* ${name}(root${
+      args.length > 0 ? `, ${args.join(`, `)}` : ``
+    }) {
         ${body.replace(/\n/g, `\n  `)}
       }
     `

@@ -56,7 +56,7 @@ describe(`createComponent`, () => {
 
     it(`should create css file`, async () => {
       expect(await read(`app/one/components/myComponent/css.js`)).to.match(
-        /return css\`/
+        /export default css\`/
       )
     })
   })

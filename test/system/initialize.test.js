@@ -14,11 +14,15 @@ describe(`init`, async () => {
     )
 
     await page.waitForFunction(() => {
-      return !!document.body.textContent
+      const el = document.querySelector(`x-view-home`)
+
+      return el && el.shadowRoot
     })
 
     expect(
-      await page.evaluate(() => document.body.textContent.trim())
-    ).to.equal(`Hurray! You're here.`)
+      await page.evaluate(
+        () => document.querySelector(`x-view-home`).shadowRoot.innerHTML
+      )
+    ).to.match(/Hurray! You're here./)
   })
 })
