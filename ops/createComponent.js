@@ -41,7 +41,7 @@ async function createComponentFile(path, name, file, body) {
 
       import css from "./${path ? `${path}/` : ``}${name}/css.js"
 
-      component(\`${tagName}\`, { css }, function ${name}({isReady, language}) {
+      component(\`${tagName}\`, { css }, function ${name}({language}) {
         ${getBody()}
       })
     `
@@ -50,10 +50,6 @@ async function createComponentFile(path, name, file, body) {
   function getBody() {
     if (!body) {
       body = o`
-        if (!isReady) {
-          return \`...\`
-        }
-
         return html\`
           Hello! I'm ${tagName}
         \`
