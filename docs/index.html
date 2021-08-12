@@ -1,44 +1,99 @@
 <html>
   <head>
     <title>Tiden API Reference</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <header>
       <nav>
-        <a href='index.html'><img src='assets/logo.svg' alt='Tiden logo'></img></a>
-        <a href='index.html'>API</a>
-        <a href='about.html'>About</a>
+        <a href="index.html"><img src="assets/logo.svg" alt="Tiden logo" /></a>
+        <a href="index.html">API</a>
+        <a href="about.html">About</a>
       </nav>
     </header>
-    <div id='sideBarAndMain'>
-      <nav id='sideBar'>
+    <div id="sideBarAndMain">
+      <nav id="sideBar">
         <ol>
-          <li><a href='#exampleCommand'>Example Command</a></li>
-          <li><a href='#exampleCommand2'>Example Command 2</a></li>
-          <li><a href='#exampleCommand3'>Example Command 3</a></li>
+          <li><a href="#publish">Publish</a></li>
+          <li><a href="#cache">Cache</a></li>
         </ol>
       </nav>
       <main>
-        <div id='mainContent'>
+        <div id="mainContent">
           <h1>API Reference</h1>
-          <section id='exampleCommand'>
-            <h2>Example Command</h2>
-            <p>Description on how to use the example command</p>
-            <p>Some more description in a new paragraph. Some more description in a new paragraph. Some more description in a new paragraph.</p>
+          <section id="publish">
+            <h2>Publish</h2>
+            <p>
+              Broadcasts a message without waiting for any responses. Typically
+              used to announce that something has happened, or in more rare
+              cases to directly submit information to downstream subscribers.
+            </p>
+            <h3>Example</h3>
+            <pre>
+              yield publish(`tabFocusChanged`, { isFocused: false }, { ...extras })
+            </pre>
+
+            <h3>Usage</h3>
+            <pre>
+              publish(type, data = null, extras = null)
+            </pre>
           </section>
-          <section id='exampleCommand2'>
-            <h2>Example Command 2</h2>
-            <p>Description on how to use the example command</p>
-            <p>Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. </p>
-            <p>Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. </p>
-            <p>Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. </p>
-            <p>Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. Needlessly long description for testing scrolling and links. </p>
-          </section>
-          <section id='exampleCommand3'>
-            <h2>Example Command 3</h2>
-            <p>Description on how to use the example command</p>
-            <p>Some more description in a new paragraph. Some more description in a new paragraph. Some more description in a new paragraph.</p>
+
+          <section id="cache">
+            <h2>Cache</h2>
+            <p>
+              Low level function to create saga that caches the return value.
+              Useful to avoid expensive requests for resource and/or
+              computation. Nearly always used together with
+              <code>respondTo</code>
+            </p>
+
+            <p>
+              Typically, using <code>merge</code> would be better as it fulfills
+              most usecases while also caching.
+            </p>
+            <h3>Examples</h3>
+            <pre>
+              const cached = cache()
+
+              yield respondTo(`get`, `fingerprint`, cached(function*() {
+                console.log(`hit`)
+                return navigator.userAgent.reduce((sum, char) => sum + char.charCodeAt(0), 0)
+              })
+
+              yield request(`get`, `fingerprint`)
+              yield request(`get`, `fingerprint`)
+              // 'hit' is only displayed once
+            </pre>
+
+            <pre>
+              const cached = cache((number, {user}) => `${user}-${number}` )
+
+              yield respondTo(`get`, `someNumber`, cached(function*(number, {user}) {
+                console.log(user, number)
+                return `hello`
+              })
+
+              yield request(`get`, `someNumber`, 3, { user: `Mr. Anderson` })
+              yield request(`get`, `someNumber`, 3, { user: `Mr. Anderson` }) // cached
+              yield request(`get`, `someNumber`, 1, { user: `Mr. Anderson` })
+              yield request(`get`, `someNumber`, 1, { user: `Mr. Anderson` }) // cached
+              yield request(`get`, `someNumber`, 3, { user: `Mr. Petersen` }) 
+              
+              // hit is displayed 3 times, because caching algorithm is based on both number and user name
+            </pre>
+
+            <h3>Usage</h3>
+            <pre>
+              function* cache(function keyFunction)
+            </pre>
+
+            <p>
+              Key Function may be omitted. If supplied, it must be a function
+              that returns a string based on the request object. This string is
+              used as a unique identifier, causing requests of similar nature to
+              be cached independently.
+            </p>
           </section>
         </div>
       </main>
