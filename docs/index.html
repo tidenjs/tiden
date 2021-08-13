@@ -33,9 +33,9 @@
               yield publish(`tabFocusChanged`, { isFocused: false }, { ...extras })
             </pre>
 
-            <h3>Usage</h3>
+            <h3>Interface</h3>
             <pre>
-              publish(type, data = null, extras = null)
+              publish(type: string, data = null: any, extras = null: object)
             </pre>
           </section>
 
@@ -58,7 +58,7 @@
 
               yield respondTo(`get`, `fingerprint`, cached(function*() {
                 console.log(`hit`)
-                return navigator.userAgent.reduce((sum, char) => sum + char.charCodeAt(0), 0)
+                return navigator.userAgent.reduce((sum, char) =&gt; sum + char.charCodeAt(0), 0)
               })
 
               yield request(`get`, `fingerprint`)
@@ -67,7 +67,7 @@
             </pre>
 
             <pre>
-              const cached = cache((number, {user}) => `${user}-${number}` )
+              const cached = cache((number, {user}) =&gt; `${user}-${number}` )
 
               yield respondTo(`get`, `someNumber`, cached(function*(number, {user}) {
                 console.log(user, number)
@@ -83,9 +83,9 @@
               // hit is displayed 3 times, because caching algorithm is based on both number and user name
             </pre>
 
-            <h3>Usage</h3>
+            <h3>Interface</h3>
             <pre>
-              function* cache(function keyFunction)
+              function* cache(keyFunction(data: any, extras: object): function
             </pre>
 
             <p>
@@ -94,6 +94,145 @@
               used as a unique identifier, causing requests of similar nature to
               be cached independently.
             </p>
+          </section>
+
+          <section id="connect">
+            <h2>Connect</h2>
+            <p>
+              A high-level method of specifying properties on a html element. It
+              requests initial upstream data, processes the data, and sets up
+              subscriptions. This is the recommended approach to binding data to
+              Web Components.
+            </p>
+
+            <p>
+              The command will block until any function properties retur a
+              value. This value will be passed back to caller.
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              let currentBird = {
+                name: `ducks`,
+                changedAt: new Date()
+              }
+
+              yield respondTo(`get`, `bird`, function*() {
+                return currentBird
+              })
+              yield respondTo(`set`, `bird`, function*(newBird) {
+                currentBird = {
+                  name: newBird,
+                  changedAt: new Date()
+                }
+                return currentBird
+              })
+
+              component(`x-bird`, {}, function bird({name, title, onChange, close}) {
+                return html`
+                  &lt;h1&gt;${title}&gt;h1&lt;
+
+                  &lt;b&gt;${name}&lt;/b&gt;: Tweet tweet.
+
+                  &lt;input .input=${(e) =&gt; onChange(e.target.value)}&gt; &lt;/input&gt;
+
+                  &lt;button .onClick=${close}&gt;Close&lt;/button&gt;
+                `
+              })
+
+              const el = document.createElement(`x-bird`)
+
+              const ret = yield connect(el, {
+                title: `Birds!!!`,
+                name: s(`bird`, bird =&gt; bird.name),
+                *onChange(newBirdName) {
+                  yield request(`set`, `bird`, newBirdName)
+                },
+                *close() {
+                  return `User chose to close this.`
+                }
+              })
+
+              console.log(ret) // `User chose to close this`
+            </pre>
+
+            <h3>Interface</h3>
+
+            <pre>
+              function* connect(el: HTMLElement, selectors: Object, params?: Params): Task
+
+              interface Params {
+                  assets?: Array&lt;string&gt;,
+                  onReady?: GeneratorFunction
+              }
+            </pre>
+
+            <p>
+              <code>selectors</code> is a complex object where each key is
+              mapped to a property on the element. The behavior depends on the
+              value type:
+            </p>
+
+            <p>
+              When value is created with <code>s</code> command, then it will be
+              a selector. If the selector returns a generator function or a<code
+                >object</code
+              >
+              including one or more generator functions, they are replaced with
+              proxies to Tiden messaging. In short, this means you can use
+              <code>yield</code> as usual within generator functions.
+            </p>
+
+            <p>
+              When value is a <code>GeneratorFunction</code> then it is replaced
+              with a proxy function as above.
+            </p>
+
+            <p>
+              When value is a <code>object</code> then it is passed on to
+              element, replacing any generator functions as above.
+            </p>
+
+            <p>
+              When value is a primitive type other than array, then it is passed
+              on to the element.
+            </p>
+
+            <p>
+              Value is not allowed to be an array. This datatype is reserved for
+              the future.
+            </p>
+          </section>
+
+          <section id="connect">
+            <h2>LinkTo</h2>
+            <p>
+              Creates an object suitable for <code>x-touchable</code>, mapping
+              both <code>onClick</code> and <code>href</code> from a given page
+              location.
+            </p>
+            <h3>Examples</h3>
+
+            <pre>
+              yield connect(someElement, {
+                link: linkTo({
+                  id: `somePage`,
+                  someValue: `data`,
+                })
+              })
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              interface TouchableArgs {
+                onClick: Function,
+                href: string,
+                target: string,
+              }
+              
+              function linkTo(page: Object, args?: { target: `_blank` }): TouchableArgs
+            </pre>
           </section>
         </div>
       </main>
