@@ -2,6 +2,19 @@
   <head>
     <title>Tiden API Reference</title>
     <link rel="stylesheet" href="index.css" />
+    <script async>
+      window.addEventListener(`load`, function () {
+        const sidebar = document.querySelector(`#sideBar ol`)
+        const sections = [...document.querySelectorAll(`section`)].map(
+          (s) => s.id
+        )
+
+        console.log(sections)
+        for (const section of sections) {
+          sidebar.innerHTML += `<li><a href="#${section}">${section}</a></li>`
+        }
+      })
+    </script>
   </head>
   <body>
     <header>
@@ -13,13 +26,7 @@
     </header>
     <div id="sideBarAndMain">
       <nav id="sideBar">
-        <ol>
-          <li><a href="#publish">publish</a></li>
-          <li><a href="#cache">cache</a></li>
-          <li><a href="#connect">connect</a></li>
-          <li><a href="#linkTo">linkTo</a></li>
-          <li><a href="#cache">cache</a></li>
-        </ol>
+        <ol></ol>
       </nav>
       <main>
         <div id="mainContent">
@@ -696,6 +703,23 @@
             </pre>
           </section>
 
+          <section id="delay">
+            <h2>delay</h2>
+            <p>Creates a blocking effect for given milliseconds.</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield delay(100) // delays for 100ms
+            </pre>
+
+            <h3>Interface</h3>
+
+            <pre>
+              delay(ms: number)
+            </pre>
+          </section>
+
           <section id="fork">
             <h2>fork</h2>
             <p>
@@ -800,18 +824,6 @@
             <pre>
               cancel(task?: Task)
             </pre>
-          </section>
-
-          <section id="lit">
-            <h2>lit</h2>
-            <p></p>
-
-            <h3>Examples</h3>
-
-            <pre></pre>
-
-            <h3>Interface</h3>
-            <pre></pre>
           </section>
         </div>
       </main>
