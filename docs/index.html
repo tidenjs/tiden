@@ -25,7 +25,7 @@
         <div id="mainContent">
           <h1>API Reference</h1>
           <section id="publish">
-            <h2>Publish</h2>
+            <h2>publish</h2>
             <p>
               Broadcasts a message without waiting for any responses. Typically
               used to announce that something has happened, or in more rare
@@ -43,7 +43,7 @@
           </section>
 
           <section id="cache">
-            <h2>Cache</h2>
+            <h2>cache</h2>
             <p>
               Low level function to create saga that caches the return value.
               Useful to avoid expensive requests for resource and/or
@@ -100,7 +100,7 @@
           </section>
 
           <section id="connect">
-            <h2>Connect</h2>
+            <h2>connect</h2>
             <p>
               A high-level method of specifying properties on a html element. It
               requests initial upstream data, processes the data, and sets up
@@ -172,9 +172,9 @@
             </pre>
 
             <p>
-              <code>selectors</code> is a complex object where each key is
-              mapped to a property on the element. The behavior depends on the
-              value type:
+              <code>selector</code> is a complex object where each key is mapped
+              to a property on the element. The behavior depends on the value
+              type:
             </p>
 
             <p>
@@ -208,8 +208,51 @@
             </p>
           </section>
 
-          <section id="connect">
-            <h2>LinkTo</h2>
+          <section id="s">
+            <h2>s</h2>
+            <p>
+              Creates a definition for merging one or more streams into a
+              HTMLElement property.
+            </p>
+
+            <p>
+              Note that while this is currently the recommended way of setting
+              properties on HTMLElements, other methods are currently being
+              discussed and might become the future recommendation. In either
+              case, <code>s</code> is unlikely to be deprecated for a long time.
+            </p>
+
+            <p>
+              Note that there is some 'magic' being done with the return value
+              from selectors. Any GeneratorFunctions will be replaced with
+              regular functions that proxy communication to Tiden. This is
+              necessary because the callback does not exist within the
+              communication model.
+            </p>
+
+            <h3>Examples</h3>
+
+            Also see example from <code>connect</code> above.
+
+            <pre>
+              // set the latest value of `language` stream
+              s(`language`) 
+
+              // set the id from latest value of of `language` stream
+              s(`language`, language =&gt; language.id)
+
+              // combine serveral streams
+              s(`language`, `translations`, (language, translations) =&gt; translations[language.id].bird)
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              s(stream1: string, stream2: string, streamX: string, combinator: function(stream1Value: Any, stream2Value: Any, streamXValue: Any)): Selector
+            </pre>
+          </section>
+
+          <section id="linkTo">
+            <h2>linkTo</h2>
             <p>
               Creates an object suitable for <code>x-touchable</code>, mapping
               both <code>onClick</code> and <code>href</code> from a given page
@@ -236,6 +279,539 @@
               
               function linkTo(page: Object, args?: { target: `_blank` }): TouchableArgs
             </pre>
+          </section>
+
+          <section id="subscribe">
+            <h2>subscribe</h2>
+            <p>
+              Sets up a listener for a stream. The provided function will be
+              called for every message captured. Does not block.
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield subscribe(`tabFocus`, function*(isFocused) {
+                console.log(isFocused ? `The tab has been focused` : `The tab lost focus`)
+              })
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              subscribe(type: string, actor: GeneratorFunction): Task
+            </pre>
+          </section>
+
+          <section id="merge">
+            <h2>merge</h2>
+            <p>
+              Combines one or more streams and optionally creates a new stream.
+              Using <code>merge</code> is the recommended way to create streams
+              that are dependent on other streams.
+              <i>
+                Note: Before Tiden 0.0.1 this was called
+                <code>confluence</code>
+              </i>
+            </p>
+
+            <p>
+              If <code>undefined</code> is returned then it is assumed that
+              there isn't a new value for the new stream. The new stream won't
+              output anything.
+            </p>
+
+            <p>
+              Streams created with <code>merge</code> are always cached. The
+              provided <code>actor</code> function is only called when there are
+              upstream changes.
+            </p>
+
+            <p>Does not block</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield simpleStream(`a`, 0)
+              yield simpleStream(`b`, 0)
+
+              yield fork(function*() {
+                let value = 0
+                while (true) {
+                  yield request(`set`, `a`, value++)
+                  yield delay(1000)
+                }
+              })
+
+              yield fork(function*() {
+                let value = 0
+                while (true) {
+                  yield request(`set`, `b`, value++)
+                  yield delay(1200)
+                }
+              })
+
+              yield merge([`a`, `b`], `c`, function*(a, b) {
+                return `a: ${a}    b: ${b}`
+              })
+
+              yield listenFor(`c`, function*(c) {
+                console.log(c)
+              })
+
+              // The new stream c uses values from a and b, which are changed every 1000 and 1200 ms
+              // The console output is:
+              //
+              // a: 0   b: 0
+              // a: 1   b: 0
+              // a: 1   b: 1
+              // a: 2   b: 1
+              // .... and so on
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              merge(streams: array&lt;string&gt;, stream: string, actor: GeneratorFunction)
+            </pre>
+          </section>
+
+          <section id="mutex">
+            <h2>mutex</h2>
+            <p>
+              Makes sure that only one Task is executing within a block of code
+              at a time
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              const lock = mutex()
+
+              function* writeA() {
+                yield lock(function*() {
+                  yield delay(500)
+                  console.log(`a`)
+                })
+              }
+
+              function* writeB() {
+                yield lock(function*() {
+                  yield delay(10)
+                  console.log(`b`)
+                })
+              }
+
+              yield fork(writeA)
+              yield fork(writeB)
+
+
+              // outputs `a` and then `b` because B cannot execute before A releases the lock.
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              mutex(): GeneratorFunction
+
+              lock(actor: GeneratorFunction) 
+            </pre>
+          </section>
+
+          <section id="once">
+            <h2>once</h2>
+            <p>Shorthand for cache()(actor: GeneratorFunction)</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield respondTo(`get`, `bird`, once(function*() {
+                console.log(`Actor function called!`)
+                return `duck`
+              })
+
+              console.log(yield request(`bird`))
+              console.log(yield request(`bird`))
+
+              // Output:
+              //
+              // Actor function called!
+              // duck
+              // duck
+            </pre>
+
+            <h3>Interface</h3>
+            <pre></pre>
+          </section>
+
+          <section id="request">
+            <h2>request</h2>
+            <p>
+              Makes a requests to stream, or <code>respondTo</code> directive.
+              Blocks until response is ready.
+            </p>
+
+            <p>Returns the response value, or throws an error</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield respondTo(`delete`, `bird`, function*() {
+                ...make some REST requests here to delete it
+                if (success) {
+                  return true
+                } else {
+                  throw new Error(errorMsg)
+                }
+              })
+
+              try {
+                const success = yield request(`delete`, `bird`)
+                console.log(success ? `Bird deleted successfully` : `Bird already deleted`)
+              } catch(e) {
+                console.error(e)
+              }
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              respondTo(verb: string, noun: string, actor: GeneratorFunction)
+            </pre>
+          </section>
+
+          <section id="respondToSync">
+            <h2>respondToSync</h2>
+            <p>
+              Blocks until a request arrives, and finishes after a single
+              response has been made.
+            </p>
+            <p>
+              Two forms are available. If a third parameter is provided then it
+              is used as the return data and a SyncObject won't be returned.
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield fork(function*() {
+                yield delay(1000)
+                const response = yield request(`birds`)
+                console.log(response)
+              })
+
+              yield respondToSync(`get`, `birds`, [`satanic nightjar`, `horned screamer`, `sad flycatcher`])
+            </pre>
+
+            <pre>
+              yield fork(function*() {
+                yield delay(1000)
+                const response = yield request(`birds`)
+                console.log(response)
+              })
+
+              const req = yield respondToSync(`get`, `birds`)
+              console.log(`Someone made a request! Using ${req.data} and ${reg.metadata}`)
+              yield req.respond([`satanic nightjar`, `horned screamer`, `sad flycatcher`])
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              interface SyncObject {
+                data: Any,
+                metadata: Object,
+                respond: GeneratorFunction
+              }
+
+              (yield respondToSync(verb: string, noun: string)): SyncObject
+
+              yield respondToSync(verb: string, noun: string, data: Any)
+            </pre>
+          </section>
+
+          <section id="simpleStream">
+            <h2>simpleStream</h2>
+            <p>
+              Creates a very basic stream that has an initival value and respond
+              to <code>get</code> and <code>set</code> verbs
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield simpleStream(`bird`, `Swallow`)
+
+              yield request(`get`, `bird`) // `Swallow`
+
+              yield request(`set`, `bird`, `sad flycatcher`)
+
+              yield request(`get`, `bird`) // `sad flycatcher`
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              simpleStream(name: string, initialValue?: Any): Task
+            </pre>
+          </section>
+
+          <section id="waitFor">
+            <h2>waitFor</h2>
+            <p>Blocks until a message of specific type arrives.</p>
+
+            <p>
+              Optional second argument is a matcher that should return a boolish
+              based on data and/or metadata
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield fork(function*() {
+                let count = 1000
+                while (true) {
+                  yield delay(1000)
+                  yield announce(`lizardAttack`, { count })
+                  count += 1
+                }
+              })
+
+              const info = yield waitFor(`lizardAttack`)
+              console.log(info.data.count) // 1000
+
+              // we'll be stuck here for 5 seconds
+              const info2 = yield waitFor(`lizardAttack`, ({count}, metadata) =&gt; count === 1005 )
+              console.log(info2.data.count) // 1005
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              interface WaitForObj {
+                data: Any,
+                metadata: Object,
+              }
+
+              waitFor(type: string, matcher?: function(data: Any, metadata: Object)): WaitForObj
+            </pre>
+          </section>
+
+          <section id="whenChanged">
+            <h2>whenChanged</h2>
+            <p>
+              Filters calls from <code>subscribe</code> to only let through
+              changes to a stream message.
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield simpleConcept(`bird`, `satanic nightjar`)
+
+              yield subscribe(`bird`, whenChanged(function*(bird) {
+                console.log(`There was a new bird: ${bird}`)
+              }))
+
+              yield request(`set`, `bird`, `satanic nightjar`)
+              yield request(`set`, `bird`, `satanic nightjar`)
+              yield request(`set`, `bird`, `satanic nightjar`)
+              yield request(`set`, `bird`, `sad flycatcher`)
+              yield request(`set`, `bird`, `sad flycatcher`)
+              yield request(`set`, `bird`, `swallow`)
+
+              // Output:
+              //
+              // satanic nightjar
+              // sad flycatcher
+              // swallow
+            </pre>
+
+            <p>
+              A matcher function can also be provided, enabling you to specify
+              what part of the message should be used for uniqueness. Consider
+              this example where the <code>updatedAt</code> is always a new
+              object.
+            </p>
+
+            <p>Does not block.</p>
+
+            <pre>
+              yield simpleConcept(`bird`, {id: `satanic nightjar`, updatedAt: new Date()})
+
+              yield subscribe(`bird`, whenChanged(({id}) =&gt; id, function*(bird) {
+                console.log(`There was a new bird: ${bird}`)
+              }))
+
+              yield request(`set`, `bird`, { id: `satanic nightjar`, updatedAt: new Date()})
+              yield request(`set`, `bird`, { id: `satanic nightjar`, updatedAt: new Date()})
+              yield request(`set`, `bird`, { id: `sad flycatcher`, updatedAt: new Date()})
+              yield request(`set`, `bird`, { id: `sad flycatcher`, updatedAt: new Date()})
+              yield request(`set`, `bird`, { id: `swallow`, updatedAt: new Date()})
+
+              // Output:
+              //
+              // satanic nightjar
+              // sad flycatcher
+              // swallow
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              whenChanged(matcher?: function(data: Any, metadata: Object), actor: GeneratorFunction): Task
+            </pre>
+          </section>
+
+          <section id="all">
+            <h2>all</h2>
+            <p>Waits for all tasks to finish and returns the values.</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield simpleConcept(`bird`, `sad flycatcher`)
+
+              const [...ret] = yield all([
+                request(`bird`),
+                call(function*() {
+                  yield delay(1000)
+                  return `wings`
+                })
+              ])
+
+              console.log(ret) // [`bird`, `wings`]
+            </pre>
+
+            <pre>
+              yield simpleConcept(`bird`, `sad flycatcher`)
+
+              const ret = yield all({
+                bird: request(`bird`),
+                wings: call(function*() {
+                  yield delay(1000)
+                  return `wings`
+                })
+              })
+
+              console.log(ret) // { bird: `bird`, wings: `wings` }
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              all(sagas: Object&lt;string, Task&gt;): Object&lt;string, Task&gt;
+              all(sagas: array&lt;Task&gt;): array&lt;Task&gt;
+            </pre>
+          </section>
+
+          <section id="fork">
+            <h2>fork</h2>
+            <p>
+              Creates a new task that executes in parallel to the currently
+              running Task.
+            </p>
+
+            <p>This is non-blocking.</p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield fork(function*() {
+                yield delay(100)
+                console.log(`a`)
+              })
+
+              console.log(`b`)
+
+              // Output:
+              //
+              // b
+              // a
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              fork(actor: GeneratorFunction): Task
+            </pre>
+          </section>
+
+          <section id="spawn">
+            <h2>spawn</h2>
+            <p>
+              Similar to fork, only the task is detached from the parent task.
+              If parent task is cancelled, or throws an error, then the spawned
+              saga would still continue executing. Tiden tasks are no different
+              from Redux Saga tasks. See their documentation for more details:
+              <a
+                href="https://redux-saga.js.org/docs/advanced/ForkModel"
+                alt="Fork Model"
+              >
+                redux-saga.js.org/docs/advanced/ForkModel
+              </a>
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              yield spawn(function*() {
+                yield delay(100)
+                console.log(`a`)
+              })
+
+              console.log(`b`)
+
+              // Output:
+              //
+              // b
+              // a
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              spawn(actor: GeneratorFunction): Task
+            </pre>
+          </section>
+
+          <section id="cancel">
+            <h2>cancel</h2>
+            <p>
+              Cancels a task, for example created using fork, subscribe,
+              respondTo, merge, etc..
+            </p>
+
+            <p>
+              If no task is specified, then the current task will be cancelled.
+            </p>
+
+            <p>
+              Note that this will also cancel any parent tasks or joiners. Tiden
+              tasks are no different from Redux Saga's tasks. Read more at
+              <a
+                href="https://redux-saga.js.org/docs/advanced/ForkModel"
+                alt="Fork Model"
+              >
+                redux-saga.js.org/docs/advanced/ForkModel
+              </a>
+            </p>
+
+            <h3>Examples</h3>
+
+            <pre>
+              const task = yield subscribe(`tick`, function*(data) {
+                ...
+              })
+
+              yield cancel(task)
+            </pre>
+
+            <h3>Interface</h3>
+            <pre>
+              cancel(task?: Task)
+            </pre>
+          </section>
+
+          <section id="lit">
+            <h2>lit</h2>
+            <p></p>
+
+            <h3>Examples</h3>
+
+            <pre></pre>
+
+            <h3>Interface</h3>
+            <pre></pre>
           </section>
         </div>
       </main>
