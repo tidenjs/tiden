@@ -11,6 +11,7 @@ import indexHtml from "./init/index.html.template.js"
 import indexJs from "./init/index.js.template.js"
 import appJs from "./init/app.js.template.js"
 import manifestJson from "./init/manifest.json.template.js"
+import * as touchable from "./init/touchable.js"
 
 export default async function init({ name, description, isTest }) {
   await Promise.all([
@@ -42,6 +43,13 @@ export default async function init({ name, description, isTest }) {
     body: o`
       return html\`Hurray! You're here.\`
     `,
+  })
+  await createComponent({
+    name: `touchable`,
+    imports: touchable.bodyImports,
+    args: touchable.bodyArgs,
+    body: touchable.body,
+    css: touchable.css,
   })
   await createPage({ name: `home`, pathname: `/` })
   await createStream({
