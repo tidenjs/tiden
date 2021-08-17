@@ -5,14 +5,22 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 import camelToSnake from "../lib/camelToSnake.js"
+import importsBuilder from "./importsBuilder.js"
 
-export default async function createComponent({ path, name, body }) {
+export default async function createComponent({
+  path,
+  name,
+  body,
+  imports,
+  args,
+  css,
+}) {
   const realPath = path ? `app/${path}` : `app`
   path = path || ``
 
   const file = `${realPath}/components/${name}.js`
   const demo = `${realPath}/components/${name}/demo.js`
-  const css = `${realPath}/components/${name}/css.js`
+  const cssFile = `${realPath}/components/${name}/css.js`
   const exists = await fileExists(file)
 
   if (exists) {
@@ -20,13 +28,25 @@ export default async function createComponent({ path, name, body }) {
   }
 
   await mkdirp(realPath + `/components/${name}`)
-  await createComponentFile(path, name, file, body)
-  await createCss(path, name, css)
+  await createComponentFile(path, name, file, body, imports, args)
+  await createCss(path, name, cssFile, css)
   await createComponentDemo(path, name, demo)
 }
 
-async function createComponentFile(path, name, file, body) {
+async function createComponentFile(path, name, file, body, imports, args = []) {
   const nss = path ? path.split(`/`) : []
+  const allImports = importsBuilder({
+    tiden: {
+      html: [`html`],
+      component: [`component`],
+    },
+    [`./${path ? `${path}/` : ``}${name}/css.js`]: {
+      default: [`css`],
+    },
+  })
+  if (imports) {
+    allImports.add(imports)
+  }
 
   if (nss.length === 0) {
     nss.push(`x`)
@@ -37,11 +57,12 @@ async function createComponentFile(path, name, file, body) {
   await fs.writeFile(
     file,
     o`
-      import { html, component } from "tiden"
+      ${allImports}
 
-      import css from "./${path ? `${path}/` : ``}${name}/css.js"
-
-      component(\`${tagName}\`, { css }, function ${name}({language}) {
+      component(\`${tagName}\`, { css }, function ${name}({ ${[
+      `language`,
+      ...args,
+    ].join(`, `)} }) {
         ${getBody()}
       })
     `
@@ -81,14 +102,16 @@ async function createComponentDemo(path, name, file) {
   )
 }
 
-async function createCss(path, name, file) {
+async function createCss(path, name, file, css) {
+  css = css || `* { font-size: 24px }`
+
   await fs.writeFile(
     file,
     o`
       import { css } from "tiden"
 
       export default css\`
-        * { font-size: 24px }
+        ${css.split(`\n`).join(`\n  `)}
       \`
     `
   )

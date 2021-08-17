@@ -90,6 +90,59 @@ describe(`createComponent`, () => {
       )
     })
   })
+
+  describe(`with imports`, () => {
+    beforeEach(async () => {
+      await createComponent({
+        name: `myComponent`,
+        imports: {
+          "../someLib.js": {
+            default: [`someLib`],
+          },
+        },
+      })
+    })
+
+    it(`should include it`, async () => {
+      expect(await read(`app/components/myComponent.js`)).to.include(
+        `import someLib from "../someLib.js"`
+      )
+    })
+  })
+
+  describe(`with args`, () => {
+    beforeEach(async () => {
+      await createComponent({
+        name: `myComponent`,
+        args: [`items`],
+      })
+    })
+
+    it(`should include it`, async () => {
+      expect(await read(`app/components/myComponent.js`)).to.include(
+        `component(\`x-my-component\`, { css }, function myComponent({ language, items }) {`
+      )
+    })
+  })
+
+  describe(`with css`, () => {
+    beforeEach(async () => {
+      await createComponent({
+        name: `myComponent`,
+        css: o`
+          :host {
+            background-color: yellow;
+          }
+        `,
+      })
+    })
+
+    it(`should include it`, async () => {
+      expect(await read(`app/components/myComponent/css.js`)).to.include(
+        `:host {\n    background-color: yellow;\n  }`
+      )
+    })
+  })
 })
 
 async function read(file) {
