@@ -3,6 +3,7 @@ export const bodyImports = {
     html: [`html`],
     component: [`component`],
     useEffect: [`useEffect`],
+    useMemo: [`useMemo`],
   },
 }
 
@@ -140,7 +141,7 @@ if (!link.href) {
 }
 `
 
-export const css = `
+export const css = () => `
 :host {
   display: inline-block;
   cursor: pointer;
