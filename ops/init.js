@@ -46,10 +46,10 @@ export default async function init({ name, description, isTest }) {
   })
   await createComponent({
     name: `touchable`,
-    imports: touchable.bodyImports,
-    args: touchable.bodyArgs,
-    body: touchable.body,
-    css: touchable.css,
+    imports: touchable.bodyImports(),
+    args: touchable.bodyArgs(),
+    body: touchable.body(),
+    css: touchable.css(),
   })
   await createPage({ name: `home`, pathname: `/` })
   await createStream({
