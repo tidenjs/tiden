@@ -97,13 +97,9 @@ const onAnchorClick = useMemo(
 )
 
 useEffect(() => {
-  this.target = link.target || \`_self\`
-}, [link])
-
-useEffect(() => {
   this.tabIndex = disabled ? -1 : 0
-  this.setAttribute(\`aria-disabled\`, disabled)
-  this.classList.toggle(\`disabled\`, disabled)
+  this.ariaDisabled = disabled
+  this.classList.toggle(\`disabled\`, !!disabled)
 }, [disabled])
 
 useEffect(() => {
@@ -131,9 +127,9 @@ if (!link.href) {
       tabindex="-1"
       class="touchable focusTheme-\${focusTheme}"
       @focus=\${stopPropagation}
-      href=\${this.href}
-      target=\${this.target}
-      @click=\${this.onAnchorClick}
+      href=\${link.href}
+      target=\${link.target}
+      @click=\${onAnchorClick}
     >
       <slot @slotchange=\${disableSlotFocus} />
     </a>
