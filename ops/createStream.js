@@ -103,7 +103,9 @@ async function addToNs(path) {
   const importStatement = `import myStreams from "./${ns}/streams.js"`
   const forkStatement = `\n  yield fork(myStreams)`
 
-  c = c.replace(matcher, `$1${importStatement}\n$2$3${forkStatement}$4$5`)
+  if (!c.includes(importStatement)) {
+    c = c.replace(matcher, `$1${importStatement}\n$2$3${forkStatement}$4$5`)
+  }
 
   await fs.writeFile(nsFile, c)
 }

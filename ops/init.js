@@ -66,4 +66,18 @@ export default async function init({ name, description, isTest }) {
       })
     `,
   })
+  await createStream({
+    name: `language`,
+    body: o`
+      let language = \`en\`
+      yield respondTo(\`set\`, \`language\`, function* (newLanguage) {
+        language = newLanguage
+        return language
+      })
+
+      yield respondTo(\`get\`, \`language\`, function* () {
+        return language
+      })
+    `,
+  })
 }
