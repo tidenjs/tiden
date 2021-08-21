@@ -21,6 +21,7 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`manifest.json`, manifestJson({ name, description })),
     fs.writeFile(`favicon.png`, faviconPng()),
     fs.writeFile(`favicon.svg`, faviconSvg()),
+    fs.writeFile(`.prettierrc.json`, `{\n  "semi": false\n}`),
   ])
 
   await createNano({
