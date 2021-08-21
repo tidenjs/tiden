@@ -38,6 +38,14 @@ async function createNanoFile(path, name, file, body, imports, args) {
     },
   })
 
+  if (name !== `template`) {
+    allImports.add({
+      "./template.js": {
+        default: [``],
+      },
+    })
+  }
+
   const nss = path ? path.split(`/`) : []
 
   if (nss.length === 0) {

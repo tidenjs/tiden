@@ -24,6 +24,12 @@ export default async function init({ name, description, isTest }) {
     fs.writeFile(`.prettierrc.json`, `{\n  "semi": false\n}`),
   ])
 
+  await createComponent({
+    name: `template`,
+    body: o`
+      return html\`<div><slot></slot></div>\`
+    `,
+  })
   await createNano({
     name: `template`,
     body: o`
@@ -33,6 +39,9 @@ export default async function init({ name, description, isTest }) {
     `,
     imports: {
       tiden: { render: [`render`], html: [`html`], fork: [`fork`] },
+      "../components/template.js": {
+        default: [``],
+      },
     },
     args: [`child`],
   })
