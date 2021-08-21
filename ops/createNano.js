@@ -41,7 +41,7 @@ async function createNanoFile(path, name, file, body, imports, args) {
   if (name !== `template`) {
     allImports.add({
       "./template.js": {
-        default: [``],
+        default: [`template`],
       },
     })
   }
@@ -53,24 +53,11 @@ async function createNanoFile(path, name, file, body, imports, args) {
   }
 
   if (!body) {
-    const tagName = `${nss.join(`-`)}-view-${camelToSnake(name)}`
-
     body = o`
-      const el = document.createElement(\`${tagName}\`)
-
-      root.innerHTML = \`\`
-      root.appendChild(el)
-
-      yield connect(el, {
-        language: s(\`language\`)
+      yield template(root, function*(root) {
+        
       })
     `
-
-    allImports.add({
-      [`../components/view${name[0].toUpperCase() + name.slice(1)}.js`]: {
-        default: [``],
-      },
-    })
   }
 
   allImports.add(imports)

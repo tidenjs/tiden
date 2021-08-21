@@ -27,7 +27,7 @@ export default async function init({ name, description, isTest }) {
   await createComponent({
     name: `template`,
     body: o`
-      return html\`<div><slot></slot></div>\`
+      return html\`<div><slot>Hurray! You're here.</slot></div>\`
     `,
   })
   await createNano({
@@ -47,12 +47,6 @@ export default async function init({ name, description, isTest }) {
   })
   await createNano({
     name: `home`,
-  })
-  await createComponent({
-    name: `viewHome`,
-    body: o`
-      return html\`Hurray! You're here.\`
-    `,
   })
   await createComponent({
     name: `touchable`,
