@@ -28,6 +28,8 @@ export default ({ name, description, isTest }) => o`
     html {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
     }
   </style>
   <div id="root" style="display: contents;"></div>
