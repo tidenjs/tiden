@@ -2,6 +2,7 @@ import minimist from "minimist"
 
 import {
   init,
+  upgrade,
   createStream,
   createPage,
   createNano,
@@ -37,6 +38,9 @@ export default function run(...slice) {
 
       return [init, { name, description: nargs.description }]
     }
+    case `upgrade`: {
+      return [upgrade]
+    }
     case `create`: {
       // Usage 1: tiden create stream myStream
       // Usage 2: tiden create stream ns/ns2/ns3/nsX myStream
@@ -64,12 +68,13 @@ export default function run(...slice) {
 
 function showHelp() {
   console.log(`Usage:
-
     init <name> [--description="some description"] [-d "some description"]
+    upgrade
     start
     create stream <name> [path]
     create nano <name> [path]
     create page <name> [path] [--pathname="/custom/url"] [-pn "/custom/url"]
+    create component <name> [path]
   `)
 }
 

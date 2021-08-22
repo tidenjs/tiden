@@ -7,6 +7,7 @@ import {
   createComponent,
   createPage,
   createNano,
+  upgrade,
 } from "../ops.js"
 import ide from "../ide.js"
 import parse from "./parse.js"
@@ -120,6 +121,12 @@ describe(`cli`, () => {
         createComponent,
         { name: `myComponent`, path: `ns1/ns2` },
       ])
+    })
+  })
+
+  describe(`upgrade`, () => {
+    it(`should upgrade with no extra args`, () => {
+      expect(parse(`upgrade`)).to.be.deep.equal([upgrade])
     })
   })
 })

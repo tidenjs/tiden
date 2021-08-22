@@ -1,3 +1,7 @@
+# 0.1.0
+
+- CLI has been added, use `tiden help` for specification
+
 # Changes to pre-0.0.1 legacy code
 
 ## Deprecations
