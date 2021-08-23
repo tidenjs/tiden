@@ -1,3 +1,7 @@
+# 0.1.1
+
+- Fixed an issue #20. Dependencies weren't installed correctly
+
 # 0.1.0
 
 - CLI has been added, use `tiden help` for specification
