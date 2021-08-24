@@ -14,7 +14,7 @@ Make sure you have npm or yarn installed, then install Tiden using:
 npm install -g tiden
 ```
 
-Create a folder for your project. We're rebuilding Tiden documentation from raw HTML and CSS to a pure Tiden project in this tutorial. So I'll name it "tiden-docs."
+Create a folder for your project. For this tutorial, we're converting Tiden documentation from raw HTML and CSS. So I'll name it "tiden-docs."
 
 You can also supply a description. If you do, then it is used to add [Open Graph](https://ogp.me/) tags. It will also add the description to your [manifest.json](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) file
 
