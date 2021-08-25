@@ -24,6 +24,10 @@ export default ({ name, description, isTest }) => o`
       : `https://cdn.jsdelivr.net/npm/tiden@0.1.1/init.js`
   }"></script>
   <style>
+    #root {
+      display: contents;
+    }
+
     body,
     html {
       margin: 0;
@@ -32,5 +36,5 @@ export default ({ name, description, isTest }) => o`
       height: 100%;
     }
   </style>
-  <div id="root" style="display: contents;"></div>
+  <div id="root"></div>
 `
