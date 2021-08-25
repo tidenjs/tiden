@@ -56,7 +56,7 @@
   "bugs": {
     "url": "https://github.com/tidenjs/tiden/issues"
   },
-  "homepage": "https://github.com/tidenjs/tiden#readme",
+  "homepage": "https://tiden.js.org",
   "type": "module",
   "husky": {
     "hooks": {
