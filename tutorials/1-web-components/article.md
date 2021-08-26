@@ -21,7 +21,7 @@ You can also supply a description. If you do, then it is used to add [Open Graph
 ```
 mkdir tiden-docs
 cd tiden-docs
-tiden create tiden-docs -d "Tiden API reference & documentation"
+tiden init tiden-docs -d "Tiden API reference & documentation"
 ```
 
 Then start your server using the command:
