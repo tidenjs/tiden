@@ -99,20 +99,14 @@ describe(`createNano`, () => {
         o`
           import { connect, s, render } from "tiden"
 
-          import "../components/viewMyNano.js"
-
           import { thing, thing2 as custom } from "./some/other.js  "
           import "./some/second.js"
           import third from "./some/third.js"
+          import template from "./template.js"
 
           export default function* myNano(root) {
-            const el = document.createElement(\`one-view-my-nano\`)
-            
-            root.innerHTML = \`\`
-            root.appendChild(el)
-            
-            yield connect(el, {
-              language: s(\`language\`)
+            yield template(root, function*(root) {
+              
             })
           }
         `
