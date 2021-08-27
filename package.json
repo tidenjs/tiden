@@ -1,6 +1,6 @@
 {
   "name": "tiden",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Build dynamic web applications using streams, nano-frontends, and modern native web technology",
   "main": "tiden.js",
   "bin": {
@@ -62,5 +62,6 @@
     "hooks": {
       "pre-commit": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
     }
-  }
+  },
+  "engines": { "node": ">=15.3.0" }
 }

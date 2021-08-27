@@ -1,3 +1,7 @@
+# 0.1.2
+
+- Ensure that node version is at least 15.3.0. As we use EcmaScript modules, it will definitely break if node version is lower.
+
 # 0.1.1
 
 - Fixed an issue #20. Dependencies weren't installed correctly
