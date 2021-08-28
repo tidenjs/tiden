@@ -18,6 +18,7 @@ import stream from "./lib/api/stream.js"
 import render from "./lib/api/render.js"
 import html from "./lib/api/html.js"
 import s from "./lib/api/s.js"
+import url from "./lib/url.js"
 import component, {
   css,
   createContext,
@@ -68,6 +69,7 @@ export {
   render,
   cancel,
   s,
+  url,
   /* component exports start here */
   component,
   html,
