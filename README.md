@@ -28,6 +28,10 @@ Tutorials are currently in progress. So far, there is a single video, but please
 
 [1. Web Components](/tutorials/1-web-components/article.md)
 
+## Community discussion
+
+Got some amazing ideas? Or just want to throw some inspiration at us? Maybe you want to donate lots of money. [Join us at Discord](https://discord.gg/Yj6UsECFCP)
+
 ## Core values
 
 - Native first
