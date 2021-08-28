@@ -14,14 +14,14 @@ describe(`init`, async () => {
     )
 
     await page.waitForFunction(() => {
-      const el = document.querySelector(`x-view-home`)
+      const el = document.querySelector(`x-template`)
 
       return el && el.shadowRoot
     })
 
     expect(
       await page.evaluate(
-        () => document.querySelector(`x-view-home`).shadowRoot.innerHTML
+        () => document.querySelector(`x-template`).shadowRoot.innerHTML
       )
     ).to.match(/Hurray! You're here./)
   })
