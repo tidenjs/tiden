@@ -10,6 +10,7 @@ export default () => o`
     subscribe,
     publish,
   } from "tiden"
+  import * as stdlib from "tiden/stdlib.js"
   import {takeEvery} from "redux-saga/effects.js"
 
   export default function* app() {
@@ -23,6 +24,7 @@ export default () => o`
     })
 
     yield fork(streams)
+    yield fork(stdlib.streams)
 
     const root = document.getElementById(\`root\`)
     let task

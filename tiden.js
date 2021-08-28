@@ -109,6 +109,13 @@ export default function tiden(actor) {
   store = createStore((s) => s || {}, applyMiddleware(sagaMiddleware))
   sagaMiddleware.run(actor)
 
+  window.request = (...args) => {
+    sagaMiddleware.run(function* () {
+      const response = yield request(...args)
+      console.log(response)
+    })
+  }
+
   return {
     sagaMiddleware,
     store,

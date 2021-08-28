@@ -1,4 +1,5 @@
 import { compress, decompress } from "../compression.js"
+import { stream, respondTo } from "tiden"
 
 let storageIsFunctional
 
@@ -26,16 +27,17 @@ function encode(value) {
 
 function decode(value) {
   try {
-    ret = decompress(ret)
+    let ret = decompress(value)
     ret = JSON.parse(ret)
     if (ret && ret.pop && ret[0] === `--!class=set` && ret[1]) {
       ret = new Set(ret[1])
     }
+    return ret
   } catch (e) {
     // this is not a compressed JSON object,
     // return it unchanged. However, you should keep in mind that it will be compressed if
     // written back using storage.
-    return ret
+    return value
   }
 }
 
@@ -61,16 +63,20 @@ function getItem(key) {
 
 let cache
 
-export default stream(function* storage() {
-  yield respondTo(`get`, `storage`, function* () {
-    if (!cache) {
-      cache = {}
-      if (storageIsFunctional) {
-        for (const key of Object.keys(localStorage)) {
-          cache[key] = decode(getItem(key))
-        }
+function initCache() {
+  if (!cache) {
+    cache = {}
+    if (storageIsFunctional) {
+      for (const key of Object.keys(localStorage)) {
+        cache[key] = decode(getItem(key))
       }
     }
+  }
+}
+
+export default stream(`storage`, function* storage() {
+  yield respondTo(`get`, `storage`, function* () {
+    initCache()
     return cache
   })
 
@@ -78,6 +84,8 @@ export default stream(function* storage() {
     if (typeof newData !== `object`) {
       throw new Error(`data provided to 'set storage' must be an object`)
     }
+
+    initCache()
 
     for (const key of Object.keys(newData)) {
       const value = newData[key]
