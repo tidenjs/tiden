@@ -1,3 +1,7 @@
+# 0.2.1
+
+- Fix a bug causing CSS not to be HMR ready
+
 # 0.2.0
 
 - Fixed HMR. Components now reload without having to reload whole site
