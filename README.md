@@ -22,6 +22,21 @@ For more commands, use the command:
 tiden help
 ```
 
+## How to upgrade
+
+New versions of Tiden are released often. To get the latest CLI:
+
+```
+npm update -g tiden
+```
+
+And then, to upgrade your own project:
+
+```
+cd myProject
+tiden upgrade
+```
+
 ## Tutorials
 
 Tutorials are currently in progress. So far, there is a single video, but please look back here as @mikabytes aims to post a new tutorial every Monday.
