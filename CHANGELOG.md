@@ -1,6 +1,8 @@
-# 0.1.4
+# 0.2.0
 
 - Fixed HMR. Components now reload without having to reload whole site
+- Fixed an issue where 'connect' would refuse to set an array property returned from selector.
+- Added stdlib with 'Storage' functionality
 
 # 0.1.3
 
