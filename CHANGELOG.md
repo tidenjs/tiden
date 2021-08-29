@@ -1,3 +1,7 @@
+# 0.1.4
+
+- Fixed HMR. Components now reload without having to reload whole site
+
 # 0.1.3
 
 - Add instructions for installing Watchman and better error handling #22
