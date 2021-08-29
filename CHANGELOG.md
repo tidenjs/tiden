@@ -1,3 +1,7 @@
+# 0.2.2
+
+- Fix another bug in 'connect' where returned arrays were converted to objects
+
 # 0.2.1
 
 - Fix a bug causing CSS not to be HMR ready

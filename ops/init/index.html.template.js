@@ -21,7 +21,7 @@ export default ({ name, description, isTest }) => o`
   <script data-initial src="${
     isTest
       ? `http://localhost:1105/init.js`
-      : `https://cdn.jsdelivr.net/npm/tiden@0.2.1/init.js`
+      : `https://cdn.jsdelivr.net/npm/tiden@0.2.2/init.js`
   }"></script>
   <style>
     #root {

@@ -1,7 +1,7 @@
 import fs from "fs/promises"
 
 export default async function upgrade() {
-  const version = `0.2.1`
+  const version = `0.2.2`
   let index = await fs.readFile(`index.html`, `utf-8`)
   index = index.replace(
     new RegExp(`(https://cdn.jsdelivr.net/npm/tiden@)[^/]+(/init.js)`),
