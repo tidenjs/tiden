@@ -1,3 +1,8 @@
+# next
+
+- Remove faulty warning message from 'connect'
+
+
 # 0.2.2
 
 - Fix another bug in 'connect' where returned arrays were converted to objects
