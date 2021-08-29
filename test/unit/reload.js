@@ -9,7 +9,8 @@ try {
     window.location.origin.includes(`localhost`) ||
     window.location.origin.includes(`0.0.0.0`) ||
     window.location.origin.includes(`192.`) ||
-    window.location.origin.includes(`127.`)
+    window.location.origin.includes(`127.`) ||
+    localStorage.forceLocal
   ) {
     new WebSocket(url).onmessage = (message) => {
       console.log(message.data)
