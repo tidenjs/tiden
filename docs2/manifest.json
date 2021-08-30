@@ -1,0 +1,20 @@
+{
+  "name": "Tiden Documentation",
+  "description": "undefined",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "2000x2000",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#f66300",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta property="og:title" content="tiden-docs" />
+<meta property="og:image" content="favicon.svg" />
+<meta property="og:description" content="Tiden API reference & documentation" />
+<meta property="og:type" content="website" />
+<link rel="shortcut icon" href="favicon.png" type="image/png" />
+<link rel="manifest" href="manifest.json" />
+<title>tiden-docs</title>
+
+<script data-initial>
+  // this function may be called directly by Tiden. Don't remove it.
+  window.outdated = function(msg) {
+    document.body.innerHTML = "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\n\nMessage was: " + msg
+  }
+</script>
+
+<script data-initial src="https://cdn.jsdelivr.net/npm/tiden@0.2.2/init.js"></script>
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    :root {
+        font-family: arial, sans-serif;
+
+        --maya-blue: #5cc8ffff;
+        --sonic-silver: #747274ff;
+        --space-cadet: #1a1b41ff;
+        --middle-green-yellow: #a8c256ff;
+        --papaya-whip: #ffeecfff;
+
+        --primary-color: var(--maya-blue);
+    }
+</style>
+<div id="root" style="display: contents;"></div>
