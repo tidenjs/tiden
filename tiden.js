@@ -117,6 +117,11 @@ export default function tiden(actor) {
       console.log(response)
     })
   }
+  window.publish = (...args) => {
+    sagaMiddleware.run(function* () {
+      yield publish(...args)
+    })
+  }
 
   return {
     sagaMiddleware,
