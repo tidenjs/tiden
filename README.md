@@ -39,13 +39,19 @@ tiden upgrade
 
 ## Tutorials
 
-Tutorials are currently in progress. So far, there is a single video, but please look back here as @mikabytes aims to post a new tutorial every Monday.
+Tutorials are currently in progress. Subscribe to receive notifications when new videos are added.
 
-[1. Web Components](/tutorials/1-web-components/article.md)
+[Web Components](/tutorials/1-web-components/article.md)
 
-## Community discussion
+[Web Components](/tutorials/communication-streams-pages-nanos/article.md)
 
-Got some amazing ideas? Or just want to throw some inspiration at us? Maybe you want to donate lots of money. [Join us at Discord](https://discord.gg/Yj6UsECFCP)
+## Community
+
+- Got some amazing ideas? Or just want to throw some inspiration at us? Maybe you want to donate lots of money. [Join us at Discord](https://discord.gg/Yj6UsECFCP)
+
+- @mikabytes creates instructive videos about Tiden. Follow him on [Youtube](https://www.youtube.com/channel/UC6nZU9OrRBxcZmE-2__p8ZA)
+
+- He also tweets about Tiden and the Web at [Twitter](https://twitter.com/mika_bytes)
 
 ## Core values
 
