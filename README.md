@@ -43,7 +43,7 @@ Tutorials are currently in progress. Subscribe to receive notifications when new
 
 [Web Components](/tutorials/1-web-components/article.md)
 
-[Web Components](/tutorials/communication-streams-pages-nanos/article.md)
+[Tiden communication; streams, pages, and nanos](/tutorials/communication-streams-pages-nanos/article.md)
 
 ## Community
 
