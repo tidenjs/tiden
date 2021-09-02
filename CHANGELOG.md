@@ -1,4 +1,4 @@
-# main
+# 0.3.0
 
 - Remove faulty warning message from 'connect'
 - Add `window.publish` and `window.request` methods
