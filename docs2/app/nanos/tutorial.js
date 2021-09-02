@@ -5,9 +5,9 @@ import "../components/sidebar.js"
 import "../components/header.js"
 import "../components/main.js"
 
-export default function* home(root) {
+export default function* tutorial(root) {
   yield template(root, function* (root) {
-    const homeData = yield request(`homeData`)
+    const homeData = yield request(`tutorial`)
 
     let selectedArticle = homeData[0]
 

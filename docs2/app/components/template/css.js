@@ -24,6 +24,7 @@ export default css`
   #main {
     grid-area: main;
     padding: 10px;
-    overflow:auto;
+    overflow: hidden;
+    overflow-y: auto;
   }
 `
