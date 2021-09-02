@@ -6,10 +6,6 @@ _Build flexible web apps using modern native web technology_
 
 ## Get started
 
-- Prerequisite: to start dev-server on local, you need to install `watchman` on:
-  - [Linus/MacOS](https://facebook.github.io/watchman/docs/install.html#linux-and-macos)
-  - [Windows](https://facebook.github.io/watchman/docs/install.html#windows)
-
 ```
 npm install -g tiden
 tiden init <project name> [-d "project description"]

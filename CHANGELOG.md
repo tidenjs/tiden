@@ -1,7 +1,8 @@
-# main
+# 0.3.0
 
 - Remove faulty warning message from 'connect'
 - Add `window.publish` and `window.request` methods
+- Using hotserve 1.3.3 include mikabytes/hotserve#2 we no longer have a dependency on Watchman. (thanks! @Seke1412)
 
 # 0.2.2
 
