@@ -1,6 +1,7 @@
 # NEXT
 
 - Added comments in generated index.html to help people add their own import maps
+- Fix an issue where multiple importmaps would fail due to the shim being loaded later
 
 # 0.3.0
 
