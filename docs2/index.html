@@ -9,15 +9,8 @@
 <meta property="og:type" content="website" />
 <link rel="shortcut icon" href="favicon.png" type="image/png" />
 <link rel="manifest" href="manifest.json" />
-<title>tiden-docs</title>
+<title>Tiden docs</title>
 
-<script type="importmap">
-  {
-    "imports": {
-      "marked": "https://cdn.jsdelivr.net/npm/marked@3.0.2/marked.min.js"
-    }
-  }
-</script>
 <script data-initial>
   // this function may be called directly by Tiden. Don't remove it.
   window.outdated = function (msg) {
@@ -26,11 +19,12 @@
       msg
   }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script
-  data-initial
-  src="https://cdn.jsdelivr.net/npm/tiden@0.2.0/init.js"
-></script>
+<script>
+  importmap = {
+    marked: "https://cdn.jsdelivr.net/npm/marked@3.0.2/lib/marked.esm.js",
+  }
+</script>
+<script data-initial src="http://localhost:1099/init.js"></script>
 <style>
   body,
   html {
