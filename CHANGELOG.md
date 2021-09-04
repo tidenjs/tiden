@@ -1,3 +1,7 @@
+# NEXT
+
+- Added comments in generated index.html to help people add their own import maps
+
 # 0.3.0
 
 - Remove faulty warning message from 'connect'
