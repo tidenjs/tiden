@@ -11,23 +11,18 @@ export default ({ name, description, isTest }) => o`
   <link rel="manifest" href="manifest.json" />
   <title>${name}</title>
 
-  <!-- Remove this comment to add your own imports. Popular hosting sites are unpkg, jsdelivr, skypack
-       For example, with config below you could do: import charts from "chartjs"
-  <script type="importmap">
-    {
-      "imports": {
-        "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"
-      }
-    }
-  </script>   -->
-
   <script data-initial>
     // this function may be called directly by Tiden. Don't remove it.
     window.outdated = function(msg) {
       document.body.innerHTML = "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\\n\\nMessage was: " + msg
     }
-  </script>
 
+    // add your own importmaps here. For example, using config below, this will enable:
+    // import {Element} from "chartjs"
+    importmap = {
+      // "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.js"
+    }
+  </script>
   <script data-initial src="${
     isTest
       ? `http://localhost:1105/init.js`

@@ -13,22 +13,26 @@ function browserSupport() {
 
 function addImportMap() {
   const base = document.currentScript.src.replace(/\/init.js$/, `/`)
+
+  window.importmap = {
+    ...(window.importmap || {}),
+    tiden: base + "tiden.js",
+    "tiden/": base,
+    "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
+    "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
+    "redux-saga":
+      "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
+    "redux-saga/effects.js":
+      "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
+    redux: "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
+    reselect: "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js",
+  }
+
   document.head.appendChild(
     Object.assign(document.createElement("script"), {
       type: "importmap",
       innerHTML: JSON.stringify({
-        imports: {
-          tiden: base + "tiden.js",
-          "tiden/": base,
-          "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
-          "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
-          "redux-saga":
-            "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
-          "redux-saga/effects.js":
-            "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
-          redux: "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
-          reselect: "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js",
-        },
+        imports: window.importmap,
       }),
     })
   )
