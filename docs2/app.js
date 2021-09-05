@@ -11,7 +11,7 @@ import {
   publish,
 } from "tiden"
 import * as stdlib from "tiden/stdlib.js"
-import {takeEvery} from "redux-saga/effects.js"
+import { takeEvery } from "redux-saga/effects.js"
 
 export default function* app() {
   yield subscribe(`error`, function* (e) {
@@ -19,8 +19,10 @@ export default function* app() {
     root.innerHTML = `<pre>An error occured:\n\n${e.message}\n\n${e.stack}</pre>`
   })
 
-  yield subscribe(`*`, function*(data, rest) {
-    console.log(rest.type, data)
+  yield subscribe(`*`, function* (data, rest) {
+    const metadata = { ...rest }
+    delete metadata.type
+    console.log(rest.type, data, metadata)
   })
 
   yield fork(streams)
@@ -36,7 +38,7 @@ export default function* app() {
       if (task) {
         yield cancel(task)
       }
-      task = yield fork(function*() {
+      task = yield fork(function* () {
         try {
           yield pageDefinition.saga(root)
         } catch (e) {
@@ -51,7 +53,9 @@ export default function* app() {
   if (pageDefinition) {
     yield request(`set`, `page`, pageDefinition)
   } else {
-    yield publish(`error`, `The location ${document.location} was not found.`, { id: `404` })
+    yield publish(`error`, `The location ${document.location} was not found.`, {
+      id: `404`,
+    })
   }
 }
 import myStreams from "./app/streams.js"
