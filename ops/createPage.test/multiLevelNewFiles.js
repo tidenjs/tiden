@@ -13,6 +13,15 @@ export default function () {
       expect(await read(`app/one/two/pages/myPage.js`)).to.match(/register/)
     })
 
+    it(`should have the correct id`, async () => {
+      expect(await read(`app/one/two/pages/myPage.js`)).contains(
+        o`
+          const id = \`one/two/myPage\`
+        `
+      )
+    })
+
+
     it(`should create pages.js`, async () => {
       expect(await read(`app/one/two/pages.js`)).to.equal(
         o`
