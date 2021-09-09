@@ -23,16 +23,12 @@ export default async function createPage({ path, name, pathname }) {
 }
 
 async function createPageFile(path, name, file, pathname) {
-  let id
+  const nss = path.split(`/`)
+
+  const id = `${nss.slice(1).join(`/`)}/${name}`
 
   if (!pathname) {
-    const nss = path.split(`/`)
-    nss[0] = ``
-
-    pathname = `${nss.join(`/`)}/${name}`
-    id = pathname.slice(1)
-  } else {
-    id =  `${pathname.slice(1)}/${name}`
+    pathname = `/${nss.slice(1).join(`/`)}/${name}`
   }
 
   await fs.writeFile(

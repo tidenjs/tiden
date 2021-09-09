@@ -33,23 +33,24 @@ describe(`createPage`, () => {
     it(`should use it`, async () => {
       await createPage({ name: `hello`, pathname: `/custom/path` })
 
-      const pageContent = await read(`app/pages/hello.js`)
-
-      expect(pageContent).contains(
-        o`
-          const id = \`custom/path/hello\`
-        `
-      )
-
-      expect(pageContent).contains(
+      expect(await read(`app/pages/hello.js`)).contains(
         o`
           new RegExp(\`^/custom/path$\`)
         `
       )
 
-      expect(pageContent).contains(
+      expect(await read(`app/pages/hello.js`)).contains(
         o`
           return \`/custom/path\`
+        `
+      )
+    })
+    it(`should have the correct id`, async () => {
+      await createPage({ name: `hello`, pathname: `/custom/path` })
+
+      expect(await read(`app/pages/hello.js`)).contains(
+        o`
+          const id = \`/hello\`
         `
       )
     })
