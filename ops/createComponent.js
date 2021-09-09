@@ -15,26 +15,44 @@ export default async function createComponent({
   args,
   css,
 }) {
-  const realPath = path ? `app/${path}` : `app`
-  path = path || ``
+  const havePath = path !== `` && path !== `/` && path !== `./` && path !== undefined
+  const haveAppDir = process.cwd().indexOf(`/app/`) !== -1
+  let resolvePath
 
-  const file = `${realPath}/components/${name}.js`
-  const demo = `${realPath}/components/${name}/demo.js`
-  const cssFile = `${realPath}/components/${name}/css.js`
+  if (havePath && haveAppDir)  {
+    resolvePath = path
+  }
+
+  if (!havePath && !haveAppDir)  {
+    resolvePath = `app`
+  }
+
+  if (!havePath && haveAppDir)  {
+    resolvePath = ``
+  }
+
+  if (havePath && !haveAppDir)  {
+    resolvePath = `app/${path}/`
+  }
+
+  const componentPath = resolvePath ? `${resolvePath}/components` : `components`
+  const file = `${componentPath}/${name}.js`
+  const demo = `${componentPath}/${name}/demo.js`
+  const cssFile = `${componentPath}/${name}/css.js`
   const exists = await fileExists(file)
 
   if (exists) {
     throw new Error(`A component '${name}' already exists`)
   }
 
-  await mkdirp(realPath + `/components/${name}`)
-  await createComponentFile(path, name, file, body, imports, args)
-  await createCss(path, name, cssFile, css)
-  await createComponentDemo(path, name, demo)
+  await mkdirp(`${componentPath}/${name}`)
+  await createComponentFile(resolvePath, name, file, body, imports, args)
+  await createCss(resolvePath, name, cssFile, css)
+  await createComponentDemo(resolvePath, name, demo)
 }
 
 async function createComponentFile(path, name, file, body, imports, args = []) {
-  const nss = path ? path.split(`/`) : []
+  const nss = path ? path.split(`/`).filter(dir => dir !== `app` && !!dir) : []
   const allImports = importsBuilder({
     tiden: {
       html: [`html`],

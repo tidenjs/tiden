@@ -61,9 +61,77 @@ describe(`createComponent`, () => {
     })
   })
 
-  describe(`with no namespace`, () => {
+  describe(`with 1 level namespace`, async () => {
     beforeEach(async () => {
-      await createComponent({ name: `myComponent` })
+      await createComponent({ name: `myComponent`, path: `one` })
+    })
+
+    it(`should create component`, async () => {
+      expect(await read(`app/one/components/myComponent.js`)).to.match(
+        /component\(.*\)/
+      )
+    })
+  })
+
+  describe(`with 2 level namespace`, async () => {
+    beforeEach(async () => {
+      await createComponent({ name: `myComponent`, path: `one/two` })
+    })
+
+    it(`should create component`, async () => {
+      expect(await read(`app/one/two/components/myComponent.js`)).to.match(
+        /component\(.*\)/
+      )
+    })
+  })
+
+  describe(`with namespace but cwd inside a dir [app/east]`, async () => {
+    beforeEach(async () => {
+      await mkdirp(`app/east`)
+      process.chdir(`app/east`)
+      await createComponent({ name: `myComponent`, path: `asia`})
+    })
+
+    it(`should create component`, async () => {
+      expect(await read(`asia/components/myComponent.js`)).to.match(
+        /component\(.*\)/
+      )
+    })
+  })
+
+  describe(`with no-namespace but cwd inside a dir [app/east]`, async () => {
+    beforeEach(async () => {
+      await mkdirp(`app/east`)
+      process.chdir(`app/east`)
+      await createComponent({ name: `myComponent`})
+    })
+
+    it(`should create component`, async () => {
+      expect(await read(`components/myComponent.js`)).to.match(
+        /component\(.*\)/
+      )
+    })
+  })
+
+  describe(`with no-namespace but cwd inside a multi-level dir [app/east/asia]`, async () => {
+    beforeEach(async () => {
+      await mkdirp(`app/east/asia`)
+      process.chdir(`app/east/asia`)
+      await createComponent({ name: `myComponent`})
+    })
+
+    it(`should create component`, async () => {
+      expect(await read(`components/myComponent.js`)).to.match(
+        /component\(.*\)/
+      )
+    })
+  })
+
+  describe(`with no-namespace and no-app-dir`, async () => {
+    beforeEach(async () => {
+      await mkdirp(`east`)
+      process.chdir(`east`)
+      await createComponent({ name: `myComponent`})
     })
 
     it(`should create component`, async () => {
