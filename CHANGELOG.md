@@ -1,3 +1,7 @@
+# 0.4.1
+
+- Bump version of hotserve to 1.3.4 which includes a fix for HMR
+
 # 0.4.0
 
 - Added comments in generated index.html to help people add their own import maps
