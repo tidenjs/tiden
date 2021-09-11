@@ -14,6 +14,13 @@ import manifestJson from "./init/manifest.json.template.js"
 import * as touchable from "./init/touchable.js"
 
 export default async function init({ name, description, isTest }) {
+
+  const files = await fs.readdir(process.cwd())
+  if (files.length > 0) {
+    console.log(`Cannot init project in non-empty folder`)
+    return
+  }
+
   await Promise.all([
     fs.writeFile(`index.html`, indexHtml({ name, description, isTest })),
     fs.writeFile(`index.js`, indexJs()),

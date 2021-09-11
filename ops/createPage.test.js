@@ -45,6 +45,15 @@ describe(`createPage`, () => {
         `
       )
     })
+    it(`should have the correct id`, async () => {
+      await createPage({ name: `hello`, pathname: `/custom/path` })
+
+      expect(await read(`app/pages/hello.js`)).contains(
+        o`
+          const id = \`/hello\`
+        `
+      )
+    })
   })
 })
 

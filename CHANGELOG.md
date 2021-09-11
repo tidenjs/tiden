@@ -1,10 +1,15 @@
-# NEXT
+# 0.4.1
+
+- Bump version of hotserve to 1.3.4 which includes a fix for HMR
+
+# 0.4.0
 
 - Added comments in generated index.html to help people add their own import maps
 - Fix an issue where multiple importmaps would fail due to the shim being loaded later
 - IDE will now reload automatically when changing the index.html file
 - `merge` can now be anonymous (just omit second argument)
 - Feat! `render` can now be used with generator functions!
+- Page IDs will now include namespace by default
 
 # 0.3.0
 

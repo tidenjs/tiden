@@ -23,10 +23,12 @@ export default async function createPage({ path, name, pathname }) {
 }
 
 async function createPageFile(path, name, file, pathname) {
+  const nss = path.split(`/`)
+
+  const id = `${nss.slice(1).join(`/`)}/${name}`
+
   if (!pathname) {
-    const nss = path.split(`/`)
-    nss[0] = ``
-    pathname = `${nss.join(`/`)}/${name}`
+    pathname = `/${nss.slice(1).join(`/`)}/${name}`
   }
 
   await fs.writeFile(
@@ -34,7 +36,7 @@ async function createPageFile(path, name, file, pathname) {
     o`
       import { router } from "tiden"
 
-      const id = \`one/two/${name}\`
+      const id = \`${id}\`
 
       function* saga(root) {
         const ${name} = (yield import(\`../nanos/${name}.js\`)).default
