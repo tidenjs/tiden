@@ -7,15 +7,15 @@ import "./logo.js"
 component(
   `x-header`,
   { css },
-  function header({ pageId, homeLink, apiLink, tutorialLink }) {
+  function header({ pageId, home, api, tutorial }) {
     return html`
       <x-logo></x-logo>
 
       <navigation>
         <menu>
-          <x-touchable .link=${homeLink}>Home</x-touchable>
-          <x-touchable .link=${apiLink}>API</x-touchable>
-          <x-touchable .link=${tutorialLink}>Tutorial</x-touchable>
+          <x-touchable .link=${home.link}>Home</x-touchable>
+          <x-touchable .link=${api.link}>API</x-touchable>
+          <x-touchable .link=${tutorial.link}>Tutorial</x-touchable>
         </menu>
       </navigation>
     `

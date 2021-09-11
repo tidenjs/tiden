@@ -6,7 +6,7 @@ export default stream(`methods`, function* methods() {
     return [
       {
         name: `publish`,
-        markup: o`
+        markdown: o`
           ## Publish
           Broadcasts a \`\`\`message\`\`\` without waiting for any responses. Typically used to announce that something has happened, or in more rare cases to directly submit information to downstream subscribers.
           ### Example
@@ -17,7 +17,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `cache`,
-        markup: o`
+        markdown: o`
           ## Cache
           Low level function to create saga that caches the return value. Useful to avoid expensive requests for resource and/or computation. Nearly always used together with \`\`\`respondTo\`\`\`
           Typically, using \`\`\`merge\`\`\` would be better as it fulfills most usecases while also caching.
@@ -55,7 +55,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `connect`,
-        markup: o`
+        markdown: o`
           ## Connect
 
           A high-level method of specifying properties on a html element. It requests initial upstream data, processes the data, and sets up subscriptions. This is the recommended approach to binding data to Web Components.
@@ -131,7 +131,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `s`,
-        markup: o`
+        markdown: o`
           ## S
 
           Creates a definition for merging one or more streams into a HTMLElement property.
@@ -165,7 +165,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `linkTo`,
-        markup: o`
+        markdown: o`
           ## linkTo
 
           Creates an object suitable for \`\`\`x-touchable\`\`\`, mapping both \`\`\`onClick\`\`\` and \`\`\`href\`\`\` from a given page location.
@@ -192,7 +192,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `subscribe`,
-        markup: o`
+        markdown: o`
           ## subscribe
 
           Sets up a listener for a stream. The provided function will be called for every message captured. Does not block.
@@ -211,7 +211,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `merge`,
-        markup: o`
+        markdown: o`
           ## merge
 
           Combines one or more streams and optionally creates a new stream. Using \`\`\`merge\`\`\` is the recommended way to create streams that are dependent on other streams.
@@ -272,7 +272,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `mutex`,
-        markup: o`
+        markdown: o`
           ## mutex
 
           Makes sure that only one Task is executing within a block of code at a time
@@ -312,7 +312,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `once`,
-        markup: o`
+        markdown: o`
           ## once
 
           Shorthand for cache()(actor: GeneratorFunction)
@@ -339,7 +339,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `request`,
-        markup: o`
+        markdown: o`
           ## request
 
           Makes a requests to stream, or \`\`\`respondTo\`\`\` directive. Blocks until response is ready.
@@ -371,7 +371,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `respondToSync`,
-        markup: o`
+        markdown: o`
           ## respondToSync
 
           Blocks until a request arrives, and finishes after a single response has been made.
@@ -416,7 +416,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `simpleStream`,
-        markup: o`
+        markdown: o`
           ## simpleStream
 
           Creates a very basic stream that has an initival value and respond to \`\`\`get\`\`\` and \`\`\`set\`\`\` verbs
@@ -440,7 +440,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `waitFor`,
-        markup: o`
+        markdown: o`
           ## waitFor
 
           Blocks until a message of specific type arrives.
@@ -477,7 +477,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `whenChanged`,
-        markup: o`
+        markdown: o`
           ## whenChanged
 
           Filters calls from \`\`\`subscribe\`\`\` to only let through changes to a stream message.
@@ -533,7 +533,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `all`,
-        markup: o`
+        markdown: o`
           ## all
 
           Waits for all tasks to finish and returns the values.
@@ -575,7 +575,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `delay`,
-        markup: o`
+        markdown: o`
           ## delay
 
           Creates a blocking effect for given milliseconds.
@@ -593,7 +593,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `fork`,
-        markup: `
+        markdown: `
           ## fork
 
           Creates a new task that executes in parallel to the currently running Task.
@@ -622,7 +622,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `spawn`,
-        markup: o`
+        markdown: o`
           ## spawn
 
           Similar to fork, only the task is detached from the parent task. If parent task is cancelled, or throws an error, then the spawned saga would still continue executing. Tiden tasks are no different from Redux Saga tasks. See their documentation for more details: [redux-saga.js.org/docs/advanced/ForkModel]
@@ -651,7 +651,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `cancel`,
-        markup: o`
+        markdown: o`
           ## cancel
 
           Cancels a task, for example created using fork, subscribe,
@@ -684,7 +684,7 @@ export default stream(`methods`, function* methods() {
       },
       {
         name: `cancel`,
-        markup: o`
+        markdown: o`
           ## cancel
 
           Cancels a task, for example created using fork, subscribe,

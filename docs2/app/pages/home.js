@@ -1,6 +1,6 @@
 import { router } from "tiden"
 
-const id = `one/two/home`
+const id = `home`
 
 function* saga(root) {
   const home = (yield import(`../nanos/home.js`)).default
@@ -9,13 +9,11 @@ function* saga(root) {
 }
 
 export function interpret(url) {
-  return url.pathname.match(
-    new RegExp(`^/$`)
-  )
+  return url.pathname.match(new RegExp(`^/$`))
 }
 
 export function generate(args) {
   return `/`
 }
 
-router.register({id, saga, interpret, generate})
+router.register({ id, saga, interpret, generate })

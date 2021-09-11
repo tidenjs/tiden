@@ -1,6 +1,6 @@
 import { router } from "tiden"
 
-const id = `one/two/api`
+const id = `api`
 
 function* saga(root) {
   const api = (yield import(`../nanos/api.js`)).default
@@ -9,13 +9,11 @@ function* saga(root) {
 }
 
 export function interpret(url) {
-  return url.pathname.match(
-    new RegExp(`^/api$`)
-  )
+  return url.pathname.match(new RegExp(`^/api$`))
 }
 
 export function generate(args) {
   return `/api`
 }
 
-router.register({id, saga, interpret, generate})
+router.register({ id, saga, interpret, generate })

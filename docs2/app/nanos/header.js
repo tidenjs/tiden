@@ -9,9 +9,9 @@ export default function* header(root) {
         .pageId=${merge([`page`], function* (page) {
           return page.id
         })}
-        .homeLink=${linkTo({ id: `one/two/home` })}
-        .apiLink=${linkTo({ id: `one/two/apiLink` })}
-        .tutorialLink=${linkTo({ id: `one/two/tutorialLink` })}
+        .home=${{ link: linkTo({ id: `home` }) }}
+        .api=${{ link: linkTo({ id: `api` }) }}
+        .tutorial=${{ link: linkTo({ id: `tutorial` }) }}
       ></x-header>
     `,
     root
