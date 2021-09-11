@@ -1,3 +1,8 @@
+# main
+
+- Fixed an issue where `cache` would fail if metadata did not exist
+- `createNano` no longer adds template boilerplate, as this is usually not needed
+
 # 0.4.1
 
 - Bump version of hotserve to 1.3.4 which includes a fix for HMR
