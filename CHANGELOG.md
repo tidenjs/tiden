@@ -2,6 +2,9 @@
 
 - Fixed an issue where `cache` would fail if metadata did not exist
 - `createNano` no longer adds template boilerplate, as this is usually not needed
+- Fixed an issue where Router.generate would fail to create links with provided `id` instead of legacy `pageId`
+- Fix an issue with `linkTo` which would use legacy verb `navigate` instead of `set page`
+- `render` can now take properties that have deeply nested generators
 
 # 0.4.1
 
