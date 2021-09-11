@@ -38,14 +38,6 @@ async function createNanoFile(path, name, file, body, imports, args) {
     },
   })
 
-  if (name !== `template`) {
-    allImports.add({
-      "./template.js": {
-        default: [`template`],
-      },
-    })
-  }
-
   const nss = path ? path.split(`/`) : []
 
   if (nss.length === 0) {
@@ -53,11 +45,7 @@ async function createNanoFile(path, name, file, body, imports, args) {
   }
 
   if (!body) {
-    body = o`
-      yield template(root, function*(root) {
-        
-      })
-    `
+    body = ``
   }
 
   allImports.add(imports)

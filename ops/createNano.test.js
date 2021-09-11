@@ -102,12 +102,9 @@ describe(`createNano`, () => {
           import { thing, thing2 as custom } from "./some/other.js  "
           import "./some/second.js"
           import third from "./some/third.js"
-          import template from "./template.js"
 
           export default function* myNano(root) {
-            yield template(root, function*(root) {
-              
-            })
+            
           }
         `
       )
