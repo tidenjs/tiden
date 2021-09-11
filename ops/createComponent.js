@@ -15,26 +15,16 @@ export default async function createComponent({
   args,
   css,
 }) {
+
   const havePath = path !== `` && path !== `/` && path !== `./` && path !== undefined
-  const haveAppDir = process.cwd().indexOf(`/app/`) !== -1
-  let resolvePath
+  const notInAppDir = process.cwd().indexOf(`/app`) === -1
+  const noAppPath = !havePath || path?.indexOf(`app`) === -1
 
-  if (havePath && haveAppDir)  {
-    resolvePath = path
+  if (notInAppDir && noAppPath) {
+    throw new Error(`Cannot create component outside app directory`)
   }
 
-  if (!havePath && !haveAppDir)  {
-    resolvePath = `app`
-  }
-
-  if (!havePath && haveAppDir)  {
-    resolvePath = ``
-  }
-
-  if (havePath && !haveAppDir)  {
-    resolvePath = `app/${path}/`
-  }
-
+  const resolvePath = havePath ? path : ``
   const componentPath = resolvePath ? `${resolvePath}/components` : `components`
   const file = `${componentPath}/${name}.js`
   const demo = `${componentPath}/${name}/demo.js`
@@ -52,7 +42,9 @@ export default async function createComponent({
 }
 
 async function createComponentFile(path, name, file, body, imports, args = []) {
-  const nss = path ? path.split(`/`).filter(dir => dir !== `app` && !!dir) : []
+  const appDirIndex = process.cwd().indexOf(`/app`)
+  const namespace = (appDirIndex !== -1) ? process.cwd().substr(appDirIndex + 4) : ``
+  const nss = namespace ? namespace.split(`/`).filter(dir => !!dir) : []
   const allImports = importsBuilder({
     tiden: {
       html: [`html`],

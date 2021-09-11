@@ -29,7 +29,7 @@ describe(`createComponent`, () => {
 
     it(`should throw an error`, async () => {
       try {
-        await createComponent({ path: `one`, name: `myComponent` })
+        await createComponent({ path: `app/one`, name: `myComponent` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A component 'myComponent' already exists`)
@@ -37,9 +37,24 @@ describe(`createComponent`, () => {
     })
   })
 
+  describe(`when create outside app dir`, () => {
+    beforeEach(async () => {
+      await mkdirp(`app/one/two/three`)
+    })
+
+    it(`should throw an error`, async () => {
+      try {
+        await createComponent({ name: `myComponent` })
+        throw new Error(`It did not throw an error`)
+      } catch (e) {
+        expect(e.message).to.equal(`Cannot create component outside app directory`)
+      }
+    })
+  })
+
   describe(`with no existing component`, () => {
     beforeEach(async () => {
-      await createComponent({ path: `one`, name: `myComponent` })
+      await createComponent({ path: `app/one`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
@@ -63,7 +78,7 @@ describe(`createComponent`, () => {
 
   describe(`with 1 level namespace`, async () => {
     beforeEach(async () => {
-      await createComponent({ name: `myComponent`, path: `one` })
+      await createComponent({ path: `app/one`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
@@ -75,7 +90,7 @@ describe(`createComponent`, () => {
 
   describe(`with 2 level namespace`, async () => {
     beforeEach(async () => {
-      await createComponent({ name: `myComponent`, path: `one/two` })
+      await createComponent({ path: `app/one/two`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
@@ -89,7 +104,7 @@ describe(`createComponent`, () => {
     beforeEach(async () => {
       await mkdirp(`app/east`)
       process.chdir(`app/east`)
-      await createComponent({ name: `myComponent`, path: `asia`})
+      await createComponent({ path: `asia`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
@@ -127,24 +142,10 @@ describe(`createComponent`, () => {
     })
   })
 
-  describe(`with no-namespace and no-app-dir`, async () => {
-    beforeEach(async () => {
-      await mkdirp(`east`)
-      process.chdir(`east`)
-      await createComponent({ name: `myComponent`})
-    })
-
-    it(`should create component`, async () => {
-      expect(await read(`app/components/myComponent.js`)).to.match(
-        /component\(.*\)/
-      )
-    })
-  })
-
   describe(`with body`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `one`,
+        path: `app/one`,
         name: `myComponent`,
         body: o`
           return html\`Muppet show\`
@@ -162,6 +163,7 @@ describe(`createComponent`, () => {
   describe(`with imports`, () => {
     beforeEach(async () => {
       await createComponent({
+        path: `app`,
         name: `myComponent`,
         imports: {
           "../someLib.js": {
@@ -181,6 +183,7 @@ describe(`createComponent`, () => {
   describe(`with args`, () => {
     beforeEach(async () => {
       await createComponent({
+        path: `app`,
         name: `myComponent`,
         args: [`items`],
       })
@@ -196,6 +199,7 @@ describe(`createComponent`, () => {
   describe(`with css`, () => {
     beforeEach(async () => {
       await createComponent({
+        path: `app`,
         name: `myComponent`,
         css: o`
           :host {
