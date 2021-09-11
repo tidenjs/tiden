@@ -16,15 +16,15 @@ export default async function createComponent({
   css,
 }) {
 
-  const havePath = path !== `` && path !== `/` && path !== `./` && path !== undefined
+  const emptyPath = path === `` || path === `/` || path === `./` || path === undefined
   const notInAppDir = process.cwd().indexOf(`/app`) === -1
-  const noAppPath = !havePath || path?.indexOf(`app`) === -1
+  const noAppPath = emptyPath || path?.indexOf(`app/`) === -1
 
-  if (notInAppDir && noAppPath) {
+  if (path !== `app` && notInAppDir && noAppPath) {
     throw new Error(`Cannot create component outside app directory`)
   }
 
-  const resolvePath = havePath ? path : ``
+  const resolvePath = !emptyPath ? path : ``
   const componentPath = resolvePath ? `${resolvePath}/components` : `components`
   const file = `${componentPath}/${name}.js`
   const demo = `${componentPath}/${name}/demo.js`
