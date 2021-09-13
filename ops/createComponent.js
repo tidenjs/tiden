@@ -8,23 +8,16 @@ import camelToSnake from "../lib/camelToSnake.js"
 import importsBuilder from "./importsBuilder.js"
 
 export default async function createComponent({
-  path,
+  path = ``,
   name,
   body,
   imports,
   args,
   css,
 }) {
-
-  const emptyPath = path === `` || path === `/` || path === `./` || path === undefined
-  const notInAppDir = process.cwd().indexOf(`/app`) === -1
-  const noAppPath = emptyPath || path?.indexOf(`app/`) === -1
-
-  if (path !== `app` && notInAppDir && noAppPath) {
-    throw new Error(`Cannot create component outside app directory`)
-  }
-
-  const resolvePath = !emptyPath ? path : ``
+  const isInApp = process.cwd().indexOf(`/app`) !== -1
+  const isAppPath = path?.startsWith(`app`)
+  const resolvePath = (isInApp || isAppPath) ? path : `app/` + path
   const componentPath = resolvePath ? `${resolvePath}/components` : `components`
   const file = `${componentPath}/${name}.js`
   const demo = `${componentPath}/${name}/demo.js`

@@ -29,14 +29,14 @@ describe(`createComponent`, () => {
 
     it(`should throw an error`, async () => {
       try {
-        await createComponent({ path: `app/one`, name: `myComponent` })
+        await createComponent({ path: `one`, name: `myComponent` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A component 'myComponent' already exists`)
       }
     })
   })
-
+    /*
   describe(`when create outside app dir`, () => {
     beforeEach(async () => {
       await mkdirp(`app/one/two/three`)
@@ -51,7 +51,7 @@ describe(`createComponent`, () => {
       }
     })
   })
-
+  */
   describe(`with no existing component`, () => {
     beforeEach(async () => {
       await createComponent({ path: `app/one`, name: `myComponent` })
@@ -145,7 +145,7 @@ describe(`createComponent`, () => {
   describe(`with body`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `app/one`,
+        path: `one`,
         name: `myComponent`,
         body: o`
           return html\`Muppet show\`
@@ -163,7 +163,6 @@ describe(`createComponent`, () => {
   describe(`with imports`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `app`,
         name: `myComponent`,
         imports: {
           "../someLib.js": {
@@ -183,7 +182,6 @@ describe(`createComponent`, () => {
   describe(`with args`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `app`,
         name: `myComponent`,
         args: [`items`],
       })
@@ -199,7 +197,6 @@ describe(`createComponent`, () => {
   describe(`with css`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `app`,
         name: `myComponent`,
         css: o`
           :host {
