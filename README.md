@@ -80,3 +80,18 @@ Tiden has official support for all major browsers released in the past year. Whi
 Tiden is also likely to work in much older browsers than these. However, we don't consider it a bug if it does not.
 
 Major browsers: Edge, Firefox, Chrome, Safari, Opera
+
+# Milestone schedule
+
+Milestones usually don't have dates, but each have a vision and focus for that major release. The naming schedule is:
+
+1. Stone: we're currently working on this, it's done when Tiden is production ready
+2. Bronze: gradual improvements on Stone
+3. Iron: exciting new features
+4. Glass
+5. Metal
+6. Steam
+7. Gas
+8. Electric
+9. Plastic
+10. ... we'll have to brainstorm this when we get there
