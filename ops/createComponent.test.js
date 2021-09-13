@@ -36,25 +36,10 @@ describe(`createComponent`, () => {
       }
     })
   })
-    /*
-  describe(`when create outside app dir`, () => {
-    beforeEach(async () => {
-      await mkdirp(`app/one/two/three`)
-    })
 
-    it(`should throw an error`, async () => {
-      try {
-        await createComponent({ name: `myComponent` })
-        throw new Error(`It did not throw an error`)
-      } catch (e) {
-        expect(e.message).to.equal(`Cannot create component outside app directory`)
-      }
-    })
-  })
-  */
   describe(`with no existing component`, () => {
     beforeEach(async () => {
-      await createComponent({ path: `app/one`, name: `myComponent` })
+      await createComponent({ path: `one`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
