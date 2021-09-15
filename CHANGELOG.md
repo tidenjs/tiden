@@ -5,6 +5,7 @@
 - Fixed an issue where Router.generate would fail to create links with provided `id` instead of legacy `pageId`
 - Fix an issue with `linkTo` which would use legacy verb `navigate` instead of `set page`
 - `render` can now take properties that have deeply nested generators
+- Added `history` and `pop` streams to stdlib. Basic popstate functionality.
 
 # 0.4.1
 
