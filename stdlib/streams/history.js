@@ -15,7 +15,7 @@ let history = [
   },
 ]
 
-export default stream(`history`, function* history() {
+export default stream(`history`, function* historyStream() {
   yield respondTo(`get`, `history`, function* () {
     return history
   })
@@ -24,6 +24,7 @@ export default stream(`history`, function* history() {
     const i = getCurrentPosition()
 
     window.history.replaceState({ i }, title, url)
+    console.log(history)
     history = history.slice()
     history[i] = {
       title,
