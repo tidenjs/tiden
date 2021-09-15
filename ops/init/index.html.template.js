@@ -17,9 +17,14 @@ export default ({ name, description, isTest }) => o`
       document.body.innerHTML = "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\\n\\nMessage was: " + msg
     }
 
+    // Set 'root' to the folder where index files are located. Can be relative:
+    // - If it is hosted adjacent to this file (common when using URL fragments, "hash URL") then "./" is suitable.
+    // - If server uses rewrites to host 'index.html' on all routes, you probably want to set this to "/"
+    window.root = "./"
+
     // add your own importmaps here. For example, using config below, this will enable:
     // import {Element} from "chartjs"
-    importmap = {
+    window.importmap = {
       // "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.js"
     }
   </script>

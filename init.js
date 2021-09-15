@@ -51,7 +51,7 @@ function addImportMapShim() {
 function startApp() {
   const init = Object.assign(document.createElement("script"), {
     type: "module",
-    src: "./index.js",
+    src: `${window.root || `./`}index.js`,
   })
   init.setAttribute("async", "")
   init.dataset.initial = ""
