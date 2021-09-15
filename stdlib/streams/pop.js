@@ -2,6 +2,8 @@
 //
 // Instead, it publishes a 'pop' message so that user can decide what to do.
 
+import { fork, publish, stream } from "tiden"
+
 let globalI = window.history.length
 let i = 0
 
