@@ -1,9 +1,7 @@
-import { connect, s, render, html, fork } from "tiden"
-
 import "../components/template.js"
 
-export default function* template(root, child) {
-  render(html`<x-template></x-template>`, root)
+import { render, html } from 'tiden'
 
-  yield fork(child, root.children[0])
+export default function* template(root, child) {
+  yield render(html`<x-template nano=${child}></x-template>`, root)
 }
