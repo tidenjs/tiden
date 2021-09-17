@@ -18,6 +18,7 @@ export function setCurrentPosition(newI) {
 export default stream(`pop`, function* url() {
   yield fork(initialize)
   yield fork(tamePopstate)
+  //  yield fork(tameHashchange)
 })
 
 // if there are no entries in native History object then it will exit the app when user pushes
@@ -58,6 +59,30 @@ function* tamePopstate() {
       }
     }
   } finally {
-    window.removeEventListener(`popstate`, resolve)
+    window.removeEventListener(`popstate`, popstate)
+  }
+}
+
+function* tameHashchange() {
+  let resolve
+  function hashchange(e) {
+    if (resolve) {
+      resolve(e)
+    }
+  }
+
+  try {
+    window.addEventListener(`hashchange`, hashchange)
+
+    while (true) {
+      const promise = new Promise((res) => {
+        resolve = res
+      })
+      const e = yield promise
+
+      const requested = e.state ? e.state.i : -1
+    }
+  } finally {
+    window.removeEventListener(`hashchange`, hashchange)
   }
 }

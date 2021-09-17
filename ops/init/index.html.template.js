@@ -7,8 +7,8 @@ export default ({ name, description, isTest }) => o`
   <meta property="og:image" content="favicon.svg" />
   <meta property="og:description" content="${description}" />
   <meta property="og:type" content="website" />
-  <link rel="shortcut icon" href="favicon.png" type="image/png" />
-  <link rel="manifest" href="manifest.json" />
+  <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+  <link rel="manifest" href="/manifest.json" />
   <title>${name}</title>
 
   <script data-initial>
@@ -20,7 +20,7 @@ export default ({ name, description, isTest }) => o`
     // Set 'root' to the folder where index files are located. Can be relative:
     // - If it is hosted adjacent to this file (common when using URL fragments, "hash URL") then "./" is suitable.
     // - If server uses rewrites to host 'index.html' on all routes, you probably want to set this to "/"
-    window.root = "./"
+    window.root = "/"
 
     // add your own importmaps here. For example, using config below, this will enable:
     // import {Element} from "chartjs"

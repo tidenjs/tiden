@@ -7,8 +7,8 @@
 <meta property="og:image" content="favicon.svg" />
 <meta property="og:description" content="Tiden API reference & documentation" />
 <meta property="og:type" content="website" />
-<link rel="shortcut icon" href="favicon.png" type="image/png" />
-<link rel="manifest" href="manifest.json" />
+<link rel="shortcut icon" href="/favicon.png" type="image/png" />
+<link rel="manifest" href="/manifest.json" />
 <title>Tiden docs</title>
 
 <script data-initial>
@@ -18,9 +18,10 @@
       "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\n\nMessage was: " +
       msg
   }
-</script>
-<script>
-  importmap = {
+
+  window.root = `/`
+
+  window.importmap = {
     marked: "https://cdn.jsdelivr.net/npm/marked@3.0.2/lib/marked.esm.js",
   }
 </script>
