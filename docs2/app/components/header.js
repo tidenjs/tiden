@@ -8,6 +8,10 @@ component(
   `x-header`,
   { css },
   function header({ pageId, home, api, tutorial }) {
+    if (!pageId) {
+      return null
+    }
+
     return html`
       <x-logo></x-logo>
 

@@ -5,10 +5,10 @@ export default css`
     display: grid;
     grid-template-areas: "header header" "sidebar main";
     grid-template-rows: 60px 1fr;
-    grid-template-columns: minmax(200px, max-content) 1fr;
+    grid-template-columns: min-content 1fr;
     height: 100%;
   }
-  
+
   #header {
     grid-area: header;
     box-shadow: 0px 0px 5px 0px #000;
@@ -20,7 +20,7 @@ export default css`
     padding: 10px;
     box-shadow: 40px 0px 5px -40px #000;
   }
-  
+
   #main {
     grid-area: main;
     padding: 10px;

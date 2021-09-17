@@ -16,7 +16,9 @@ function* saga(root) {
   )
 
   const { methodId } = yield request(`page`)
-  yield request(`set`, `methodId`, methodId)
+  if (methodId) {
+    yield request(`set`, `methodId`, methodId)
+  }
 
   yield api(root)
 }

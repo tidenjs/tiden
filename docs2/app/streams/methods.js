@@ -682,39 +682,6 @@ export default stream(`methods`, function* methods() {
           [redux-saga.js.org/docs/advanced/ForkModel]: https://redux-saga.js.org/docs/advanced/ForkModel
     `,
       },
-      {
-        name: `cancel`,
-        markdown: o`
-          ## cancel
-
-          Cancels a task, for example created using fork, subscribe,
-                        respondTo, merge, etc..
-
-
-          If no task is specified, then the current task will be cancelled.
-
-
-          Note that this will also cancel any parent tasks or joiners. Tiden
-                        tasks are no different from Redux Saga's tasks. Read more at
-                        [redux-saga.js.org/docs/advanced/ForkModel]
-
-          ### Examples
-
-                      
-                        const task = yield subscribe(\`tick\`, function*(data) {
-                          ...
-                        })
-
-                        yield cancel(task)
-                      
-
-          ### Interface
-                      
-                        cancel(task?: Task)
-
-          [redux-saga.js.org/docs/advanced/ForkModel]: https://redux-saga.js.org/docs/advanced/ForkModel
-    `,
-      },
     ]
   })
 })

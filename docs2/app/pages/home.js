@@ -1,11 +1,23 @@
-import { router } from "tiden"
+import { html, render, request, router } from "tiden"
 
 const id = `home`
 
 function* saga(root) {
-  const home = (yield import(`../nanos/home.js`)).default
+  const template = (yield import("../nanos/template.js")).default
+  const home = (yield import("../components/home.js")).default
+  const header = (yield import("../nanos/header.js")).default
 
-  yield home(root)
+  yield request(`replace`, `history`, { title: `Tiden docs`, url: generate() })
+
+  yield template(root, function* (root) {
+    yield render(
+      html`
+        <span slot="header" nano=${header}></span>
+        <x-home slot="main"></x-home>
+      `,
+      root
+    )
+  })
 }
 
 export function interpret(url) {
