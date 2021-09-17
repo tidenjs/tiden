@@ -8,9 +8,11 @@ component(
   `x-header`,
   { css },
   function header({ pageId, home, api, tutorial }) {
-    if (!pageId) {
+    if (!home || !api || !tutorial) {
       return null
     }
+
+    console.log(888, api)
 
     return html`
       <x-logo></x-logo>
