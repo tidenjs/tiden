@@ -1,13 +1,15 @@
 import fs from 'fs/promises'
+import {relative, resolve} from 'path'
 
-export default async function translator(path) {
-  const cwd = process.cwd()
-  const rootPath = await searchRootFolder(cwd)
-  if (!rootPath) {
+export default async function translator(path, root = ``) {
+  const appRoot = root || await searchAppRoot()
+  const absolutePath = resolve()
+  if (!appRoot) {
+    const cwd = relative(absolutePath, path)
     throw Error(`Cannot translate using ${cwd} folder`)
   }
 
-  const relativeRoot = removeAppFromPath(cwd.substr(rootPath.length))
+  const relativeRoot = removeAppFromPath(relative(appRoot, absolutePath))
   const isAppPath = path?.startsWith(`app`)
   const resolvePath = isAppPath 
     ? removeAppFromPath(path) 
@@ -20,17 +22,17 @@ export default async function translator(path) {
   return translatedPath
 }
 
-// translate app/a/b/c => a/b/c
+// translate 
+// - app/a/b/c => a/b/c
+// - app => ''
 function removeAppFromPath(path) {
-  return path
-    .split(`/`)
-    .filter(dir => dir.length > 0 && dir !== `app`)
-    .join(`/`)
+  const index = Math.min(path?.length, 4)
+  return path?.startsWith(`app`) ? path.substr(index) : path
 }
 
-async function searchRootFolder(cwd) {
-  let rootPath = ``
-  const folders = cwd.split(`/`)
+async function searchAppRoot() {
+  let appRoot = ``
+  const folders = resolve().split(`/`)
 
   if (folders.length > 0) {
     const promises = []
@@ -49,10 +51,10 @@ async function searchRootFolder(cwd) {
     for (let i = 0; i < foldersInfo.length; i++) {
       const maybeRoot = foldersInfo[i].indexOf(`manifest.json`) !== -1
       if (maybeRoot) {
-        rootPath = paths[i]
+        appRoot = paths[i]
       }
     }
   }
 
-  return rootPath
+  return appRoot
 }

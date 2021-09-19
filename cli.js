@@ -3,14 +3,17 @@
 import parse from "./cli/parse.js"
 import translator from "./cli/translator.js"
 
-try {
-  const [cmd, ...args] = parse(...process.argv.slice(2))
-
-  translator(args[0]?.path).then(resolvePath => {
+async function start () {
+  try {
+    const [cmd, ...args] = parse(...process.argv.slice(2))
+    const resolvePath = await translator(args[0]?.path)
     args[0].path = resolvePath
-    cmd(args)
-  })
+    cmd(...args)
 
-} catch (e) {
-  process.exit(1)
+  } catch (e) {
+    console.error(e.message)
+    process.exit(1)
+  }
 }
+
+start()

@@ -59,8 +59,7 @@ describe(`translator`, () => {
         await translator(`lib`)
         throw new Error(`It did not throw an error`)
       } catch (e) {
-        const cwd = `/private${dir}/lib`
-        expect(e.message).to.equal(`Cannot translate using ${cwd} folder`)
+        expect(e.message).to.equal(`Cannot translate using lib folder`)
       }
     })
   })
