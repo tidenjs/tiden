@@ -1,24 +1,30 @@
 import "../components/header.js"
 
-import { html, linkTo, merge, render } from "tiden"
+import { connect, html, linkTo, render, s } from "tiden"
 
 export default function* header(root) {
-  yield render(
+  render(
     html`
       <x-header .home=${home} .api=${api} .tutorial=${tutorial}></x-header>
     `,
     root
   )
+
+  yield connect(root.children[0], {
+    home,
+    api,
+    tutorial,
+  })
 }
 
-const home = merge([`page`], function* (page) {
+const home = s(`page`, (page) => {
   return { link: linkTo({ id: `home` }), selected: page.id === `home` }
 })
 
-const api = merge([`page`], function* (page) {
+const api = s(`page`, (page) => {
   return { link: linkTo({ id: `api` }), selected: page.id === `api` }
 })
 
-const tutorial = merge([`page`], function* (page) {
+const tutorial = s(`page`, (page) => {
   return { link: linkTo({ id: `tutorial` }), selected: page.id === `tutorial` }
 })

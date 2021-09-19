@@ -1,11 +1,34 @@
-import { router } from "tiden"
+import { fork, html, render, request, router } from "tiden"
 
 const id = `tutorial`
 
 function* saga(root) {
-  const tutorial = (yield import(`../nanos/tutorial.js`)).default
+  const [template, header, sidebar, main] = (yield Promise.all([
+    import(`../nanos/template.js`),
+    import(`../nanos/header.js`),
+    import(`../nanos/tutorialSidebar.js`),
+    import(`../nanos/tutorialMain.js`),
+  ])).map((it) => it.default)
 
-  yield tutorial(root)
+  yield request(`replace`, `history`, {
+    title: `Tiden tutorials`,
+    url: generate(),
+  })
+
+  yield template(root, function* (root) {
+    render(
+      html`
+        <span slot="header"></span>
+        <span slot="sidebar"></span>
+        <span slot="main"></span>
+      `,
+      root
+    )
+
+    yield fork(header, root.children[0])
+    yield fork(sidebar, root.children[1])
+    yield fork(main, root.children[2])
+  })
 }
 
 export function interpret(url) {

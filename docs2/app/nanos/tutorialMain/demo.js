@@ -1,4 +1,4 @@
-import nano from "../tutorial.js"
+import nano from "../tutorialMain.js"
 
 export const examples = {
   
