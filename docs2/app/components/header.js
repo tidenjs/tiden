@@ -12,8 +12,6 @@ component(
       return null
     }
 
-    console.log(888, api)
-
     return html`
       <x-logo></x-logo>
 

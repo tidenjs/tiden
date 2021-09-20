@@ -11,7 +11,6 @@ export default function* tutorialMain(root) {
 }
 
 const markdown = s(`tutorialId`, `tutorials`, (tutorialId, tutorials) => {
-  console.log(888, tutorialId, tutorials)
   const tutorial = tutorials.find((it) => it.name === tutorialId)
 
   return tutorial ? tutorial.markdown : null

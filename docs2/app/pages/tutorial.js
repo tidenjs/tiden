@@ -1,4 +1,4 @@
-import { fork, html, render, request, router } from "tiden"
+import { fork, html, merge, render, request, router } from "tiden"
 
 const id = `tutorial`
 
@@ -10,9 +10,14 @@ function* saga(root) {
     import(`../nanos/tutorialMain.js`),
   ])).map((it) => it.default)
 
-  yield request(`replace`, `history`, {
-    title: `Tiden tutorials`,
-    url: generate(),
+  const page = yield request(`page`)
+  yield request(`set`, `tutorialId`, page.tutorialId || `Home`)
+
+  yield merge([`tutorialId`], function* (tutorialId) {
+    yield request(`replace`, `history`, {
+      title: `Tiden tutorials`,
+      url: generate({ tutorialId }),
+    })
   })
 
   yield template(root, function* (root) {
@@ -32,11 +37,11 @@ function* saga(root) {
 }
 
 export function interpret(url) {
-  return url.pathname.match(new RegExp(`^/tutorial$`))
+  return url.pathname.match(new RegExp(`^/tutorial/?(?<tutorialId>[^/]+)?$`))
 }
 
-export function generate(args) {
-  return `/tutorial`
+export function generate(args = {}) {
+  return `/tutorial${args.tutorialId ? `/${args.tutorialId}` : ``}`
 }
 
 router.register({ id, saga, interpret, generate })

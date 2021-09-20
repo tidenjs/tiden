@@ -18,6 +18,12 @@ export default stream(`tutorials`, function* tutorials() {
         name: `Web Components`,
         markdown: yield download(`1-web-components/article.md`),
       },
+      {
+        name: `Communication: streams, pages & nanos`,
+        markdown: yield download(
+          `communication-streams-pages-nanos/article.md`
+        ),
+      },
     ]
   })
 })

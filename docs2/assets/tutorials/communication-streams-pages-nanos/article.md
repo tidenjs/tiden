@@ -6,4 +6,4 @@ This tutorial is still being built. So far, we only have this one video in the s
 
 Some general theory behind Tiden messaging and communication.
 
-[![Tiden communication](./thumb.png)](https://www.youtube.com/watch?v=GZcaOJEEJxw)
+[![Tiden communication](/assets/tutorials/communication-streams-pages-nanos/thumb.png)](https://www.youtube.com/watch?v=GZcaOJEEJxw)
