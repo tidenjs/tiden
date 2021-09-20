@@ -5,13 +5,11 @@ export default css`
     display: flex;
     align-items: center;
     padding: 10px;
-    height: 100%;
-    box-sizing: border-box;
+    background-color: var(--tone-out-1);
   }
-  
+
   menu x-touchable {
     margin: 0 10px;
-    text-transform: capitalize;
     font-weight: bold;
   }
 

@@ -8,14 +8,12 @@ component(`x-sidebar`, { css }, function sidebar({ methods }) {
     return null
   }
   return html`
-    <menu>
-      ${methods.map(
-        ({ name, selectMethod, isSelected, link }) => html` <li>
-          <x-touchable .link=${link}>
-            <span class="${classMap({ selected: isSelected })}"> ${name} </span>
-          </x-touchable>
-        </li>`
-      )}
-    </menu>
+    ${methods.map(
+      ({ name, selectMethod, isSelected, link }) => html`
+        <x-touchable .link=${link}>
+          <span class=${classMap({ selected: isSelected })}> ${name} </span>
+        </x-touchable>
+      `
+    )}
   `
 })

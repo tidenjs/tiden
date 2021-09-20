@@ -1,19 +1,23 @@
-import { render, html, request } from "tiden"
+import { fork, html, render } from "tiden"
 
-import template from "./template.js"
-import sidebar from "./sidebar.js"
 import header from "./header.js"
 import main from "./main.js"
+import sidebar from "./sidebar.js"
+import template from "./template.js"
 
 export default function* api(root) {
   yield template(root, function* (root) {
-    yield render(
+    render(
       html`
-        <span slot="header" nano=${header}></span>
-        <span slot="sidebar" nano=${sidebar}></span>
-        <span slot="main" nano=${main}></span>
+        <span slot="header"></span>
+        <span slot="sidebar"></span>
+        <span slot="main"></span>
       `,
       root
     )
+
+    yield fork(header, root.children[0])
+    yield fork(sidebar, root.children[1])
+    yield fork(main, root.children[2])
   })
 }

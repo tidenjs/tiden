@@ -1,12 +1,16 @@
 import "../components/sidebar.js"
 
-import { html, merge, render, request } from "tiden"
+import { connect, html, render, request, s } from "tiden"
 
 export default function* sidebar(root) {
-  yield render(html` <x-sidebar .methods=${methods}></x-sidebar> `, root)
+  render(html` <x-sidebar></x-sidebar> `, root)
+
+  yield connect(root.children[0], {
+    methods,
+  })
 }
 
-const methods = merge([`methodId`, `methods`], (methodId, methods) => {
+const methods = s(`methodId`, `methods`, (methodId, methods) => {
   return methods.map((m) => {
     return {
       name: m.name,
