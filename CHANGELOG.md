@@ -1,4 +1,4 @@
-# main
+# 0.5.0
 
 - Fixed an issue where `cache` would fail if metadata did not exist
 - `createNano` no longer adds template boilerplate, as this is usually not needed
@@ -7,7 +7,7 @@
 - `render` can now take properties that have deeply nested generators
 - Added `history` and `pop` streams to stdlib. Basic popstate functionality.
 - Added option to use URL fragments (i.e. "hash URLs"), just set `window.root` to the folder where index files are located (can be relative)
-- Returned gapture groups from Page `interpret` function are now automatically run by `decodeURIComponent`
+- Returned capture groups from Page `interpret` function are now automatically run by `decodeURIComponent`
 - Anonymous `merge` will now start immediately. It cannot wait for a 'first request', because anonymous merges cannot be requested.
 
 # 0.4.1
