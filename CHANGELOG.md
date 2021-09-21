@@ -1,3 +1,7 @@
+# 0.5.1
+
+- Fixed an issue where component() would fail in production only 
+
 # 0.5.0
 
 - Fixed an issue where `cache` would fail if metadata did not exist
