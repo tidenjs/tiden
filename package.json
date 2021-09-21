@@ -1,6 +1,6 @@
 {
   "name": "tiden",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Build dynamic web applications using streams, nano-frontends, and modern native web technology",
   "main": "tiden.js",
   "bin": {
