@@ -1,6 +1,10 @@
+# main
+
+- Added `<body>` to index.html template. Seems Firefox gets cranky otherwise, even though it's not required by spec.
+
 # 0.5.1
 
-- Fixed an issue where component() would fail in production only 
+- Fixed an issue where component() would fail in production only
 
 # 0.5.0
 
