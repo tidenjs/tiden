@@ -21,7 +21,7 @@ component(
     }, [])
 
     const onClickHandler = useMemo(() => {
-      return () => {
+      return (e) => {
         if (!disabled && link.onClick) {
           link.onClick()
         }
@@ -87,7 +87,6 @@ component(
         } else if (!e.ctrlKey && !e.metaKey && link.onClick) {
           // no special keys, treat it as a button click. Don't open link.
           e.preventDefault()
-          onClickHandler()
         } else {
           // special keys, don't treat as button click, let browser open link
           e.stopPropagation()

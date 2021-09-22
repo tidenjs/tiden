@@ -14,6 +14,8 @@ import * as stdlib from "tiden/stdlib.js"
 import { takeEvery } from "redux-saga/effects.js"
 
 export default function* app() {
+  const root = document.getElementById(`root`)
+
   yield subscribe(`error`, function* (e) {
     console.error(e)
     root.innerHTML = `<pre>An error occured:\n\n${e.message}\n\n${e.stack}</pre>`
@@ -28,7 +30,6 @@ export default function* app() {
   yield fork(streams)
   yield fork(stdlib.streams)
 
-  const root = document.getElementById(`root`)
   let task
 
   yield subscribe(

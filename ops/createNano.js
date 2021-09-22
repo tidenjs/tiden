@@ -7,7 +7,7 @@ import o from "outdent"
 import camelToSnake from "../lib/camelToSnake.js"
 import importsBuilder from "./importsBuilder.js"
 
-export default async function createStream({
+export default async function createNano({
   path,
   name,
   body,

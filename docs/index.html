@@ -11,24 +11,6 @@
 <link rel="manifest" href="/manifest.json" />
 <title>Tiden docs</title>
 
-<script data-initial>
-  // this function may be called directly by Tiden. Don't remove it.
-  window.outdated = function (msg) {
-    document.body.innerHTML =
-      "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\n\nMessage was: " +
-      msg
-  }
-
-  window.root = `/`
-
-  window.importmap = {
-    marked: "https://cdn.jsdelivr.net/npm/marked@3.0.2/lib/marked.esm.js",
-  }
-</script>
-<script
-  data-initial
-  src="https://cdn.jsdelivr.net/npm/tiden@0.5.1/init.js"
-></script>
 <style>
   body,
   html {
@@ -52,4 +34,27 @@
     --primary-color: var(--maya-blue);
   }
 </style>
-<div id="root" style="display: contents"></div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "marked": "https://cdn.jsdelivr.net/npm/marked@3.0.2/lib/marked.esm.js"
+    }
+  }
+</script>
+
+<body>
+  <div id="root" style="display: contents"></div>
+  <script data-initial>
+    // this function may be called directly by Tiden. Don't remove it.
+    window.outdated = function (msg) {
+      document.body.innerHTML =
+        "Your browser is outdated. Please turn on updates, or install Chrome, Firefox, Safari, Opera, or Edge.\n\nMessage was: " +
+        msg
+    }
+
+    window.root = `/`
+  </script>
+  <!-- <script data-initial src="https://cdn.jsdelivr.net/npm/tiden@0.5.1/init.js" ></script> -->
+  <script data-initial src="http://localhost:1099/init.js"></script>
+</body>

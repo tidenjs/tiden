@@ -1,6 +1,9 @@
 # main
 
 - Added `<body>` to index.html template. Seems Firefox gets cranky otherwise, even though it's not required by spec.
+- Use `document.write` instead of `document.createElement` in `init.js`, fixes issue with Firefox not loading shim.
+- Removed `window.importmap` variable. Instead, use a normal importmap (Tiden will patch it).
+- Re-added so that `tiden init ...` will use template by default
 
 # 0.5.1
 

@@ -25,7 +25,19 @@ export default ({ name, description, isTest }) => o`
     }
   </style>
 
+  <!-- add your own importmaps here. For example, using config below, this will enable: 
+       import {Element} from "chartjs" 
+  <script type="importmap">
+    {
+      "imports": {
+        "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.js"
+      }
+    }
+  </script>
+  -->
+
   <body> 
+    <div id="root"></div>
     <script data-initial>
       // this function may be called directly by Tiden. Don't remove it.
       window.outdated = function(msg) {
@@ -36,18 +48,11 @@ export default ({ name, description, isTest }) => o`
       // - If it is hosted adjacent to this file (common when using URL fragments, "hash URL") then "./" is suitable.
       // - If server uses rewrites to host 'index.html' on all routes, you probably want to set this to "/"
       window.root = "/"
-
-      // add your own importmaps here. For example, using config below, this will enable:
-      // import {Element} from "chartjs"
-      window.importmap = {
-        // "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.js"
-      }
     </script>
     <script data-initial src="${
       isTest
         ? `http://localhost:1105/init.js`
         : `https://cdn.jsdelivr.net/npm/tiden@0.5.1/init.js`
     }"></script>
-    <div id="root"></div>
   </body>
 `
