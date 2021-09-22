@@ -52,7 +52,7 @@ export default ({ name, description, isTest }) => o`
     <script data-initial src="${
       isTest
         ? `http://localhost:1105/init.js`
-        : `https://cdn.jsdelivr.net/npm/tiden@0.5.1/init.js`
+        : `https://cdn.jsdelivr.net/npm/tiden@0.6.0/init.js`
     }"></script>
   </body>
 `
