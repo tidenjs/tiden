@@ -1,4 +1,5 @@
 import o from "outdent"
+import version from "../../version.js"
 
 export default ({ name, description, isTest }) => o`
   <!DOCTYPE html>
@@ -25,16 +26,20 @@ export default ({ name, description, isTest }) => o`
     }
   </style>
 
-  <!-- add your own importmaps here. For example, using config below, this will enable: 
-       import {Element} from "chartjs" 
-  <script type="importmap">
-    {
-      "imports": {
-        "chartjs": "https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.js"
-      }
+<script type="importmap">
+  {
+    imports: {
+      "tiden": "https://cdn.jsdelivr.net/npm/tiden@${version}/tiden.js",
+      "tiden/": "https://cdn.jsdelivr.net/npm/tiden@${version}/",
+      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
+      "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
+      "redux-saga": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
+      "redux-saga/effects.js": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
+      "redux": "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
+      "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js"
     }
-  </script>
-  -->
+  }
+</script>
 
   <body> 
     <div id="root"></div>
@@ -52,7 +57,7 @@ export default ({ name, description, isTest }) => o`
     <script data-initial src="${
       isTest
         ? `http://localhost:1105/init.js`
-        : `https://cdn.jsdelivr.net/npm/tiden@0.6.0/init.js`
+        : `https://cdn.jsdelivr.net/npm/tiden@${version}/init.js`
     }"></script>
   </body>
 `

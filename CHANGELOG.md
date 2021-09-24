@@ -1,3 +1,7 @@
+# 0.7.0
+
+- Removed injecting of importmap during runtime. It is not possible in Firefox. Instead, importmap is now injected into index.html during `tiden upgrade` command.
+
 # 0.6.0
 
 - Added `<body>` to index.html template. Seems Firefox gets cranky otherwise, even though it's not required by spec.
