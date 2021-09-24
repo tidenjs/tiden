@@ -1,3 +1,7 @@
+# 0.7.1
+
+- Fixed an issue where `tiden init` would create an broken project
+
 # 0.7.0
 
 - Removed injecting of importmap during runtime. It is not possible in Firefox. Instead, importmap is now injected into index.html during `tiden upgrade` command.

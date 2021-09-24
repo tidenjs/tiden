@@ -26,20 +26,20 @@ export default ({ name, description, isTest }) => o`
     }
   </style>
 
-<script type="importmap">
-  {
-    imports: {
-      "tiden": "https://cdn.jsdelivr.net/npm/tiden@${version}/tiden.js",
-      "tiden/": "https://cdn.jsdelivr.net/npm/tiden@${version}/",
-      "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
-      "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
-      "redux-saga": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
-      "redux-saga/effects.js": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
-      "redux": "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
-      "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js"
+  <script type="importmap">
+    {
+      "imports": {
+        "tiden": "https://cdn.jsdelivr.net/npm/tiden@${version}/tiden.js",
+        "tiden/": "https://cdn.jsdelivr.net/npm/tiden@${version}/",
+        "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",
+        "lit-html/": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/",
+        "redux-saga": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-core.esmodules-browsers.js?module",
+        "redux-saga/effects.js": "https://cdn.jsdelivr.net/npm/redux-saga@^1.1.3/dist/redux-saga-effects.esmodules-browsers.js?module",
+        "redux": "https://cdn.jsdelivr.net/npm/redux@^4.0.4/es/redux.mjs",
+        "reselect": "https://cdn.jsdelivr.net/npm/reselect@^4.0.0/es/index.js"
+      }
     }
-  }
-</script>
+  </script>
 
   <body> 
     <div id="root"></div>
