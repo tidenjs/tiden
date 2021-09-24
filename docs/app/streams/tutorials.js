@@ -1,31 +1,37 @@
-import { stream, respondTo } from "tiden"
+import { cache, respondTo, stream } from "tiden"
 import o from "https://cdn.jsdelivr.net/npm/outdent@0.8.0/lib-module/index.js"
 
 export default stream(`tutorials`, function* tutorials() {
-  yield respondTo(`get`, `tutorials`, function* () {
-    return [
-      {
-        name: `Home`,
-        markdown: o`
+  const cached = cache()
+
+  yield respondTo(
+    `get`,
+    `tutorials`,
+    cached(function* () {
+      return [
+        {
+          name: `Home`,
+          markdown: o`
           # Tutorials
 
           Please select a tutorial from the left-side menu.
 
           These are still being produced, so if you're interested check in often. You can also follow [@mikabytes on Twitter](https://twitter.com/mika_bytes) or join us at [ Discord ](https://discord.gg/Yj6UsECFCP)
         `,
-      },
-      {
-        name: `Web Components`,
-        markdown: yield download(`1-web-components/article.md`),
-      },
-      {
-        name: `Communication: streams, pages & nanos`,
-        markdown: yield download(
-          `communication-streams-pages-nanos/article.md`
-        ),
-      },
-    ]
-  })
+        },
+        {
+          name: `Web Components`,
+          markdown: yield download(`1-web-components/article.md`),
+        },
+        {
+          name: `Communication: streams, pages & nanos`,
+          markdown: yield download(
+            `communication-streams-pages-nanos/article.md`
+          ),
+        },
+      ]
+    })
+  )
 })
 
 async function download(path) {
