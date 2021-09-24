@@ -54,7 +54,6 @@ describe(`translator`, () => {
   describe(`invalid path and cwd`, () => {
     it(`should throw error`, async () => {
       await mkdirp(`lib`)
-      process.chdir(`lib`)
       try {
         await translator(`lib`)
         throw new Error(`It did not throw an error`)
@@ -70,7 +69,6 @@ describe(`translator`, () => {
         fs.writeFile(`manifest.json`, o`whatever`),
         mkdirp(`app`)
       ])
-      process.chdir(`app`)
     })
 
     it(`return namespace after app`, async () => {
@@ -98,11 +96,11 @@ describe(`translator`, () => {
     })
 
     it(`return namespace after app`, async () => {
-      expect(await translator()).to.be.equal(`bubble/tea/with/milk/`)
+      expect(await translator()).to.be.equal(`bubble/tea/with/milk`)
     })
 
     it(`return namespace after app`, async () => {
-      expect(await translator(``)).to.be.equal(`bubble/tea/with/milk/`)
+      expect(await translator(``)).to.be.equal(`bubble/tea/with/milk`)
     })
   })
 
@@ -126,7 +124,6 @@ describe(`translator`, () => {
         fs.writeFile(`manifest.json`, o`whatever`),
         mkdirp(`app/bubble/tea/with/milk`)
       ])
-      process.chdir(`app/bubble/tea/with/milk`)
     })
 
     it(`return namespace after app path only`, async () => {

@@ -1,23 +1,15 @@
 import {stat} from 'fs/promises'
 import {relative, resolve} from 'path'
 
-export default async function translator(path, root = ``) {
-  const appRoot = root || await searchRootFolder(resolve())
-  const absolutePath = resolve()
+export default async function translator(rawPath) {
+  const path = rawPath ?? `.`
+  const appRoot = await searchRootFolder(path)
   if (!appRoot) {
-    const cwd = relative(absolutePath, path)
-    throw Error(`Cannot translate using ${cwd} folder`)
+    throw Error(`Cannot translate using ${rawPath} folder`)
   }
 
-  const relativeRoot = removeAppFromPath(relative(appRoot, absolutePath))
-  const isAppPath = path?.startsWith(`app`)
-  const resolvePath = isAppPath 
-    ? removeAppFromPath(path) 
-    : path ?? ``
-
-  const translatedPath = isAppPath
-    ? resolvePath
-    : `${relativeRoot ? relativeRoot + `/` : ``}` + resolvePath
+  const rootToPath = relative(appRoot, path)
+  const translatedPath = removeAppFromPath(rootToPath)
 
   return translatedPath
 }
@@ -31,11 +23,11 @@ function removeAppFromPath(path) {
 }
 
 async function searchRootFolder(path) {
-  const hasManifest = !!(await stat(`${path}/manifest.json`).catch(e => false))
-
   if (path === `/`) {
     return false
   }
+
+  const hasManifest = !!(await stat(`${path}/manifest.json`).catch(e => false))
 
   if (hasManifest) {
     return path
