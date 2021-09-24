@@ -27,7 +27,7 @@ export default async function upgrade() {
       `
 <script type="importmap">
   {
-    imports: {
+    "imports": {
       "tiden": "https://cdn.jsdelivr.net/npm/tiden@${version}/tiden.js",
       "tiden/": "https://cdn.jsdelivr.net/npm/tiden@${version}/",
       "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@1.4.1/lit-html.js",

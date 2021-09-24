@@ -1,3 +1,7 @@
+# 0.7.2
+
+- Fixed an issue where `tiden upgrade` would create a broken project if run from 0.6.0 to 0.7.1
+
 # 0.7.1
 
 - Fixed an issue where `tiden init` would create an broken project
