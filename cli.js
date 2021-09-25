@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 
 import parse from "./cli/parse.js"
+import translator from "./cli/translator.js"
 
-try {
-  const [cmd, ...args] = parse(...process.argv.slice(2))
-  cmd(...args)
-} catch (e) {
+async function start () {
+  try {
+    const [cmd, ...args] = parse(...process.argv.slice(2))
+    const resolvePath = await translator(args[0]?.path)
+    args[0].path = resolvePath
+    cmd(...args)
 
-  if (e.message.includes('spawn watchman')) {
-    console.log('Please check if watchman is installed properly, before using dev-server!')
-  } else {
+  } catch (e) {
     console.error(e.message)
+    process.exit(1)
   }
-
-  process.exit(1)
 }
+
+start()
