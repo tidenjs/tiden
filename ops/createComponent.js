@@ -8,15 +8,15 @@ import camelToSnake from "../lib/camelToSnake.js"
 import importsBuilder from "./importsBuilder.js"
 
 export default async function createComponent({
-  path,
+  namespace,
   name,
   body,
   imports,
   args,
   css,
 }) {
-  const realPath = path ? `app/${path}` : `app`
-  path = path || ``
+  const realPath = namespace ? `app/${namespace}` : `app`
+  namespace = namespace || ``
 
   const file = `${realPath}/components/${name}.js`
   const demo = `${realPath}/components/${name}/demo.js`
@@ -28,19 +28,26 @@ export default async function createComponent({
   }
 
   await mkdirp(realPath + `/components/${name}`)
-  await createComponentFile(path, name, file, body, imports, args)
-  await createCss(path, name, cssFile, css)
-  await createComponentDemo(path, name, demo)
+  await createComponentFile(namespace, name, file, body, imports, args)
+  await createCss(namespace, name, cssFile, css)
+  await createComponentDemo(namespace, name, demo)
 }
 
-async function createComponentFile(path, name, file, body, imports, args = []) {
-  const nss = path ? path.split(`/`) : []
+async function createComponentFile(
+  namespace,
+  name,
+  file,
+  body,
+  imports,
+  args = []
+) {
+  const nss = namespace ? namespace.split(`/`) : []
   const allImports = importsBuilder({
     tiden: {
       html: [`html`],
       component: [`component`],
     },
-    [`./${path ? `${path}/` : ``}${name}/css.js`]: {
+    [`./${namespace ? `${namespace}/` : ``}${name}/css.js`]: {
       default: [`css`],
     },
   })
@@ -81,7 +88,7 @@ async function createComponentFile(path, name, file, body, imports, args = []) {
   }
 }
 
-async function createComponentDemo(path, name, file) {
+async function createComponentDemo(namespace, name, file) {
   await fs.writeFile(
     file,
     o`
@@ -102,7 +109,7 @@ async function createComponentDemo(path, name, file) {
   )
 }
 
-async function createCss(path, name, file, css) {
+async function createCss(namespace, name, file, css) {
   css = css || `* { font-size: 24px }`
 
   await fs.writeFile(

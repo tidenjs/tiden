@@ -1,15 +1,5 @@
 import minimist from "minimist"
 
-import {
-  init,
-  upgrade,
-  createStream,
-  createPage,
-  createNano,
-  createComponent,
-} from "../ops.js"
-import ide from "../ide.js"
-
 export default function run(...slice) {
   const parsed = minimist(slice, {
     alias: {
@@ -24,7 +14,7 @@ export default function run(...slice) {
 
   switch (verb) {
     case `start`: {
-      return [ide, {}]
+      return [`ide`, {}]
       break
     }
     case `init`: {
@@ -36,10 +26,10 @@ export default function run(...slice) {
         )
       }
 
-      return [init, { name, description: nargs.description }]
+      return [`init`, { name, description: nargs.description }]
     }
     case `upgrade`: {
-      return [upgrade]
+      return [`upgrade`]
     }
     case `create`: {
       // Usage 1: tiden create stream myStream
@@ -47,15 +37,15 @@ export default function run(...slice) {
 
       const noun = arg1
       const name = arg2
-      const path = arg3
+      const namespace = arg3
 
       if (!noun || !name) {
         throw new Error(
-          `Usage: create <thing> <name> [path] (where thing can be 'stream', 'component', 'page' or 'nano')`
+          `Usage: create <thing> <name> [namespace] (where thing can be 'stream', 'component', 'page' or 'nano')`
         )
       }
 
-      return create(noun, name, path, parsed)
+      return create(noun, name, namespace, parsed)
     }
     case `help`: {
       return showHelp()
@@ -71,22 +61,24 @@ function showHelp() {
     init <name> [--description="some description"] [-d "some description"]
     upgrade
     start
-    create stream <name> [path]
-    create nano <name> [path]
-    create page <name> [path] [--pathname="/custom/url"] [-pn "/custom/url"]
-    create component <name> [path]
+    create stream <name> [namespace]
+    create nano <name> [namespace]
+    create page <name> [namespace] [--pathname="/custom/url"] [-pn "/custom/url"]
+    create component <name> [namespace]
   `)
 }
 
-function create(noun, name, path, extras) {
+function create(noun, name, namespace, extras) {
+  namespace ||= ``
+
   if (noun === `stream`) {
-    return [createStream, { path, name }]
+    return [`createStream`, { namespace, name }]
   } else if (noun === `page`) {
-    return [createPage, { path, name, pathname: extras.pathname }]
+    return [`createPage`, { namespace, name, pathname: extras.pathname }]
   } else if (noun === `nano`) {
-    return [createNano, { path, name }]
+    return [`createNano`, { namespace, name }]
   } else if (noun === `component`) {
-    return [createComponent, { path, name }]
+    return [`createComponent`, { namespace, name }]
   } else {
     throw new Error(
       `Bad noun '${noun}'. Available: 'stream', 'component', 'page' or 'nano'`

@@ -29,7 +29,7 @@ describe(`createNano`, () => {
 
     it(`should throw an error`, async () => {
       try {
-        await createNano({ path: `one`, name: `myNano` })
+        await createNano({ namespace: `one`, name: `myNano` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A nano 'myNano' already exists`)
@@ -39,7 +39,7 @@ describe(`createNano`, () => {
 
   describe(`with no existing nano`, () => {
     beforeEach(async () => {
-      await createNano({ path: `one`, name: `myNano` })
+      await createNano({ namespace: `one`, name: `myNano` })
     })
 
     it(`should create nano`, async () => {
@@ -66,7 +66,7 @@ describe(`createNano`, () => {
   describe(`with body`, () => {
     beforeEach(async () => {
       await createNano({
-        path: `one`,
+        namespace: `one`,
         name: `myNano`,
         body: o`
           root.innerHTML = \`Hello there\`
@@ -82,7 +82,7 @@ describe(`createNano`, () => {
   describe(`with imports`, () => {
     beforeEach(async () => {
       await createNano({
-        path: `one`,
+        namespace: `one`,
         name: `myNano`,
         imports: {
           tiden: { render: [`render`] },

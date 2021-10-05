@@ -33,7 +33,7 @@ describe(`createStream`, () => {
   describe(`with body argument`, () => {
     it(`should create put whatever given in body`, async () => {
       await createStream({
-        path: ``,
+        namespace: ``,
         name: `niagara`,
         body: `I'm a little\nmonkey`,
       })

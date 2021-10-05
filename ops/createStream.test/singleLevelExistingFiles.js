@@ -24,7 +24,7 @@ export default function () {
 
     it(`should throw an error`, async () => {
       try {
-        await createStream({ path: ``, name: `niagara` })
+        await createStream({ namespace: ``, name: `niagara` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A stream 'niagara' already exists in app`)
@@ -56,7 +56,7 @@ export default function () {
     })
 
     it(`should add to list`, async () => {
-      await createStream({ path: ``, name: `niagara` })
+      await createStream({ namespace: ``, name: `niagara` })
 
       expect(await read(`app/streams.js`)).to.equal(
         o`

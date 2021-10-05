@@ -6,7 +6,7 @@ import { expect } from "chai"
 export default function () {
   describe(`when no files exists`, () => {
     beforeEach(async () => {
-      await createPage({ path: `one/two`, name: `myPage` })
+      await createPage({ namespace: `one/two`, name: `myPage` })
     })
 
     it(`should create page file`, async () => {
@@ -20,7 +20,6 @@ export default function () {
         `
       )
     })
-
 
     it(`should create pages.js`, async () => {
       expect(await read(`app/one/two/pages.js`)).to.equal(

@@ -6,7 +6,7 @@ import { expect } from "chai"
 export default function () {
   describe(`when no files exists`, () => {
     beforeEach(async () => {
-      await createStream({ path: `cart/checkout`, name: `personalInfo` })
+      await createStream({ namespace: `cart/checkout`, name: `personalInfo` })
     })
 
     it(`should create stream file`, async () => {
