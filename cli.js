@@ -19,7 +19,6 @@ async function start() {
     // if cwd() is in a namespace, then implicitly add it to the command namespace
     const [name, ...args] = addNamespace(command, namespace)
 
-    console.log(root, name, ...args)
     process.chdir(root)
 
     if (name === `ide`) {
