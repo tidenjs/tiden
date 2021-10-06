@@ -29,7 +29,7 @@ describe(`createComponent`, () => {
 
     it(`should throw an error`, async () => {
       try {
-        await createComponent({ path: `one`, name: `myComponent` })
+        await createComponent({ namespace: `one`, name: `myComponent` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A component 'myComponent' already exists`)
@@ -39,7 +39,7 @@ describe(`createComponent`, () => {
 
   describe(`with no existing component`, () => {
     beforeEach(async () => {
-      await createComponent({ path: `one`, name: `myComponent` })
+      await createComponent({ namespace: `one`, name: `myComponent` })
     })
 
     it(`should create component`, async () => {
@@ -76,7 +76,7 @@ describe(`createComponent`, () => {
   describe(`with body`, () => {
     beforeEach(async () => {
       await createComponent({
-        path: `one`,
+        namespace: `one`,
         name: `myComponent`,
         body: o`
           return html\`Muppet show\`

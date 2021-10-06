@@ -5,24 +5,24 @@ import mkdirp from "../lib/mkdirp.js"
 import { resolve } from "path"
 import o from "outdent"
 
-export default async function createStream({ path, name, body }) {
-  path = path ? `app/${path}` : `app`
+export default async function createStream({ namespace, name, body }) {
+  namespace = namespace ? `app/${namespace}` : `app`
 
-  const file = `${path}/streams/${name}.js`
+  const file = `${namespace}/streams/${name}.js`
   const exists = await fileExists(file)
 
   if (exists) {
     throw new Error(`A stream '${name}' already exists in app`)
   }
 
-  await mkdirp(path + `/streams`)
-  await createStreamFile(path, name, file, body)
-  await addToStreamsList(path, name)
-  await addToNs(path)
-  await addToGrandParents(path)
+  await mkdirp(namespace + `/streams`)
+  await createStreamFile(namespace, name, file, body)
+  await addToStreamsList(namespace, name)
+  await addToNs(namespace)
+  await addToGrandParents(namespace)
 }
 
-async function createStreamFile(path, name, file, body) {
+async function createStreamFile(namespace, name, file, body) {
   if (body === undefined) {
     body = o`
       yield respondTo(\`get\`, \`${name}\`, function*() {
@@ -45,8 +45,8 @@ async function createStreamFile(path, name, file, body) {
   )
 }
 
-async function addToStreamsList(path, name) {
-  const streamsFile = `${path}/streams.js`
+async function addToStreamsList(namespace, name) {
+  const streamsFile = `${namespace}/streams.js`
   let c
   if (await fileExists(streamsFile)) {
     c = await fs.readFile(streamsFile, `utf8`)
@@ -81,10 +81,10 @@ async function addToStreamsList(path, name) {
   await fs.writeFile(streamsFile, c)
 }
 
-async function addToNs(path) {
-  const nss = path.split(`/`)
+async function addToNs(namespace) {
+  const nss = namespace.split(`/`)
   const ns = nss.pop()
-  const nsFile = `${path}.js`
+  const nsFile = `${namespace}.js`
 
   let c
   if (await fileExists(nsFile)) {
@@ -110,8 +110,8 @@ async function addToNs(path) {
   await fs.writeFile(nsFile, c)
 }
 
-async function addToGrandParents(path) {
-  const nss = path.split(`/`)
+async function addToGrandParents(namespace) {
+  const nss = namespace.split(`/`)
 
   for (let i = nss.length - 2; i >= 0; i--) {
     const ns = nss[i]

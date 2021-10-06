@@ -29,7 +29,7 @@ export default function () {
         `
       )
 
-      await createPage({ path: `one/two`, name: `otherPage` })
+      await createPage({ namespace: `one/two`, name: `otherPage` })
     })
 
     it(`should update pages.js`, async () => {

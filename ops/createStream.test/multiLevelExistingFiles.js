@@ -43,7 +43,7 @@ export default function () {
         `
       )
 
-      await createStream({ path: `cart/checkout`, name: `personalInfo` })
+      await createStream({ namespace: `cart/checkout`, name: `personalInfo` })
     })
 
     it(`should create stream file`, async () => {

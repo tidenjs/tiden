@@ -18,7 +18,7 @@ export default function () {
 
     it(`should throw an error`, async () => {
       try {
-        await createPage({ path: ``, name: `home` })
+        await createPage({ namespace: ``, name: `home` })
         throw new Error(`It did not throw an error`)
       } catch (e) {
         expect(e.message).to.equal(`A page 'home' already exists`)
@@ -48,7 +48,7 @@ export default function () {
     })
 
     it(`should add to list`, async () => {
-      await createPage({ path: ``, name: `home` })
+      await createPage({ namespace: ``, name: `home` })
 
       expect(await read(`app/pages.js`)).to.equal(
         o`

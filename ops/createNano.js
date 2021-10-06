@@ -8,14 +8,14 @@ import camelToSnake from "../lib/camelToSnake.js"
 import importsBuilder from "./importsBuilder.js"
 
 export default async function createNano({
-  path,
+  namespace,
   name,
   body,
   imports,
   args = [],
 }) {
   imports = imports || {}
-  const realPath = path ? `app/${path}` : `app`
+  const realPath = namespace ? `app/${namespace}` : `app`
 
   const file = `${realPath}/nanos/${name}.js`
   const demo = `${realPath}/nanos/${name}/demo.js`
@@ -26,11 +26,11 @@ export default async function createNano({
   }
 
   await mkdirp(realPath + `/nanos/${name}`)
-  await createNanoFile(path, name, file, body, imports, args)
-  await createNanoDemo(path, name, demo)
+  await createNanoFile(namespace, name, file, body, imports, args)
+  await createNanoDemo(namespace, name, demo)
 }
 
-async function createNanoFile(path, name, file, body, imports, args) {
+async function createNanoFile(namespace, name, file, body, imports, args) {
   const allImports = importsBuilder({
     tiden: {
       connect: [`connect`],
@@ -38,7 +38,7 @@ async function createNanoFile(path, name, file, body, imports, args) {
     },
   })
 
-  const nss = path ? path.split(`/`) : []
+  const nss = namespace ? namespace.split(`/`) : []
 
   if (nss.length === 0) {
     nss.push(`x`)
@@ -64,7 +64,7 @@ async function createNanoFile(path, name, file, body, imports, args) {
   )
 }
 
-async function createNanoDemo(path, name, file) {
+async function createNanoDemo(namespace, name, file) {
   await fs.writeFile(
     file,
     o`
