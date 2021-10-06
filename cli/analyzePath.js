@@ -13,10 +13,14 @@ export default async function analyzePath(path, { noRoot = false } = {}) {
 
   if (!root) {
     if (!noRoot) {
+      // the caller wants to make sure that there is a root (using the 'noRoot' flag), 
+      // but there wasn't one, so we throw an error
       throw new Error(`Cannot analyze '${path}' folder`)
     }
   } else {
     if (noRoot) {
+      // the caller wanted to make sure that there is NOT a root (using the 'noRoot flag),
+      // but we found a root. So we throw an error
       throw new Error(`This path already has a Tiden project.`)
     }
   }
