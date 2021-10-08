@@ -1,7 +1,6 @@
 import { expect } from "chai"
 import o from "outdent"
 
-import ide from "../ide.js"
 import parse from "./parse.js"
 
 describe(`cli`, () => {
