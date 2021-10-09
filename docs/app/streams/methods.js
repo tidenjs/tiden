@@ -82,7 +82,7 @@ export default stream(`methods`, function* methods() {
 
                         component(\`x-bird\`, {}, function bird({name, title, onChange, close}) {
                           return html\`
-                            <h1>\${title}>h1<
+                            <h1>\${title}<h1>
 
                             <b>\${name}</b>: Tweet tweet.
 
