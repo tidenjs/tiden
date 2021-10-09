@@ -1,9 +1,16 @@
-export default async function getFiles({ match, exclude }) {
+import { url } from "tiden"
+
+export default async function getFiles({ include, exclude }) {
   const res = await fetch(
-    url`/files`({
+    url`/project/files`({
       include,
       exclude,
-    })
+    }),
+    {
+      headers: {
+        accept: `application/json`,
+      },
+    }
   )
 
   if (!res.ok) {

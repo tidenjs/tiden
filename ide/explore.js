@@ -1,52 +1,48 @@
-import getFiles from "./getFiles.js"
+import getFilesReal from "./getFiles.js"
 
 const matcher =
-  /^(?<path>app(\/(?<namespace>.*))*\/(?<type>.*)s\/(?<id>.*))\/demo\.js$/
+  /^(?<path>app(\/(?<namespace>.*))*\/(?<type>.*)s\/(?<name>.*))\/demo\.js$/
 
-export default async function explore(getFiles = getFiles) {
+export default async function explore(getFiles = getFilesReal) {
   const files = await getFiles({ include: `**/demo.js` })
 
   return files
     .map((it) => it.match(matcher)?.groups)
     .filter((it) => it)
     .map((it) => mappers[it.type](it))
-    .reduce(organizer, {})
 }
 
 const mappers = {
-  component: ({ namespace, type, id, path }) => ({
+  component: ({ namespace, type, name, path }) => ({
+    id: `${namespace || ``}-${type}-${name}`,
     type: `component`,
-    id,
+    name,
     namespace: namespace || ``,
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
     cssPath: `${path}/css.js`,
   }),
-  nano: ({ namespace, type, id, path }) => ({
+  nano: ({ namespace, type, name, path }) => ({
+    id: `${namespace || ``}-${type}-${name}`,
     type: `nano`,
-    id,
+    name,
     namespace: namespace || ``,
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
   }),
-  stream: ({ namespace, type, id, path }) => ({
+  stream: ({ namespace, type, name, path }) => ({
+    id: `${namespace || ``}-${type}-${name}`,
     type: `stream`,
-    id,
+    name,
     namespace: namespace || ``,
     path: `${path}.js`,
   }),
-  page: ({ namespace, type, id, path }) => ({
+  page: ({ namespace, type, name, path }) => ({
+    id: `${namespace || ``}-${type}-${name}`,
     type: `page`,
-    id,
+    name,
     namespace: namespace || ``,
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
   }),
-}
-
-function organizer(obj, entry) {
-  const plural = `${entry.type}s`
-  obj[plural] ||= []
-  obj[plural].push(entry)
-  return obj
 }
