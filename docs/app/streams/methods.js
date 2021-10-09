@@ -26,7 +26,7 @@ export default stream(`methods`, function* methods() {
 
                 yield respondTo(\`get\`, \`fingerprint\`, cached(function*() {
                 console.log(\`hit\`)
-                return navigator.userAgent.reduce((sum, char) =&gt; sum + char.charCodeAt(0), 0)
+                return navigator.userAgent.reduce((sum, char) => sum + char.charCodeAt(0), 0)
                 })
 
                 yield request(\`get\`, \`fingerprint\`)
@@ -34,7 +34,7 @@ export default stream(`methods`, function* methods() {
                 // 'hit' is only displayed once
           \`\`\`  \`\`\`
                 
-                const cached = cache((number, {user}) =&gt; \`\${user}-\${number}\` )
+                const cached = cache((number, {user}) => \`\${user}-\${number}\` )
                 yield respondTo(\`get\`, \`someNumber\`, cached(function*(number, {user}) {
                    console.log(user, number)
                    return \`hello\`
@@ -82,13 +82,13 @@ export default stream(`methods`, function* methods() {
 
                         component(\`x-bird\`, {}, function bird({name, title, onChange, close}) {
                           return html\`
-                            &lt;h1&gt;\${title}&gt;h1&lt;
+                            <h1>\${title}>h1<
 
-                            &lt;b&gt;\${name}&lt;/b&gt;: Tweet tweet.
+                            <b>\${name}</b>: Tweet tweet.
 
-                            &lt;input .input=\${(e) =&gt; onChange(e.target.value)}&gt; &lt;/input&gt;
+                            <input .input=\${(e) => onChange(e.target.value)}> </input>
 
-                            &lt;button .onClick=\${close}&gt;Close&lt;/button&gt;
+                            <button .onClick=\${close}>Close</button>
                           \`
                         })
 
@@ -96,7 +96,7 @@ export default stream(`methods`, function* methods() {
 
                         const ret = yield connect(el, {
                           title: \`Birds!!!\`,
-                          name: s(\`bird\`, bird =&gt; bird.name),
+                          name: s(\`bird\`, bird => bird.name),
                           *onChange(newBirdName) {
                             yield request(\`set\`, \`bird\`, newBirdName)
                           },
@@ -112,7 +112,7 @@ export default stream(`methods`, function* methods() {
                         function* connect(el: HTMLElement, selectors: Object, params?: Params): Task
 
                         interface Params {
-                            assets?: Array&lt;string&gt;,
+                            assets?: Array<string>,
                             onReady?: GeneratorFunction
                         }
 
@@ -149,10 +149,10 @@ export default stream(`methods`, function* methods() {
                         s(\`language\`) 
 
                         // set the id from latest value of of \`language\` stream
-                        s(\`language\`, language =&gt; language.id)
+                        s(\`language\`, language => language.id)
 
                         // combine serveral streams
-                        s(\`language\`, \`translations\`, (language, translations) =&gt; 
+                        s(\`language\`, \`translations\`, (language, translations) => 
                         translations[language.id].bird)
 
 
@@ -266,7 +266,7 @@ export default stream(`methods`, function* methods() {
 
           ### Interface
                       
-                        merge(streams: array&lt;string&gt;, stream: string, actor: GeneratorFunction)
+                        merge(streams: array<string>, stream: string, actor: GeneratorFunction)
              
     `,
       },
@@ -462,7 +462,7 @@ export default stream(`methods`, function* methods() {
                         console.log(info.data.count) // 1000
 
                         // we'll be stuck here for 5 seconds
-                        const info2 = yield waitFor(\`lizardAttack\`, ({count}, metadata) =&gt; count === 1005 )
+                        const info2 = yield waitFor(\`lizardAttack\`, ({count}, metadata) => count === 1005 )
                         console.log(info2.data.count) // 1005
 
           ### Interface
@@ -509,7 +509,7 @@ export default stream(`methods`, function* methods() {
                       
                         yield simpleConcept(\`bird\`, {id: \`satanic nightjar\`, updatedAt: new Date()})
 
-                        yield subscribe(\`bird\`, whenChanged(({id}) =&gt; id, function*(bird) {
+                        yield subscribe(\`bird\`, whenChanged(({id}) => id, function*(bird) {
                           console.log(\`There was a new bird: \${bird}\`)
                         }))
 
@@ -568,8 +568,8 @@ export default stream(`methods`, function* methods() {
 
           ### Interface
                       
-                        all(sagas: Object&lt;string, Task&gt;): Object&lt;string, Task&gt;
-                        all(sagas: array&lt;Task&gt;): array&lt;Task&gt;
+                        all(sagas: Object<string, Task>): Object<string, Task>
+                        all(sagas: array<Task>): array<Task>
             
     `,
       },
