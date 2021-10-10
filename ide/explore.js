@@ -17,7 +17,7 @@ const mappers = {
     id: `${namespace || ``}-${type}-${name}`,
     type: `component`,
     name,
-    namespace: namespace || ``,
+    namespace: parseNamespace(namespace),
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
     cssPath: `${path}/css.js`,
@@ -26,7 +26,7 @@ const mappers = {
     id: `${namespace || ``}-${type}-${name}`,
     type: `nano`,
     name,
-    namespace: namespace || ``,
+    namespace: parseNamespace(namespace),
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
   }),
@@ -34,15 +34,19 @@ const mappers = {
     id: `${namespace || ``}-${type}-${name}`,
     type: `stream`,
     name,
-    namespace: namespace || ``,
+    namespace: parseNamespace(namespace),
     path: `${path}.js`,
   }),
   page: ({ namespace, type, name, path }) => ({
     id: `${namespace || ``}-${type}-${name}`,
     type: `page`,
     name,
-    namespace: namespace || ``,
+    namespace: parseNamespace(namespace),
     path: `${path}.js`,
     demoPath: `${path}/demo.js`,
   }),
+}
+
+function parseNamespace(namespace = ``) {
+  return namespace.split(`/`).filter((it) => !!it)
 }

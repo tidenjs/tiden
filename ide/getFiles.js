@@ -1,11 +1,7 @@
-import { url } from "tiden"
-
 export default async function getFiles({ include, exclude }) {
   const res = await fetch(
-    url`/project/files`({
-      include,
-      exclude,
-    }),
+    `/project/files?${(include =
+      encodeURIComponent(include))}&exclude=${encodeURIComponent(exclude)}`,
     {
       headers: {
         accept: `application/json`,

@@ -1,12 +1,23 @@
 import { html, component } from "tiden"
+import { repeat } from "lit-html/directives/repeat.js"
 
 import css from "./sidebar/css.js"
+import typeToIcon from "../typeToIcon.js"
 
-component(`x-sidebar`, { css }, function sidebar({ parts }) {
-  return html`
-    <pre>
-      ${JSON.stringify(parts)}
-    </pre
-    >
-  `
+component(`x-sidebar`, { css }, function sidebar({ data }) {
+  return html` ${render(data)} `
 })
+
+function render(obj) {
+  return html` ${repeat(obj.parts, (part) => part.id, renderPart)} `
+}
+
+function renderPart(part) {
+  return html`
+    <div class="part">
+      <div class="expander"></div>
+      <div class="icon">${typeToIcon(part.type)}</div>
+      <div class="name">${part.name}</div>
+    </div>
+  `
+}
