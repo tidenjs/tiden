@@ -19,20 +19,25 @@ const data = s(`parts`, `expanded`, (parts, expanded) => {
     namespaces: {},
   }
 
-  parts = parts.map((part) => ({
-    ...part,
-    isExpanded: expanded.includes(part.id),
-    *expand() {
-      yield request(`set`, `expanded`, [...expanded, part.id])
-    },
-    *collapse() {
-      yield request(
-        `set`,
-        `expanded`,
-        expanded.filter((it) => it !== part.id)
-      )
-    },
-  }))
+  parts = parts.map((part) => {
+    const isExpanded = expanded.includes(part.id)
+
+    return {
+      ...part,
+      isExpanded,
+      *toggle() {
+        if (!isExpanded) {
+          yield request(`set`, `expanded`, [...expanded, part.id])
+        } else {
+          yield request(
+            `set`,
+            `expanded`,
+            expanded.filter((it) => it !== part.id)
+          )
+        }
+      },
+    }
+  })
 
   for (const part of parts) {
     addPartToNamespace(part, data, part.namespace)

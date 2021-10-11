@@ -1,9 +1,8 @@
-import { call } from "redux-saga/effects.js"
+import { all, publish, respondTo, stream, waitFor } from "tiden"
 import { eventChannel } from "redux-saga"
-import { publish, respondTo, stream, waitFor } from "tiden"
 import hmr from "tiden/lib/api/hmr.js"
 
-import explore from "../../explore.js"
+import explore from "../../lib/explore.js"
 
 export default stream(`parts`, function* parts() {
   let parts
@@ -12,6 +11,8 @@ export default stream(`parts`, function* parts() {
     if (!parts) {
       parts = yield explore()
     }
+
+    yield all(parts.map(addExamplesToPart))
 
     return parts
   })
@@ -38,16 +39,30 @@ export default stream(`parts`, function* parts() {
     if (newPart) {
       // ensure only changed part is replaced, keep all old objects, and return new array
       // this is to make sure that object equality is maintained for unchanged entries
+      yield addExamplesToPart(newPart)
       const result = []
+      let found = false
+
       for (let i = 0; i < parts.length; i++) {
         if (parts[i].id === newPart.id) {
           result[i] = newPart
+          found = true
+          break
         } else {
           result[i] = parts[i]
         }
+      }
+
+      if (!found) {
+        parts.push(newPart)
       }
       parts = result
       yield publish(`parts`, parts)
     }
   }
 })
+
+function* addExamplesToPart(part) {
+  const demo = yield import(part.demoPath)
+  part.examples = demo.examples
+}
