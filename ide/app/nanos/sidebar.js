@@ -2,6 +2,8 @@ import "../components/sidebar.js"
 
 import { connect, request, s, simpleStream } from "tiden"
 
+import typeToIcon from "../typeToIcon.js"
+
 export default function* sidebar(root) {
   const el = document.createElement(`x-sidebar`)
   root.appendChild(el)
@@ -9,22 +11,34 @@ export default function* sidebar(root) {
   yield simpleStream(`expanded`, [])
 
   yield connect(el, {
-    data,
+    items,
   })
 }
 
-const data = s(`parts`, `expanded`, (parts, expanded) => {
+const items = s(`parts`, `expanded`, (parts, expanded) => {
   const data = {
-    parts: [],
-    namespaces: {},
+    children: [],
   }
 
-  parts = parts.map((part) => {
+  data.children = parts.map((part) => {
     const isExpanded = expanded.includes(part.id)
 
+    let children
+
+    if (part.type === `component`) {
+      children = Object.keys(part.examples).map((example) => {
+        return {
+          title: example,
+          isExpanded: false,
+        }
+      })
+    }
+
     return {
-      ...part,
+      title: part.name,
+      theme: typeToTheme(part.type),
       isExpanded,
+      children,
       *toggle() {
         if (!isExpanded) {
           yield request(`set`, `expanded`, [...expanded, part.id])
@@ -38,10 +52,6 @@ const data = s(`parts`, `expanded`, (parts, expanded) => {
       },
     }
   })
-
-  for (const part of parts) {
-    addPartToNamespace(part, data, part.namespace)
-  }
 
   return data
 })
@@ -57,5 +67,18 @@ function addPartToNamespace(part, obj, namespace) {
       }
     }
     addPartToNamespace(part, obj.namespaces[namespace[0]], namespace.slice(1))
+  }
+}
+
+function typeToTheme(type) {
+  switch (type) {
+    case `component`:
+      return `earth`
+    case `nano`:
+      return `gray`
+    case `stream`:
+      return `blue`
+    case `page`:
+      return `white`
   }
 }

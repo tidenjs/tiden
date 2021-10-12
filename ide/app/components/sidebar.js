@@ -3,27 +3,32 @@ import { repeat } from "lit-html/directives/repeat.js"
 
 import "../components/touchable.js"
 import css from "./sidebar/css.js"
-import typeToIcon from "../typeToIcon.js"
 
-component(`x-sidebar`, { css }, function sidebar({ data }) {
-  if (!data) {
+component(`x-sidebar`, { css }, function sidebar({ items }) {
+  if (!items) {
     return null
   }
-  return html` ${render(data)} `
+  return html` ${render(items.children)} `
 })
 
-function render(obj) {
-  return html` ${repeat(obj.parts, (part) => part.id, renderPart)} `
+function render(items) {
+  return html` ${repeat(items, (child) => child.id, renderChild)} `
 }
 
-function renderPart(part) {
+function renderChild(child) {
   return html`
-    <div class="part">
-      <x-touchable .link=${{ onClick: part.toggle }}>
-        <div class="expander">${part.isExpanded ? `▾` : `▸`}</div>
-      </x-touchable>
-      <div class="icon">${typeToIcon(part.type)}</div>
-      <div class="name">${part.name}</div>
+    <div class="child ${child.theme ? `theme-${child.theme}` : ``}">
+      <div class="self">
+        <x-touchable .link=${{ onClick: child.toggle }}>
+          <div class="expander">
+            ${!child.toggle ? `` : child.isExpanded ? `▾` : `▸`}
+          </div>
+        </x-touchable>
+        <div class="name">${child.title}</div>
+      </div>
+      ${child.children && child.children.length > 0 && child.isExpanded
+        ? html` <div class="children">${render(child.children)}</div>`
+        : ``}
     </div>
   `
 }
