@@ -2,13 +2,24 @@ import { html, component } from "tiden"
 import { repeat } from "lit-html/directives/repeat.js"
 
 import "../components/touchable.js"
+import "../components/filters.js"
+import "../components/icon.js"
+import "../components/input.js"
 import css from "./sidebar/css.js"
 
-component(`x-sidebar`, { css }, function sidebar({ items }) {
+component(`x-sidebar`, { css }, function sidebar({ search, items, filters }) {
   if (!items) {
     return null
   }
-  return html` ${render(items.children)} `
+  return html`
+    <x-input
+      .value=${search.text}
+      .change=${search.callback}
+      .placeholder=${"Write a word to filter..."}
+    ></x-input>
+    <x-filters .filters=${filters}></x-filters>
+    ${render(items)}
+  `
 })
 
 function render(items) {
@@ -17,13 +28,14 @@ function render(items) {
 
 function renderChild(child) {
   return html`
-    <div class="child ${child.theme ? `theme-${child.theme}` : ``}">
+    <div class="child">
       <div class="self">
         <x-touchable .link=${{ onClick: child.toggle }}>
           <div class="expander">
             ${!child.toggle ? `` : child.isExpanded ? `▾` : `▸`}
           </div>
         </x-touchable>
+        <x-icon .type=${child.type}></x-icon>
         <div class="name">${child.title}</div>
       </div>
       ${child.children && child.children.length > 0 && child.isExpanded

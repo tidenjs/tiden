@@ -2,25 +2,70 @@ import "../components/sidebar.js"
 
 import { connect, request, s, simpleStream } from "tiden"
 
-import typeToIcon from "../typeToIcon.js"
-
 export default function* sidebar(root) {
   const el = document.createElement(`x-sidebar`)
   root.appendChild(el)
 
+  yield simpleStream(`search`, ``)
   yield simpleStream(`expanded`, [])
+  yield simpleStream(`filters`, [
+    {
+      type: `component`,
+      name: `Components`,
+      isSelected: true,
+    },
+    {
+      type: `stream`,
+      name: `Streams`,
+      isSelected: true,
+    },
+    {
+      type: `nano`,
+      name: `Nanos`,
+      isSelected: true,
+    },
+    {
+      type: `page`,
+      name: `Pages`,
+      isSelected: true,
+    },
+  ])
 
   yield connect(el, {
     items,
+    filters,
+    search,
   })
 }
 
-const items = s(`parts`, `expanded`, (parts, expanded) => {
-  const data = {
-    children: [],
+const search = s(`search`, (search) => {
+  return {
+    text: search,
+    *callback(newSearch) {
+      yield request(`set`, `search`, newSearch)
+    },
   }
+})
 
-  data.children = parts.map((part) => {
+const filters = s(`filters`, (filters) => {
+  return filters.map((filter) => {
+    return {
+      ...filter,
+      *toggle() {
+        yield request(
+          `set`,
+          `filters`,
+          filters.map((it) =>
+            it.type === filter.type ? { ...it, isSelected: !it.isSelected } : it
+          )
+        )
+      },
+    }
+  })
+})
+
+const allItems = s(`parts`, `expanded`, (parts, expanded) => {
+  const items = parts.map((part) => {
     const isExpanded = expanded.includes(part.id)
 
     let children
@@ -36,7 +81,7 @@ const items = s(`parts`, `expanded`, (parts, expanded) => {
 
     return {
       title: part.name,
-      theme: typeToTheme(part.type),
+      type: part.type,
       isExpanded,
       children,
       *toggle() {
@@ -53,7 +98,17 @@ const items = s(`parts`, `expanded`, (parts, expanded) => {
     }
   })
 
-  return data
+  return items
+})
+
+const items = s(allItems, `filters`, `search`, (items, filters, search) => {
+  return items.filter(
+    (item) =>
+      !!filters.find(
+        (filter) => filter.type === item.type && filter.isSelected
+      ) &&
+      (!search || fuzzy(item, search))
+  )
 })
 
 function addPartToNamespace(part, obj, namespace) {
@@ -75,10 +130,14 @@ function typeToTheme(type) {
     case `component`:
       return `earth`
     case `nano`:
-      return `gray`
+      return `dust`
     case `stream`:
-      return `blue`
+      return `water`
     case `page`:
-      return `white`
+      return `pig`
   }
+}
+
+function fuzzy(text, search) {
+  return !search.split(` `).find((s) => !text.includes(s))
 }

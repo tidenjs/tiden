@@ -4,12 +4,17 @@ export default css`
   :host {
     display: flex;
     flex-direction: column;
-    border-right: 1px solid gray;
+    padding: 12px;
+  }
+
+  x-filters {
+    margin-bottom: 6px;
   }
 
   .child > .self {
     display: flex;
     padding: 3px;
+    align-items: center;
   }
 
   .children {
@@ -18,12 +23,16 @@ export default css`
     padding-left: 20px;
   }
 
-  .expander,
-  .icon {
+  .expander {
     box-sizing: border-box;
     width: 20px;
     height: 20px;
     text-align: center;
+    line-height: 17px;
+  }
+
+  x-icon {
+    padding-right: 3px;
   }
 
   .expander {
@@ -32,20 +41,24 @@ export default css`
   }
 
   .name {
-    color: var(--dust);
+    color: var(--text-color);
     font-family: Roboto;
     font-weight: 400;
   }
 
-  .theme-white {
-    background-color: #ccc;
+  .component {
+    background-color: var(--part-component);
   }
 
-  .theme-gray {
-    background-color: var(--dust-light);
+  .nano {
+    background-color: var(--part-nano);
   }
 
-  .theme-earth {
-    background-color: var(--earth-light);
+  .stream {
+    background-color: var(--part-stream);
+  }
+
+  .page {
+    background-color: var(--part-page);
   }
 `
