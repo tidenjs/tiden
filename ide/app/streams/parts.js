@@ -12,10 +12,28 @@ export default stream(`parts`, function* parts() {
       parts = yield explore()
     }
 
-    yield all(parts.map(addExamplesToPart))
+    yield all(parts.map(refreshExamplesBelongingTo))
 
     return parts
   })
+
+  function* refreshExamplesBelongingTo(part) {
+    if (part.demoPath) {
+      const demo = yield import(part.demoPath)
+
+      parts = parts.filter((it) => it.parentId !== part.id)
+      for (const example of Object.keys(demo.examples)) {
+        parts.push({
+          id: `${part.id}-${example}`,
+          type: `example`,
+          parentId: part.id,
+          name: example,
+          namespace: part.namespace,
+          path: part.demoPath,
+        })
+      }
+    }
+  }
 
   const channel = eventChannel((dispatch) => {
     let cleanup
@@ -39,7 +57,7 @@ export default stream(`parts`, function* parts() {
     if (newPart) {
       // ensure only changed part is replaced, keep all old objects, and return new array
       // this is to make sure that object equality is maintained for unchanged entries
-      yield addExamplesToPart(newPart)
+      yield refreshExamplesBelongingTo(newPart)
       const result = []
       let found = false
 
@@ -61,8 +79,3 @@ export default stream(`parts`, function* parts() {
     }
   }
 })
-
-function* addExamplesToPart(part) {
-  const demo = yield import(part.demoPath)
-  part.examples = demo.examples
-}

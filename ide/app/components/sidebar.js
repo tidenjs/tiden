@@ -15,7 +15,7 @@ component(`x-sidebar`, { css }, function sidebar({ search, items, filters }) {
     <x-input
       .value=${search.text}
       .change=${search.callback}
-      .placeholder=${"Write a word to filter..."}
+      .placeholder=${"Write to filter..."}
     ></x-input>
     <x-filters .filters=${filters}></x-filters>
     ${render(items)}
@@ -32,11 +32,13 @@ function renderChild(child) {
       <div class="self">
         <x-touchable .link=${{ onClick: child.toggle }}>
           <div class="expander">
-            ${!child.toggle ? `` : child.isExpanded ? `▾` : `▸`}
+            ${!child.hasChildren ? `` : child.isExpanded ? `▾` : `▸`}
           </div>
         </x-touchable>
         <x-icon .type=${child.type}></x-icon>
-        <div class="name">${child.title}</div>
+        <div class="name">
+          ${html([child.text.replace(/\*(.*?)\*/g, `<b>$1</b>`)])}
+        </div>
       </div>
       ${child.children && child.children.length > 0 && child.isExpanded
         ? html` <div class="children">${render(child.children)}</div>`
