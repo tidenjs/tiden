@@ -72,9 +72,7 @@ const filteredIds = s(
     const ids = new Set()
 
     for (const part of parts) {
-      const isExempted = [`example`, `namespace`].includes(part.type)
-
-      if ((isExempted || matchFilter(part)) && matchSearch(part)) {
+      if (matchFilter(part) && matchSearch(part)) {
         ids.add(part.id)
         if (part.parentId) {
           // also add any ancestor of matched part
@@ -88,7 +86,12 @@ const filteredIds = s(
 
       function matchFilter(part) {
         return !!filters.find(
-          (filter) => filter.type === part.type && filter.isSelected
+          (filter) =>
+            filter.isSelected &&
+            (filter.type === part.type ||
+              (part.parentId &&
+                parts.find((it) => it.id === part.parentId).type ===
+                  filter.type))
         )
       }
       function matchSearch(part) {

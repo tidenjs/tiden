@@ -1,4 +1,4 @@
-import { html, component } from "tiden"
+import { html, component, useEffect } from "tiden"
 import { repeat } from "lit-html/directives/repeat.js"
 
 import "../components/touchable.js"
@@ -11,6 +11,20 @@ component(`x-sidebar`, { css }, function sidebar({ search, items, filters }) {
   if (!items) {
     return null
   }
+
+  useEffect(() => {
+    const key = (e) => {
+      if (e.key === `Escape`) {
+        this.shadowRoot.querySelector(`x-input`).focus()
+      }
+    }
+    document.addEventListener(`keyup`, key)
+
+    return () => {
+      document.removeEventListener(`keyup`, key)
+    }
+  }, [])
+
   return html`
     <x-input
       .value=${search.text}
