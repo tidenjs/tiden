@@ -54,6 +54,11 @@ export default function run(...slice) {
           `Usage: create <thing> <name> [path] (where thing can be 'stream', 'component', 'page' or 'nano')`
         )
       }
+      const excludeChars = /[-_\s]/g;
+      const haveExcludeChars = name.search(excludeChars) !== -1
+      if (haveExcludeChars) {
+        throw new Error(`[name] of creating page/stream/nano/component should be camelCase`)
+      }
 
       return create(noun, name, path, parsed)
     }
