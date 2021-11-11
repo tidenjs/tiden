@@ -65,6 +65,15 @@ describe(`cli`, () => {
         { name: `myPage`, namespace: ``, pathname: `/` },
       ])
     })
+
+    it(`should fail with non camelCase name`, () => {
+      try {
+        parse(`create`, `page`, `hyphen-page_`, `ns1/ns2`)
+        throw new Error(`It did not throw an error`)
+      } catch (e) {
+        expect(e.message).to.equal(`[name] of creating page/stream/nano/component should be camelCase`)
+      }
+    })
   })
 
   describe(`create stream`, () => {
@@ -80,6 +89,16 @@ describe(`cli`, () => {
         [`createStream`, { name: `myStream`, namespace: `ns1/ns2` }]
       )
     })
+
+    it(`should fail with non camelCase name`, () => {
+      try {
+        parse(`create`, `stream`, `under_score`, `ns1/ns2`)
+        throw new Error(`It did not throw an error`)
+      } catch (e) {
+        expect(e.message).to.equal(`[name] of creating page/stream/nano/component should be camelCase`)
+      }
+    })
+
   })
 
   describe(`create nano`, () => {
@@ -96,6 +115,16 @@ describe(`cli`, () => {
         { name: `myNano`, namespace: `ns1/ns2` },
       ])
     })
+
+    it(`should fail with non camelCase name`, () => {
+      try {
+        parse(`create`, `nano`, `hy-phen`, `ns1/ns2`)
+        throw new Error(`It did not throw an error`)
+      } catch (e) {
+        expect(e.message).to.equal(`[name] of creating page/stream/nano/component should be camelCase`)
+      }
+    })
+
   })
 
   describe(`create component`, () => {
@@ -113,6 +142,15 @@ describe(`cli`, () => {
         `createComponent`,
         { name: `myComponent`, namespace: `ns1/ns2` },
       ])
+    })
+
+    it(`should fail with non camelCase name`, () => {
+      try {
+        parse(`create`, `component`, `hy-phen`, `ns1/ns2`)
+        throw new Error(`It did not throw an error`)
+      } catch (e) {
+        expect(e.message).to.equal(`[name] of creating page/stream/nano/component should be camelCase`)
+      }
     })
   })
 
